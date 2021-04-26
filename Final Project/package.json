@@ -1,0 +1,21 @@
+{
+  "name": "final-project",
+  "version": "1.0.0",
+  "description": "Final Project for Yi Lin, Yuyang Peng, Xiuyuan Zhao, Zehui Lu",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Xiuyuan Zhao, Yi Lin, Zehui Lu, Yuyang Peng",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.0",
+    "express-session": "^1.17.1",
+    "handlebars": "^4.7.7",
+    "mongodb": "^3.6.6"
+  }
+}
