@@ -19,6 +19,9 @@ const getCollectionFn = (collection) => {
 module.exports = {
   vaccineInjectionSite: getCollectionFn('vaccineInjectionSite'),
   dailyData: getCollectionFn('dailyData'),
-  administration: getCollectionFn('administration')
+  administration: getCollectionFn('administration'),
+  users: getCollectionFn("users"),
+  reservation: getCollectionFn("reservation"),
+  comments:getCollectionFn("comments"),
 
 };
