@@ -201,8 +201,8 @@ async function getUserById(userId){
     if (!userId || typeof userId !== 'string' || !userId.trim()){
         throw 'User id is not a valid string.';
     }
-    const objId = ObjectId.createFromHexString(userId);
-    userId = objId;
+    userId = ObjectId.createFromHexString(userId);
+
     const userCollection = await users();
     let user = await userCollection.findOne({_id: userId});
     if(user === null){
