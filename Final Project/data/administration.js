@@ -7,6 +7,59 @@ const administration = mongoCollections.administration;
 //     "_id":"12eg456-e89b-24d3-a456-426655440000",
 //     "username": "admin",
 //     "password": "123456",
-//     "log_in_date": "1617644499"
+//     "log_in_date": [{timeStamp1},{timeStamp2},{timeStamp3}]   
+//
 // }
+
+
+async function addAdmin(username, password){
+    if (!username || typeof username != 'string' || !username.trim()) throw 'invalid username'
+    if (!password || typeof password != 'string' || !password.trim()) throw 'invalid password'
+    var newAdmin = {
+        username: username,
+        password: password,
+        log_in_date: []
+    }
+    const adminCollection = await administration();
+    let insertInfo = await adminCollection.insertOne(newAdmin);
+    if (!insertInfo || insertInfo === null) throw 'failed to add the admin';
+    return insertInfo;
+
+}
+
+async function getAdminById(adminId){
+    if (!adminId) throw 'adminId must be supplied';
+    if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';
+    let parsedAdminId = ObjectId(adminId);
+    const adminCollection = await administration();
+    let adminInfo = await adminCollection.findOne({_id:parsedAdminId});
+    if (!adminInfo || adminInfo === null) throw 'no admin with the provided id';
+    return adminInfo;
+}
+
+async function getAllAdmin(){
+    const adminCollection = await administration();
+    let allAdmin = await adminCollection.find({}).toArray();
+    return allAdmin;
+}
+ 
+async function removeAdminById(adminId){
+    if (!adminId) throw 'adminId must be supplied';
+    if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';
+    let parsedAdminId = ObjectId(adminId);
+    const adminCollection = await administration();
+    let deleteInfo = adminCollection.removeOne({_id = parsedAdminId});
+    if (deleteInfo.deletedCount === 0) {
+        throw 'Could not delete the admin';
+    }
+    return true;
+}
+
+module.exports = {
+    addAdmin,
+    getAdminById,
+    getAllAdmin,
+    removeAdminById
+}
+
 
