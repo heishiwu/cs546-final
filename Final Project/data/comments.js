@@ -3,7 +3,8 @@ const { ObjectId } = require('mongodb');
 const comments = mongoCollections.comments;
 const users = mongoCollections.users;
 const vaccineInjectionSite = mongoCollections.vaccineInjectionSite;
-
+const usersCollection = require("./users");
+const sitesCollection = require("./vaccineInjectionSite");
 
 //comment
 // {
@@ -17,10 +18,10 @@ const vaccineInjectionSite = mongoCollections.vaccineInjectionSite;
 
 async function getCommentById(commentId){
     if(!commentId || typeof (commentId) !== "string"){
-        throw "input a not string foramt commentId"
+        throw "input a not string format commentId"
     }
     const commentCollection = await comments();
-    commentId = ObjectId.createFromHexString(id);
+    commentId = ObjectId.createFromHexString(commentId);
     let commentGoal = await commentCollection.findOne({ _id: commentId });
     if (commentGoal === null)
         throw 'No comment with that id';
@@ -65,6 +66,8 @@ async function addComment(userId, siteId, rating, comment){
     let commentCreated = await getCommentById(newCommentId.toHexString());
 
     //add two methods
+    await usersCollection.addCommentIdFromUser(userId, newCommentId);
+    await sitesCollection.addCommentIdFromSite(siteId, newCommentId);
 
 
     return commentCreated;
@@ -83,7 +86,11 @@ async function removeComment(commentId, userId, siteId){
     if(!siteId || typeof (siteId) !=="string"){
         throw "input a string format siteId";
     }
+
     //add two methods
+    await usersCollection.removeCommentIdFromUser(userId, commentId);
+    await sitesCollection.removeCommentIdFromSite(siteId, commentId);
+
 
     commentId = ObjectId.createFromHexString(commentId);
     const commentCollection = await comments();

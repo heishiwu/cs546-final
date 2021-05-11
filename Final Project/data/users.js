@@ -388,9 +388,44 @@ async function updateUserInformation(userId, name, email, address, birthday, gen
 
 
 
-
-
 };
+
+async function removeUserByUserId(userId){
+    if(!userId || typeof (userId) !=="string"){
+        throw "input a string format userId";
+    }
+
+    userId = ObjectId.createFromHexString(userId);
+    const userCollection = await users();
+    let deletionInfo = await userCollection.removeOne({ _id: userId });
+    if (deletionInfo.deletedCount === 0) {
+        throw `Could not delete the comment`;
+    }
+
+    return true;
+}
+
+//this function is used in ./data/comment.js
+async function removeCommentIdFromUser(userId, commentId){
+
+}
+
+//this function is used in ./data/reservation.js
+async function removeReservationIdFromUser(userId, reservationId){
+
+}
+
+//this function is used in ./data/comment.js
+async function addCommentIdFromUser(userId, commentId){
+
+}
+
+//this function is used in ./data/reservation.js
+async function addReservationIdFromUser(userId, reservationId){
+
+}
+
+
 
 
 
@@ -403,5 +438,9 @@ module.exports = {
     updateUsername,
     updatePassword,
     updateUserInformation,
-    removeUser
+    removeUserByUserId,
+    removeCommentIdFromUser,
+    removeReservationIdFromUser,
+    addCommentIdFromUser,
+    addReservationIdFromUser
 }
