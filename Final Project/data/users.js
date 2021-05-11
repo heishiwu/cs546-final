@@ -407,22 +407,78 @@ async function removeUserByUserId(userId){
 
 //this function is used in ./data/comment.js
 async function removeCommentIdFromUser(userId, commentId){
-
+    if(!userId || typeof (userId) !=="string"){
+        throw "input a string format userId";
+    }
+    if(!commentId || typeof (commentId) !=="string"){
+        throw "input a string format commentId";
+    }
+    userId = ObjectId.createFromHexString(userId);
+    const userCollection = await users();
+    let userInformation = await getUserById(userId);
+    let list = [];
+    for(let i of userInformation.comments_history){
+        if (i !== commentId){
+            list.push(i);
+        }
+    }
+    userInformation.comments_history = list;
+    let updateInformation = await userCollection.updateOne({ _id: userId }, { $set: { comments_history: userInformation.comments_history} });
+    return updateInformation;
 }
 
 //this function is used in ./data/reservation.js
 async function removeReservationIdFromUser(userId, reservationId){
-
+    if(!userId || typeof (userId) !=="string"){
+        throw "input a string format userId";
+    }
+    if(!reservationId || typeof (reservationId) !=="string"){
+        throw "input a string format reservationId";
+    }
+    userId = ObjectId.createFromHexString(userId);
+    const userCollection = await users();
+    let userInformation = await getUserById(userId);
+    let list = [];
+    for(let i of userInformation.reservation_history){
+        if (i !== reservationId){
+            list.push(i);
+        }
+    }
+    userInformation.reservation_history = list;
+    let updateInformation = await userCollection.updateOne({ _id: userId }, { $set: { reservation_history: userInformation.reservation_history} });
+    return updateInformation;
 }
 
 //this function is used in ./data/comment.js
 async function addCommentIdFromUser(userId, commentId){
-
+    if(!userId || typeof (userId) !=="string"){
+        throw "input a string format userId";
+    }
+    if(!commentId || typeof (commentId) !=="string"){
+        throw "input a string format commentId";
+    }
+    userId = ObjectId.createFromHexString(userId);
+    const userCollection = await users();
+    let userInformation = await getUserById(userId);
+    userInformation.comments_history.push(commentId);
+    let updateInformation = await userCollection.updateOne({ _id: userId }, { $set: { comments_history: userInformation.comments_history} });
+    return updateInformation;
 }
 
 //this function is used in ./data/reservation.js
 async function addReservationIdFromUser(userId, reservationId){
-
+    if(!userId || typeof (userId) !=="string"){
+        throw "input a string format userId";
+    }
+    if(!reservationId || typeof (reservationId) !=="string"){
+        throw "input a string format reservationId";
+    }
+    userId = ObjectId.createFromHexString(userId);
+    const userCollection = await users();
+    let userInformation = await getUserById(userId);
+    userInformation.reservation_history.push(reservationId);
+    let updateInformation = await userCollection.updateOne({ _id: userId }, { $set: { reservation_history: userInformation.reservation_history} });
+    return updateInformation;
 }
 
 
