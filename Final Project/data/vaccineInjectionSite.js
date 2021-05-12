@@ -7,7 +7,7 @@ const vaccineInjectionSite = mongoCollections.vaccineInjectionSite;
 //     "_id":"12eg456-e89b-24d3-a456-426655440000",
 //     "name":"River Side",
 //     "address":{
-//     "addressLine": "1232 Grand St.",
+//         "addressLine": "1232 Grand St.",
 //         "apartment_suite_unitNumber": "APT 304",
 //         "city": "hoboken",
 //         "county": "hudson",
@@ -105,21 +105,115 @@ async function addReservationIdFromSite(siteId, reservationId){
 
 async function getSiteById(siteId){
     if (!siteId|| typeof siteId !== 'string' || !siteId.trim()){
-        throw 'User id is not a valid string.';
+        throw 'Site id is not a valid string.';
     }
     siteId = ObjectId.createFromHexString(siteId);
-
     const vaccineCollection = await vaccineInjectionSite();
     let vaccine = await vaccineCollection.findOne({_id: siteId});
     if(vaccine === null){
-        throw "No user found";
+        throw "No site found";
     }
     return vaccine;
 }
+async function getAllSites(){
+    const vaccineCollection = await vaccineInjectionSite();
+    let allSites = await vaccineCollection.find({}).toArray();
+    return allSites;
+}
+async function updateSite(siteId, name, address, reservation_history, comments_history, Rating){
+    //name check
+    if (!name || typeof name !== 'string' || !name.trim()) throw 'invalid name';
+    //address check
+    if (!address || typeof address !== 'object') throw 'invalid address';
+    if (!address.addressLine || typeof address.addressLine !== 'string' || !address.addressLine.trim()) throw 'invalid address.addressLine';
+    if (!address.apartment_suite_unitNumber || typeof address.apartment_suite_unitNumber !== 'string' || !address.apartment_suite_unitNumber.trim()) throw 'invalid apartment_suite_unitNumber';
+    if (!address.city || typeof address.city !== 'string' || !address.city.trim()) throw 'invalid city';
+    if (!address.county || typeof address.county !== 'string' || !address.county.trim()) throw 'invalid county';
+    if (!address.state || typeof address.state !== 'string' || !address.state.trim()) throw 'invalid state';
+    if (!address.postalCode || typeof address.postalCode !== 'string' || !address.postalCode.trim()) throw 'Please provide postalCode';
+    //test postalCode using regular expression.
+    if((/^[0-9]{5}(?:-[0-9]{4})?$/).test(address.postalCode)){
+        throw "must provide correct format postalCode";
+    }
+    //reservation_history check
+    if (!reservation_history || typeof reservation_history !== 'object') throw 'invalid reservation_history';
+    //comments_history check
+    if (!comments_history || typeof comments_history !== 'object') throw 'invalid comments_history';
+    //rating check
+    if (!Rating || typeof Rating !== 'string' || !Rating.trim()) throw 'invalid Rating';
 
+
+    let parsedSiteId = ObjectId(siteId);
+    const vaccineCollection = await vaccineInjectionSite();
+
+    let siteUpdateInfo = {
+        name: name,
+        address: address,
+        reservation_history: reservation_history,
+        comments_history: comments_history,
+        Rating: Rating
+    };
+    let updatedInfo = await vaccineCollection.updateOne({ _id: parsedSiteId }, { $set: siteUpdateInfo });
+    if (updatedInfo.modifiedCount === 0) {
+        throw 'could not edit the site successfully';
+    }
+    return this.getSiteById(siteId);
+}
+async function removeSite(siteId){
+    if (!siteId) throw 'siteId must be provided';
+    if (typeof siteId != 'string' || !siteId.trim()) throw 'the input siteId is invalid';
+    let parsedSiteId = ObjectId(siteId);
+    const vaccineCollection = await vaccineInjectionSite();
+    let deleteInfo = vaccineCollection.removeOne({_id:parsedSiteId});
+    if (deleteInfo.deletedCount === 0) {
+        throw 'Could not delete the site';
+    }
+    return deleteInfo;
+}
+async function createSite(name, address, reservation_history, comments_history, Rating){
+     //name check
+     if (!name || typeof name !== 'string' || !name.trim()) throw 'invalid name';
+     //address check
+     if (!address || typeof address !== 'object') throw 'invalid address';
+     if (!address.addressLine || typeof address.addressLine !== 'string' || !address.addressLine.trim()) throw 'invalid address.addressLine';
+     if (!address.apartment_suite_unitNumber || typeof address.apartment_suite_unitNumber !== 'string' || !address.apartment_suite_unitNumber.trim()) throw 'invalid apartment_suite_unitNumber';
+     if (!address.city || typeof address.city !== 'string' || !address.city.trim()) throw 'invalid city';
+     if (!address.county || typeof address.county !== 'string' || !address.county.trim()) throw 'invalid county';
+     if (!address.state || typeof address.state !== 'string' || !address.state.trim()) throw 'invalid state';
+     if (!address.postalCode || typeof address.postalCode !== 'string' || !address.postalCode.trim()) throw 'Please provide postalCode';
+     //test postalCode using regular expression.
+     if((/^[0-9]{5}(?:-[0-9]{4})?$/).test(address.postalCode)){
+         throw "must provide correct format postalCode";
+     }
+     //reservation_history check
+     if (!reservation_history || typeof reservation_history !== 'object') throw 'invalid reservation_history';
+     //comments_history check
+     if (!comments_history || typeof comments_history !== 'object') throw 'invalid comments_history';
+     //rating check
+     if (!Rating || typeof Rating !== 'string' || !Rating.trim()) throw 'invalid Rating';
+ 
+ 
+     let parsedSiteId = ObjectId(siteId);
+     const vaccineCollection = await vaccineInjectionSite();
+ 
+     let newSite = {
+         name: name,
+         address: address,
+         reservation_history: reservation_history,
+         comments_history: comments_history,
+         Rating: Rating
+    };
+    let insertInfo = vaccineCollection.insertOne(newSite);
+    if (!insertInfo || insertInfo === null) throw 'failed to add the site';
+    return insertInfo;
+}
 
 module.exports={
     getSiteById,
+    getAllSites,
+    updateSite,
+    removeSite,
+    createSite,
     removeCommentIdFromSite,
     removeReservationIdFromSite,
     addCommentIdFromSite,
