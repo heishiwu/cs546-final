@@ -3,15 +3,25 @@
     let chartData = $("#chart_data").val();
     const labels = chartLabels;
     const data = {
-        labels: labels,
+        // "dailyCases ": "151234",
+//     "dailyDeath": "6757",
+//     "dailyVaccination": "6757",
+//     "dailyRecover": "5678",
+//     "sum_of_cases": "6666",
+//     "sum_of_death": "4573",
+//     "sum_of_vaccination": "7592",
+//     "sum_of_recover": "7824",
+//     "change_date ": "04/03/2021"
+
+        labels: labels,   //x-axis
         datasets: [{
-            label: 'My First dataset',
+            label: 'dailyCases',   //
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             fill: false,
-            data: chartData[0]
+            data: chartData[0]    //data
         }, {
-            label: 'My Second dataset',
+            label: 'dailyDeath',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             fill: false,
@@ -64,4 +74,4 @@
         document.getElementById('myChart'),
         config
     );
-})(window.jQeury)
+})(jQuery)

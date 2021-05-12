@@ -1,0 +1,144 @@
+<div class="container col-9 mt-3 ">
+    <h3 class="mb-3">Profile</h3>
+    <div class="row g-3">
+        <div class="col-12">
+            <label for="username" class="form-label">Username</label>
+            <a href="#" class="link-primary">Change Username</a>
+            <div class="input-group has-validation">
+                <input type="text" class="form-control" value="{{user.username}}" id="username" disabled>
+                <div class="invalid-feedback">
+                    Your username is required.
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label for="password" class="form-label">Password</label>
+            <a href="#" class="link-primary">Change Password</a>
+        </div>
+
+        <hr class="my-4">
+
+        <h5 class="col-10">User Info</h5>
+        <a href="#" class="link-primary col-2">Edit Info</a>
+        <form class="row g-3">
+            <div class="col-sm-6">
+                <label for="firstName" class="form-label">First name</label>
+                <input type="text" class="form-control" id="firstName" value="{{user.firstName}}" disabled>
+            </div>
+
+            <div class="col-sm-6">
+                <label for="lastName" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="lastName" value="{{user.lastName}}" disabled>
+            </div>
+
+            <div class="col-12">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" value="{{user.email}}" disabled>
+            </div>
+
+            <div class="col-12">
+                <label for="birthday" class="form-label">Birthday</label>
+                <input type="date" class="form-control" id="birthday" value="{{user.birthday}}" disabled>
+            </div>
+
+            <div class="col-12">
+                <label for="addressLine" class="form-label">Address Line</label>
+                <input type="text" class="form-control" id="addressLine" value="{{user.address.addressLine}}" disabled>
+            </div>
+
+            <div class="col-12">
+                <label for="apartment_suite_unitNumber" class="form-label">Apartment Suite UnitNumber</label>
+                <input type="text" class="form-control" id="apartment_suite_unitNumber"
+                    value="{{user.address.apartment_suite_unitNumber}}" disabled>
+            </div>
+
+            <div class="col-md-3">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city" value="{{user.address.city}}" disabled>
+            </div>
+
+            <div class="col-md-3">
+                <label for="county" class="form-label">County</label>
+                <input type="text" class="form-control" id="county" value="{{user.address.county}}" disabled>
+            </div>
+
+            <div class="col-md-3">
+                <label for="state" class="form-label">State</label>
+                <select class="form-select" id="state" disabled>
+                    <option value="{{user.address.state}}">{{user.address.state}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="zip" class="form-label">Zip</label>
+                <input type="text" class="form-control" id="zip" value="{{user.address.zip}}" disabled>
+            </div>
+
+            <div class="col-12">
+                <label for="gender" class="form-label">Gender </label>
+                <label for="gender" class="form-label">{{user.gender}}</label>
+            </div>
+
+            <div class="col-md-6">
+                <label for="race" class="form-label">Race</label>
+                <select class="form-select" id="race" disabled>
+                    <option value="{{user.race}}">{{user.race}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="ethnicity" class="form-label">Ethnicity</label>
+                <select class="form-select" id="ethnicity" disabled>
+                    <option value="{{user.ethnicity}}">{{user.ethnicity}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="insuranceType" class="form-label">Insurance Type</label>
+                <select class="form-select" id="insuranceType" disabled>
+                    <option value="{{user.insuranceType}}">{{user.insuranceType}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="insuranceName" class="form-label">Insurance Name</label>
+                <input type="text" class="form-control" id="insuranceName" value="{{insuranceName}}" disabled>
+            </div>
+
+            <div class="col-md-6">
+                <label for="medicalGroupNumber" class="form-label">Medical GroupNumber</label>
+                <input type="text" class="form-control" id="medicalGroupNumber" value="{{medicalGroupNumber}}" disabled>
+            </div>
+
+            <div class="col-md-6">
+                <label for="medicalid" class="form-label">Medical Id</label>
+                <input type="text" class="form-control" id="medicalid" value="medicalid" disabled>
+            </div>
+        </form>
+
+        <hr class="my-4">
+
+        <h5 class="col-10">Reservation Record</h5>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Reservation ID</th>
+                    <th scope="col">Site Name</th>
+                    <th scope="col">Reservation Date</th>
+                    <th scope="col">Creation time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each errors}}
+                <tr>
+                    <td>{{reservation._id}}</th>
+                    <td>{{reservation.siteName}}</td>
+                    <td>{{reservation.date}}</td>
+                    <td>{{reservation.time}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
