@@ -28,7 +28,7 @@ async function addAdmin(username, password){
 }
 
 async function getAdminById(adminId){
-    if (!adminId) throw 'adminId must be supplied';
+    if (!adminId) throw 'adminId must be provided';
     if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';
     let parsedAdminId = ObjectId(adminId);
     const adminCollection = await administration();
@@ -48,18 +48,51 @@ async function removeAdminById(adminId){
     if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';
     let parsedAdminId = ObjectId(adminId);
     const adminCollection = await administration();
-    let deleteInfo = adminCollection.removeOne({_id = parsedAdminId});
+    let deleteInfo = adminCollection.removeOne({_id:parsedAdminId});
     if (deleteInfo.deletedCount === 0) {
         throw 'Could not delete the admin';
     }
     return true;
 }
 
+async function updateAdminUsername(adminId, newUsername) {
+    if (!adminId) throw 'adminId must be supplied';
+    if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';   
+    let parsedAdminId = ObjectId(adminId);
+    const adminCollection = await administration();
+    let adminInfo = await adminCollection.findOne({username: newUsername});
+    if (adminInfo !== null) throw 'the username already exist!';
+    let adminUpdateInfo = {
+        username: newUsername
+    }
+    let adminUpdateInfo = await adminCollection.updateOne({ _id: parsedAdminId }, { $set: adminUpdateInfo });
+        if (adminUpdateInfo.modifiedCount === 0) {
+            throw 'could not update the username successfully';
+        }
+        return this.getAdminById(adminId);
+}
+async function updateAdminPassword(adminId, newPassword) {
+    if (!adminId) throw 'adminId must be supplied';
+    if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';   
+    let parsedAdminId = ObjectId(adminId);
+    const adminCollection = await administration();
+    let adminUpdateInfo = {
+        password: newPassword
+    }
+    let adminUpdateInfo = await adminCollection.updateOne({ _id: parsedAdminId }, { $set: adminUpdateInfo });
+        if (adminUpdateInfo.modifiedCount === 0) {
+            throw 'could not update the username successfully';
+        }
+        return this.getAdminById(adminId);
+}
+
 module.exports = {
     addAdmin,
     getAdminById,
     getAllAdmin,
-    removeAdminById
+    removeAdminById,
+    updateAdminUsername,
+    updateAdminPassword
 }
 
 
