@@ -48,7 +48,7 @@ async function removeAdminById(adminId){
     if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';
     let parsedAdminId = ObjectId(adminId);
     const adminCollection = await administration();
-    let deleteInfo = adminCollection.removeOne({_id = parsedAdminId});
+    let deleteInfo = adminCollection.removeOne({_id : parsedAdminId});
     if (deleteInfo.deletedCount === 0) {
         throw 'Could not delete the admin';
     }

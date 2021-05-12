@@ -402,7 +402,7 @@ async function removeUserByUserId(userId){
         throw `Could not delete the comment`;
     }
 
-    return true;
+    return deletionInfo;
 }
 
 //this function is used in ./data/comment.js
