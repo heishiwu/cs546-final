@@ -80,19 +80,32 @@ async function updateAdminPassword(adminId, newPassword) {
         password: newPassword
     }
     let adminUpdateInfo = await adminCollection.updateOne({ _id: parsedAdminId }, { $set: adminUpdateInfo });
-        if (adminUpdateInfo.modifiedCount === 0) {
-            throw 'could not update the username successfully';
-        }
-        return this.getAdminById(adminId);
+    if (adminUpdateInfo.modifiedCount === 0) {
+        throw 'could not update the password successfully';
+    }
+    return this.getAdminById(adminId);
 }
-
+async function updateAdminLoginDate(adminId, newLogIn) {
+    if (!adminId) throw 'adminId must be supplied';
+    if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';   
+    let parsedAdminId = ObjectId(adminId);
+    const adminCollection = await administration();
+    let adminUpdateInfo = adminCollection.FindOne({_id:parsedAdminId});
+    adminUpdateInfo.log_in_date.push(new Date.now());
+    let adminUpdateInfo = await adminCollection.updateOne({ _id: parsedAdminId }, { $set: adminUpdateInfo });
+    if (adminUpdateInfo.modifiedCount === 0) {
+        throw 'could not update the loginDate successfully';
+    }
+    return this.getAdminById(adminId);
+}
 module.exports = {
     addAdmin,
     getAdminById,
     getAllAdmin,
     removeAdminById,
     updateAdminUsername,
-    updateAdminPassword
+    updateAdminPassword,
+    updateAdminLoginDate
 }
 
 
