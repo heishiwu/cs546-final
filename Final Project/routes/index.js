@@ -5,6 +5,7 @@ const administrationRoutes = require("./administration");
 const commentsRoutes = require("./comments");
 const reservationRoutes = require("./reservation");
 const dailyDataRoutes = require("./dailyData");
+const privateRoutes = require("./private");
 
 const constructorMethod = app => {
     app.use("/users", usersRoutes);
@@ -13,15 +14,11 @@ const constructorMethod = app => {
     app.use("/comments", commentsRoutes);
     app.use("/reservation", reservationRoutes);
     app.use("/daily", dailyDataRoutes);
+    app.use("/private", privateRoutes);
 
 
     app.get('/', (req, res) => {
-        return res.render('landing/landing', {
-            authenticated: req.session.user ? true : false,
-            user: req.session.user,
-            partial: 'landing-script',
-            title: 'Home'
-        });
+        res.redirect('http://localhost:3000/private');
     });
 
     app.use("*", (req, res) => {
