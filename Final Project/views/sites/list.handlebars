@@ -1,0 +1,53 @@
+<div class="container m-5">
+    <div class="row">
+        <div class="col col-4">
+            <label for="input1"></label>
+            <input type="text" id="input1" onkeyup="fName('input1', 0)" placeholder="search by name">
+        </div>
+        <div class="col col-4">
+            <label for="input2"></label>
+            <input type="text" id="input2" onkeyup="fName('input2, 4')" placeholder="Search by state">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-4">
+            <div class="rating-slider w-100">
+                <label for="rating" class="font-weight-bold">Rating above: <span id="rate" class="ml-2"></span></label>
+                <input type="range" value="1" min="1" max="5" step="0.1" id="rating" onmouseup="fNum('rating', 3)" onkeyup="fNum('rating, 3)">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container m-5">
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">AddressLine</th>
+                <th scope="col">City</th>
+                <th scope="col">County</th>
+                <th scope="col">State</th>
+                <th scope="col">PostalCode</th>
+                <th scope="col">Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each sites}}
+            <tr class="clickable-row" id="{{this._id}}" data-href="/sites/{{this._id}}">
+                <td>{{this.name}}</td>
+                <td>{{this.address.addressLine}}</td>
+                <td>{{this.address.city}}</td>
+                <td>{{this.address.county}}</td>
+                <td>{{this.address.state}}</td>
+                <td>{{this.address.postalCode}}</td>
+                <td>{{this.rating}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+<div class="container m-5" id="no-result" hidden="">
+    <p><span class="fa fa-exclamation-circle">&#0160;</span>No result found</p>
+</div>
