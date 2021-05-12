@@ -102,6 +102,28 @@ async function removeComment(commentId, userId, siteId){
     return true;
 }
 
+async function averageRating(siteId){
+    if(!siteId || typeof (siteId) !=="string"){
+        throw "input a string format commentId";
+    }
+    const siteInfo = await sitesCollection.getSiteById(siteId);
+    let commentsHistory = siteId.comments_history;
+    const commentCollection = await comments();
+    let temp = [];
+    for(let i of commentsHistory){
+        i._id = ObjectId.createFromHexString(i._id);
+        let tempComment = await commentCollection.findOne({_id: i._id});
+        let rating = tempComment.rating;
+        rating = parseInt(rating);
+        temp.push(rating);
+    }
+    let sum = 0;
+    for(let j = 0; j < temp.length; j++){
+        sum += temp[j];
+    }
+    return sum/ temp.length;
+}
+
 
 
 
@@ -112,5 +134,6 @@ module.exports={
     getCommentById,
     addComment,
     removeComment,
-    getAllComments
+    getAllComments,
+    averageRating
 }

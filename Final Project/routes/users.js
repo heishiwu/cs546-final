@@ -81,7 +81,7 @@ router.get('/loginin', async (req, res) =>{
         return res.redirect('/private');
     }
     else {
-        res.render('/landing/landing');
+        res.render('/users/login');
     }
 });
 
@@ -103,7 +103,7 @@ router.post('/loginin', async (req, res) =>{
                 break;
             }
         }
-        res.status(401).render('/landing/landing', {message: "Invaild username or password"});
+        res.status(401).render('/users/login', {message: "Invaild username or password"});
     }
 });
 
@@ -111,14 +111,20 @@ router.get('/logup', async (req, res) =>{
     if (!req.session.userId) {
         return res.redirect('/private');
     }else {
-        return res.render('landing/landing');
+        return res.render('/users/signup');
     }
 });
 
 //only name, username, password, email birthday and insurance are necessary, and username and email are unique.
 router.post('/logup', async (req, res) =>{
+    let userInfo = req.body;
+    if (!userInfo) {
+        res.status(400).json({ error: 'You must provide data to create a userInfo' });
+        return;
+    }
+
     const{name, username, password, email, address, birthday, gender, race,
-        ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = req.body;
+        ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = userInfo;
     try{
         if(!name){
             throw "You must input a name";
@@ -148,7 +154,7 @@ router.post('/logup', async (req, res) =>{
         req.session.userId = newUser._id.toHexString();
         return res.redirect('/private');
     }catch (e){
-        res.status(404).render('landing/landing',{message:e});
+        res.status(404).render('/users/signup',{message:e});
     }
 });
 
