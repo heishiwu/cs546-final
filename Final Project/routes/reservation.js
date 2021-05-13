@@ -27,16 +27,19 @@ router.post('/', async (req, res) =>{
     if(!reservationInfo){
         res.status(400).json({error: "You must input a data"});
     }
-    const {userId, siteId} = reservationInfo;
+    const {userId, siteId, data} = reservationInfo;
     if(!userId){
         res.status(400).json({error: "You must input a userId"});
     }
     if(!siteId){
         res.status(400).json({error: "You must input a siteId"});
     }
+    if(!data){
+        res.status(400).json({error: "You must input a data"});
+    }
 
     try{
-        const newReservation = await reservationData().addReservation(userId, siteId);
+        const newReservation = await reservationData().addReservation(userId, siteId, data);
         res.status(200).send(newReservation);
     }catch (e){
         res.status(500).json({error:e});

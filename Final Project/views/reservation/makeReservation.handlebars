@@ -1,0 +1,14 @@
+<div class="container col-8 mt-5">
+    <div class="container mb-4">
+        <a href="/vaccineInjectionSite/{{site._id}}" class="text-decoration-none text-dark font-weight-bold">
+            <h1>{{site.name}}</h1>
+        </a>
+    </div>
+    <div class="container reservation-date">
+        <form method="POST" action="/comments/{{site._id}}" id="reservation-form">
+            <label for="reservation-date">Please enter the date</label>
+            <input type="date" name="reservationDate" id="reservation-date">
+            <button type="submit" class="btn btn-primary" name="submitButton">Submit</button>
+        </form>
+    </div>
+</div>

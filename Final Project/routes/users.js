@@ -13,18 +13,15 @@ router.get('/account', async (req, res) =>{
     try{
         const userId = req.session.userId;
         let userInformation = await userData.getUserById(userId);
-        res.render('user/login', {name: userInformation.name,
-            username: userInformation.username,
-            email: userInformation.email, userInformation});
+        res.render('user/login', userInformation);
 
     }catch (e){
         res.status(404).json({error: 'User not found'});
     }
 });
 
-router.post('/account', async (req, res) =>{
-    const{name, username, password, email, address, birthday, gender, race,
-        ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = req.body;
+router.post('/account1', async (req, res) =>{
+    const{username} = req.body;
     if(!req.session.userId){
         return res.redirect('/private');
     }
@@ -36,44 +33,131 @@ router.post('/account', async (req, res) =>{
         res.status(404).json({error: 'User not found'});
         return ;
     }
+    if(username === oldUser.username){
+        res.status(400).json({ error: 'ou have to input different username' });
+        return;
+    }
 
     try{
-        let message1;
-        let message2;
-        let message3;
-        if(username === oldUser.username){
-            throw "you have to input different username";
-        }
-        if(password === oldUser.password){
-            throw "you have to input different password";
-        }
-        if(password === repeatPassword){
-            throw "Password don not match";
-        }
-        if(email === oldUser.email){
-            throw "you have to input different email";
-        }
-
-        if(username){
-            await userData.updateUsername(userId, username);
-            message1 = "username has been updates";
-        }
-        if(password){
-            const hashPassword = await bcrypt.hash(password, saltRounds);
-            await userData.updatePassword(userId, hashPassword);
-            message2 = "password has been updates";
-        }
-
-        await userData.updateUserInformation(userId, name, email, address, birthday,
-            gender, race, ethnicity, insurance, medicalGroupNumber, medicalid);
-        message3 = "information has been updates";
-
-        let updateUser = await userData.getUserById(userId);
-        res.render('users/login', {})
+        const userInfo = await userData.updateUsername(userId, username);
+        res.status(200).send(userInfo)
     }catch (e){
-        //add code
+        res.status(500).json({error:e})
+    }
+
+});
+
+router.post('/account2', async (req, res) =>{
+    const{password, repeatPassword} = req.body;
+    if(!req.session.userId){
+        return res.redirect('/private');
+    }
+    let oldUser;
+    const userId = req.session.userId;
+    try{
+        oldUser = await userData.getUserById(userId);
+    }catch (e){
+        res.status(404).json({error: 'User not found'});
+        return ;
+    }
+    if(password === oldUser.password){
+        res.status(400).json({ error: 'you have to input different password' });
+        return;
+    }
+    if(password === repeatPassword){
+        res.status(400).json({ error: 'Password don not match' });
+        return;
+    }
+
+    try{
+        // const hashPassword = await bcrypt.hash(password, saltRounds);
+        const userInfo = await userData.updatePassword(userId, password);
+        res.status(200).send(userInfo)
+    }catch (e){
+        res.status(500).json({error:e})
     }
 });
+
+router.post('/account3', async (req, res) =>{
+    const{name, email, address, birthday, gender, race,
+        ethnicity, insurance, medicalGroupNumber, medicalid} = req.body;
+    if(!req.session.userId){
+        return res.redirect('/private');
+    }
+    let oldUser;
+    const userId = req.session.userId;
+    try{
+        oldUser = await userData.getUserById(userId);
+    }catch (e){
+        res.status(404).json({error: 'User not found'});
+        return ;
+    }
+    if(email === oldUser.email){
+        res.status(400).json({ error: 'ou have to input different email' });
+        return;
+    }
+
+    try{
+        const userInfo = await userData.updateUsername(userId, name, email, address, birthday, gender, race,
+            ethnicity, insurance, medicalGroupNumber, medicalid);
+        res.status(200).send(userInfo)
+    }catch (e){
+        res.status(500).json({error:e})
+    }
+});
+//
+// router.post('/account', async (req, res) =>{
+//     const{name, username, password, email, address, birthday, gender, race,
+//         ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = req.body;
+//     if(!req.session.userId){
+//         return res.redirect('/private');
+//     }
+//     let oldUser;
+//     const userId = req.session.userId;
+//     try{
+//         oldUser = await userData.getUserById(userId);
+//     }catch (e){
+//         res.status(404).json({error: 'User not found'});
+//         return ;
+//     }
+//
+//     try{
+//         let message1;
+//         let message2;
+//         let message3;
+//         if(username === oldUser.username){
+//             throw "you have to input different username";
+//         }
+//         if(password === oldUser.password){
+//             throw "you have to input different password";
+//         }
+//         if(password === repeatPassword){
+//             throw "Password don not match";
+//         }
+//         if(email === oldUser.email){
+//             throw "you have to input different email";
+//         }
+//
+//         if(username){
+//             await userData.updateUsername(userId, username);
+//             message1 = "username has been updates";
+//         }
+//         if(password){
+//             const hashPassword = await bcrypt.hash(password, saltRounds);
+//             await userData.updatePassword(userId, hashPassword);
+//             message2 = "password has been updates";
+//         }
+//
+//         await userData.updateUserInformation(userId, name, email, address, birthday,
+//             gender, race, ethnicity, insurance, medicalGroupNumber, medicalid);
+//         message3 = "information has been updates";
+//
+//         let updateUser = await userData.getUserById(userId);
+//         res.render('users/login', {})
+//     }catch (e){
+//         //add code
+//     }
+// });
 
 
 router.get('/loginin', async (req, res) =>{
@@ -98,7 +182,7 @@ router.post('/loginin', async (req, res) =>{
             if(username === x.username){
                 if(await bcrypt.compare(password, x.password)){
                     req.session.userId = x._id.toHexString();
-                    return res.redirect('/homePage');
+                    return res.redirect('/private');
                 }
                 break;
             }

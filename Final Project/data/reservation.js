@@ -5,13 +5,14 @@ const users = mongoCollections.users;
 const vaccineInjectionSite = mongoCollections.vaccineInjectionSite;
 const usersCollection = require("./users");
 const sitesCollection = require("./vaccineInjectionSite");
-
+const moment = require("moment");
+const vaccineCollection = require('./vaccineInjectionSite');
 //reservation database
 // {
 //     "_id": "12eg456-e89b-24d3-a456-426655440000",
 //     "userId": "12eg456-e89b-24d3-a456-426655440000",
 //     "siteId": "12eg456-e89b-24d3-a456-426655440000",
-//     "data": "04//06/2021",
+//     "date": "04/06/2021",
 //     "time": "1617644499"
 // }
 
@@ -33,7 +34,7 @@ async function getAllReservation(){
     return allComments;
 }
 
-async function addReservation(userId, siteId){
+async function addReservation(userId, siteId, data){
 
     if(!siteId || typeof (siteId) !=="string"){
         throw "input a string format siteId";
@@ -43,12 +44,23 @@ async function addReservation(userId, siteId){
         throw "input a string format userId";
     }
 
+    if(!data || typeof (data) !== "string"){
+        throw "must provide birthday";
+    }
+    //test birthday using regular expression.
+    if(!moment(data, "MM/DD/YYYY", true).isValid() &&
+        !moment(data, "M/DD/YYYY", true).isValid() &&
+        !moment(data, "MM/D/YYYY", true).isValid() &&
+        !moment(data, "M/D/YYYY", true).isValid()){
+        throw "must provide correct format data";
+    }
+
 
     const reservationCollection = await reservation();
     let newReservation = {
         userId: userId,
         siteId:siteId,
-        date: new Date().toLocaleDateString(),
+        date: data,
         time: new Date().getTime()  // timestamp
     }
     let insertInfo = await reservationCollection.insertOne(newReservation);
@@ -61,8 +73,22 @@ async function addReservation(userId, siteId){
     await usersCollection.addReservationIdFromUser(userId, newReservationId);
     await sitesCollection.addReservationIdFromSite(siteId, newReservationId);
 
+    siteId = ObjectId.createFromHexString(siteId);
+    let siteInformation = await vaccineCollection.getSiteById(siteId);
 
-    return reservationCreated;
+    let result = {
+        _id: reservationCreated._id,
+        userId: reservationCreated.userId,
+        siteId: reservationCreated.siteId,
+        data: reservationCreated.data,
+        time: reservationCreated.time,
+        name: siteInformation.name,
+        address: siteInformation.address,
+        rating: siteInformation.rating
+    }
+
+
+    return result;
 }
 
 async function removeReservation(reservationId, userId, siteId){
