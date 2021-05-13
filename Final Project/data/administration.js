@@ -45,7 +45,7 @@ async function getAllAdmin(){
     let allAdmin = await adminCollection.find({}).toArray();
     return allAdmin;
 }
- 
+
 async function removeAdminById(adminId){
     if (!adminId) throw 'adminId must be supplied';
     if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';
