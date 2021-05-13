@@ -8,7 +8,7 @@ router.get('/:id', async (req, res) =>{
         const adminInformation = administrationData.getAdminById(req.params.id);
         res.json(adminInformation);
     }catch (e){
-        res.status(404).json({error: 'Comment not found'});
+        res.status(404).json({error: 'admin not found'});
     }
 });
 
@@ -45,23 +45,18 @@ router.post('/', async (req, res) =>{
 
 
 
-router.delete('/', async (req, res) =>{
-    let adminInfo = req.body;
-    if(!adminInfo){
-        res.status(400).json({error: "You must input a data"});
-    }
-    const {adminId} = adminInfo;
+router.delete('/remove', async (req, res) =>{
     try{
-        await administrationData.getAdminById(adminId);
+        await administrationData.getAdminById(req.params.id);
     }catch (e){
-        res.status(404).json({error: "Admin not found"});
+        res.status(404).json({error: "No message found"});
     }
 
     try{
-        const deleteInfo = await administrationData.removeAdminById(adminId);
-        res.status(200).send(deleteInfo);
+        const removeAdmin = await administrationData().removeAdminById(req.params.id);
+        res.status(200).send(removeAdmin);
     }catch (e){
-        res.status(500).json({ error: e});
+        res.status(500).json({ error: e });
     }
 });
 
