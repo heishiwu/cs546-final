@@ -7,7 +7,7 @@ const administration = mongoCollections.administration;
 //     "_id":"12eg456-e89b-24d3-a456-426655440000",
 //     "username": "admin",
 //     "password": "123456",
-//     "log_in_date": [{timeStamp1},{timeStamp2},{timeStamp3}]   
+//     "log_in_date": [{1:timeStamp1},{2:timeStamp2},{3:timeStamp3}]
 //
 // }
 

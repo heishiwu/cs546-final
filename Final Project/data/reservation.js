@@ -11,7 +11,7 @@ const sitesCollection = require("./vaccineInjectionSite");
 //     "_id": "12eg456-e89b-24d3-a456-426655440000",
 //     "userId": "12eg456-e89b-24d3-a456-426655440000",
 //     "siteId": "12eg456-e89b-24d3-a456-426655440000",
-//     "data": "04//06/2021",
+//     "data": "04/06/2021",
 //     "time": "1617644499"
 // }
 

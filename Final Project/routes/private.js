@@ -3,16 +3,19 @@ const router = express.Router();
 const data = require("../data");
 const userData = data.users;
 
-// router.get('/', async (req, res) =>{
-//     try{
-//         let userInformation;
-//         if(req.session){
-//             if(req.session.userId){
-//
-//             }
-//         }
-//     }
-// });
+router.get('/', async (req, res) =>{
+    try{
+        let userInformation;
+        if(req.session){
+            if(req.session.userId){
+                userInformation = await userData.getUserById(req.params.userId);
+            }
+        }
+        res.render('landing/landing', {userInformation});
+    }catch (e){
+        res.redirect('/private');
+    }
+});
 
 
 // router.get('/search', async (req, res) =>{
