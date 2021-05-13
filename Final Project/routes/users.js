@@ -98,7 +98,7 @@ router.post('/account3', async (req, res) =>{
     }
 
     try{
-        const userInfo = await userData.updateUsername(userId, name, email, address, birthday, gender, race,
+        const userInfo = await userData.updateUserInformation(userId, name, email, address, birthday, gender, race,
             ethnicity, insurance, medicalGroupNumber, medicalid);
         res.status(200).send(userInfo)
     }catch (e){

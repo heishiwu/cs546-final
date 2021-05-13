@@ -66,8 +66,11 @@ async function addComment(userId, siteId, rating, comment){
     let commentCreated = await getCommentById(newCommentId.toHexString());
 
     //add two methods
-    await usersCollection.addCommentIdFromUser(userId, newCommentId);
-    await sitesCollection.addCommentIdFromSite(siteId, newCommentId);
+    await usersCollection.addCommentIdFromUser(userId, newCommentId.toHexString());
+    await sitesCollection.addCommentIdFromSite(siteId, newCommentId.toHexString());
+
+
+
 
 
     return commentCreated;
