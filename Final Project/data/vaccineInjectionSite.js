@@ -23,7 +23,7 @@ const commentsCollection = require("./comments");
 //     "ywreywopyy",
 //     "mbnvjhgmgg"
 // ],
-//     "Rating":"4.5"
+//     "rating":"4.5"
 // }
 
 //this function is used in ./data/comment.js
