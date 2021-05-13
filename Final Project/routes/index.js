@@ -9,11 +9,11 @@ const privateRoutes = require("./private");
 
 const constructorMethod = app => {
     app.use("/users", usersRoutes);
-    app.use("/vaccine", vaccineInjectionSiteRoutes);
-    app.use("/admin", administrationRoutes);
+    app.use("/vaccineInjectionSites", vaccineInjectionSiteRoutes);
+    app.use("/administration", administrationRoutes);
     app.use("/comments", commentsRoutes);
     app.use("/reservation", reservationRoutes);
-    app.use("/daily", dailyDataRoutes);
+    app.use("/dailyData", dailyDataRoutes);
     app.use("/private", privateRoutes);
 
 
