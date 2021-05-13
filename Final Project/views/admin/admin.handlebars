@@ -1,0 +1,89 @@
+<h3 class="mb-3">Administration</h3>
+<div class="row g-3">
+    <h5 class="col-10">Site List</h5>
+    <a href="admin/addNewSite" class="link-primary col-2">Add New Site</a>
+    <form>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">AddressLine</th>
+                    <th scope="col">City</th>
+                    <th scope="col">County</th>
+                    <th scope="col">State</th>
+                    <th scope="col">PostalCode</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Operation</th>
+                </tr>
+            </thead>
+            <tbody id="siteBody">
+                {{#each sites}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{this.address.addressLine}}</td>
+                    <td>{{this.address.city}}</td>
+                    <td>{{this.address.county}}</td>
+                    <td>{{this.address.state}}</td>
+                    <td>{{this.address.postalCode}}</td>
+                    <td>{{this.rating}}</td>
+                    <td>
+                        <p hidden>{{this._id}}</p>
+                        <a class="updateSite" href="#">Update</a> <a class="deleteSite" href="#">Delete</a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </form>
+
+    <hr class="my-4">
+
+    <!-- //     "_id": "12eg456-e89b-24d3-a456-426655440000",
+//     "dailyCases ": "151234",
+//     "dailyDeath": "6757",
+//     "dailyVaccination": "6757",
+//     "dailyRecover": "5678",
+//     "sum_of_cases": "6666",
+//     "sum_of_death": "4573",
+//     "sum_of_vaccination": "7592",
+//     "sum_of_recover": "7824",
+//     "change_date ": "04/03/2021" -->
+
+    <h5 class="col-10">Daily Data</h5>
+    <a href="admin/addDailyData" class="link-primary col-2">Add Daily Data</a>
+    <table width="95%" class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Daily Cases</th>
+                <th scope="col">Daily Death</th>
+                <th scope="col">Daily Vaccination</th>
+                <th scope="col">Daily Recover</th>
+                <th scope="col">Sum of Cases</th>
+                <th scope="col">Sum of Death</th>
+                <th scope="col">Sum of Vaccination</th>
+                <th scope="col">Sum of Recover</th>
+                <th scope="col">Change Date</th>
+                <th scope="col">Operation</th>
+            </tr>
+        </thead>
+        <tbody  id="dailydataBody">
+            {{#each sites}}
+            <tr>
+                <td>{{this.dailyCases}}</td>
+                <td>{{this.dailyDeath}}</td>
+                <td>{{this.dailyVaccination}}</td>
+                <td>{{this.dailyRecover}}</td>
+                <td>{{this.sum_of_cases}}</td>
+                <td>{{this.sum_of_death}}</td>
+                <td>{{this.sum_of_vaccination}}</td>
+                <td>{{this.sum_of_recover}}</td>
+                <td>{{this.change_date}}</td>
+                <td>
+                    <p hidden>{{this._id}}</p>
+                    <a class="updateData" href="#">Update</a> <a class="deleteData" href="#">Delete</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
