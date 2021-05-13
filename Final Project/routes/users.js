@@ -13,9 +13,7 @@ router.get('/account', async (req, res) =>{
     try{
         const userId = req.session.userId;
         let userInformation = await userData.getUserById(userId);
-        res.render('user/login', {name: userInformation.name,
-            username: userInformation.username,
-            email: userInformation.email, userInformation});
+        res.render('user/login', userInformation);
 
     }catch (e){
         res.status(404).json({error: 'User not found'});
@@ -184,7 +182,7 @@ router.post('/loginin', async (req, res) =>{
             if(username === x.username){
                 if(await bcrypt.compare(password, x.password)){
                     req.session.userId = x._id.toHexString();
-                    return res.redirect('/homePage');
+                    return res.redirect('/private');
                 }
                 break;
             }
