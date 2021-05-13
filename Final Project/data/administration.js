@@ -62,10 +62,10 @@ async function updateAdminUsername(adminId, newUsername) {
     const adminCollection = await administration();
     let adminInfo = await adminCollection.findOne({username: newUsername});
     if (adminInfo !== null) throw 'the username already exist!';
-    let adminUpdateInfo = {
+    let updatedAdmin = {
         username: newUsername
     }
-    let adminUpdateInfo = await adminCollection.updateOne({ _id: parsedAdminId }, { $set: adminUpdateInfo });
+    let adminUpdateInfo = await adminCollection.updateOne({ _id: parsedAdminId }, { $set: updatedAdmin });
         if (adminUpdateInfo.modifiedCount === 0) {
             throw 'could not update the username successfully';
         }

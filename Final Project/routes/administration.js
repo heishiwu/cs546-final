@@ -45,7 +45,7 @@ router.post('/', async (req, res) =>{
 
 
 
-router.delete('/remove', async (req, res) =>{
+router.delete('/', async (req, res) =>{
     try{
         await administrationData.getAdminById(req.params.id);
     }catch (e){
@@ -54,7 +54,7 @@ router.delete('/remove', async (req, res) =>{
 
     try{
         const removeAdmin = await administrationData().removeAdminById(req.params.id);
-        res.status(200).send(removeAdmin);
+        res.status(200).send(removeUser);
     }catch (e){
         res.status(500).json({ error: e });
     }
