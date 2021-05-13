@@ -68,22 +68,23 @@ router.post('/', async (req, res) =>{
 });
 
 router.delete('/', async (req, res) =>{
-    let dailyDataInfo = req.body;
-    if(!dailyDataInfo){
+    let dailyDataId = req.body;
+    if(!dailyDataId){
         res.status(400).json({error: "You must input a data"});
     }
-    const {dailyDataId} = commentInfo;
 
     try{
-        await commentData.getCommentById(userId);
+        await commentData.getDailyDataById(userId);
     }catch (e){
-        res.status(404).json({error: "Comment not found"});
+        res.status(404).json({error: "Daily data not found"});
     }
 
     try{
-        const deleteInfo = await commentData.removeComment(commentId, userId, siteId);
+        const deleteInfo = await dailyData.removeDailyDataById(dailyDataId);
         res.status(200).send(deleteInfo);
     }catch (e){
         res.status(500).json({ error: e});
     }
 });
+
+module.exports = router;

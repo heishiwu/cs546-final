@@ -26,14 +26,14 @@ async function getDataById(dataId){
     return dataInfo;
 }
 
-async function getDataByDate(date){
-    if (!date || typeof date != string || !date.trim()) throw 'Please provide a date';
-    if (!isValidDate(date)) throw 'Please provide a valid date string, in format of MM/DD/YYYY';
-    const dataCollection = await dailyData();
-    let dataInfo = await dataCollection.findOne({change_date: date});
-    if (!dataInfo || dataInfo  === null) throw 'no daily data with the provided date';
-    return dataInfo;
-}
+// async function getDataByDate(date){
+//     if (!date || typeof date != string || !date.trim()) throw 'Please provide a date';
+//     if (!isValidDate(date)) throw 'Please provide a valid date string, in format of MM/DD/YYYY';
+//     const dataCollection = await dailyData();
+//     let dataInfo = await dataCollection.findOne({change_date: date});
+//     if (!dataInfo || dataInfo  === null) throw 'no daily data with the provided date';
+//     return dataInfo;
+// }
 
 
 async function getAllData(){
@@ -82,30 +82,31 @@ async function addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, s
     return insertInfo;
 }
 
-function isValidDate(dateString)
-{
-    // First check for the pattern
-    if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
-        return false;
 
-    // Parse the date parts to integers
-    var parts = dateString.split("/");
-    var day = parseInt(parts[1], 10);
-    var month = parseInt(parts[0], 10);
-    var year = parseInt(parts[2], 10);
+// function isValidDate(dateString)
+// {
+//     // First check for the pattern
+//     if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+//         return false;
 
-    // Check the ranges of month and year
-    if(year < 1000 || year > 3000 || month == 0 || month > 12)
-        return false;
+//     // Parse the date parts to integers
+//     var parts = dateString.split("/");
+//     var day = parseInt(parts[1], 10);
+//     var month = parseInt(parts[0], 10);
+//     var year = parseInt(parts[2], 10);
 
-    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+//     // Check the ranges of month and year
+//     if(year < 1000 || year > 3000 || month == 0 || month > 12)
+//         return false;
 
-    // Adjust for leap years
-    if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
-        monthLength[1] = 29;
-    // Check the range of the day
-    return day > 0 && day <= monthLength[month - 1];
-};
+//     var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+//     // Adjust for leap years
+//     if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+//         monthLength[1] = 29;
+//     // Check the range of the day
+//     return day > 0 && day <= monthLength[month - 1];
+// };
 
 
 
@@ -113,6 +114,5 @@ module.exports = {
     getDataById,
     getAllData,
     removeDataById,
-    addData,
-    getDataByDate
+    addData
 }
