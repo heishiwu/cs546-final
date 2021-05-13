@@ -59,15 +59,14 @@ router.post('/update', async (req, res) =>{
         return res.redirect('/private');
     }
     let oldSite;
-    const siteId = req.session.siteId;
     try{
-        oldSite = await vaccineData.getSiteById(siteId);
+        oldSite = await vaccineData.getSiteById(req.session.siteId);
     }catch (e){
         res.status(404).json({error: 'Site not found'});
         return ;
     }
     try{
-        const siteInfo = await vaccineData.updateSite(siteId, name, address, Rating);
+        const siteInfo = await vaccineData.updateSite(req.session.siteId, name, address, Rating);
         res.status(200).send(siteInfo)
     }catch (e){
         res.status(500).json({error:e})
