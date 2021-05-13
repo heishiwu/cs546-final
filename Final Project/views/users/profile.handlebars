@@ -1,27 +1,23 @@
 <div class="container col-9 mt-3 ">
     <h3 class="mb-3">Profile</h3>
     <div class="row g-3">
-        <div class="col-12">
+        <div id="usernameDiv" class="col-12">
             <label for="username" class="form-label">Username</label>
-            <a href="#" class="link-primary">Change Username</a>
-            <div class="input-group has-validation">
-                <input type="text" class="form-control" value="{{user.username}}" id="username" disabled>
-                <div class="invalid-feedback">
-                    Your username is required.
-                </div>
-            </div>
+            <a href="#" id="changeUsername" class="link-primary">Change Username</a>
+            <input type="text" class="form-control" value="{{user.username}}" id="username" disabled>
         </div>
 
-        <div class="col-12">
+        <div id="passwordDiv" class="col-12">
             <label for="password" class="form-label">Password</label>
-            <a href="#" class="link-primary">Change Password</a>
+            <a href="#" id="changePassword" class="link-primary">Change Password</a>
+            <input type="password" class="form-control" value="{{user.password}}" id="password" disabled>
         </div>
 
         <hr class="my-4">
 
         <h5 class="col-10">User Info</h5>
         <a href="#" class="link-primary col-2">Edit Info</a>
-        <form class="row g-3">
+        <form method="POST" action="#" id="editForm" class="row g-3">
             <div class="col-sm-6">
                 <label for="firstName" class="form-label">First name</label>
                 <input type="text" class="form-control" id="firstName" value="{{user.firstName}}" disabled>
@@ -65,39 +61,71 @@
 
             <div class="col-md-3">
                 <label for="state" class="form-label">State</label>
-                <select class="form-select" id="state" disabled>
-                    <option value="{{user.address.state}}">{{user.address.state}}</option>
-                </select>
+                <input type="text" class="form-control" id="state" value="{{user.address.state}}" disabled>
             </div>
 
             <div class="col-md-3">
-                <label for="zip" class="form-label">Zip</label>
-                <input type="text" class="form-control" id="zip" value="{{user.address.zip}}" disabled>
+                <label for="postalCode" class="form-label">PostalCode</label>
+                <input type="text" class="form-control" id="postalCode" value="{{user.address.postalCode}}" disabled>
             </div>
 
             <div class="col-12">
                 <label for="gender" class="form-label">Gender </label>
-                <label for="gender" class="form-label">{{user.gender}}</label>
+                <label for="gender" id="genderLable" class="form-label">{{user.gender}}</label>
+                <div id="genderDiv" style="display: none;">
+                    <input class="genderRadio" id="male" name="gender" type="radio" value="male">
+                    <label for="male">Male</label>
+                    <input class="genderRadio" id="female" name="gender" type="radio" value="female">
+                    <label for="female">Female</label>
+                    <input class="genderRadio" id="transgender" name="gender" type="radio" value="transgender">
+                    <label for="transgender">Transgender</label>
+                    <input class="genderRadio" id="other" name="gender" type="radio" value="other">
+                    <label for="other">Other</label>
+                    <input class="genderRadio" id="prefer_not_to_say" name="gender" type="radio" value="">
+                    <label for="Prefer not to say">Prefer not to say</label>
+                </div>
             </div>
 
             <div class="col-md-6">
                 <label for="race" class="form-label">Race</label>
-                <select class="form-select" id="race" disabled>
+                <select class="form-select" id="racebef" disabled>
                     <option value="{{user.race}}">{{user.race}}</option>
+                </select>
+                <select style="display: none;" class="form-select" id="raceaft">
+                    <option value="">Prefer not to say</option>
+                    <option value="African American or Black">African American or Black</option>
+                    <option value="White">White</option>
+                    <option value="Asian">Asian</option>
+                    <option value="American Indian or Alaska Native">American Indian or Alaska Native</option>
+                    <option value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander
+                    </option>
+                    <option value="Other">Other</option>
                 </select>
             </div>
 
             <div class="col-md-6">
                 <label for="ethnicity" class="form-label">Ethnicity</label>
-                <select class="form-select" id="ethnicity" disabled>
+                <select class="form-select" id="ethnicitybef" disabled>
                     <option value="{{user.ethnicity}}">{{user.ethnicity}}</option>
+                </select>
+                <select style="display: none;" class="form-select" id="ethnicityaft">
+                    <option value="">Prefer not to say</option>
+                    <option value="Hispanic or Latino">Hispanic or Latino</option>
+                    <option value="Not Hispanic or Latino">Not Hispanic or Latino</option>
                 </select>
             </div>
 
             <div class="col-md-6">
                 <label for="insuranceType" class="form-label">Insurance Type</label>
-                <select class="form-select" id="insuranceType" disabled>
+                <select class="form-select" id="insuranceTypebef" disabled>
                     <option value="{{user.insuranceType}}">{{user.insuranceType}}</option>
+                </select>
+                <select style="display: none;" class="form-select" id="insuranceTypeaft">
+                    <option value="No Health Insurance">No Health Insurance</option>
+                    <option value="Private Insurance">Private Insurance</option>
+                    <option value="Medicare">Medicare</option>
+                    <option value="Medicaid">Medicaid</option>
+                    <option value="CHIP">CHIP</option>
                 </select>
             </div>
 
@@ -115,6 +143,9 @@
                 <label for="medicalid" class="form-label">Medical Id</label>
                 <input type="text" class="form-control" id="medicalid" value="medicalid" disabled>
             </div>
+
+            <button class="w-100 btn btn-primary btn-lg" id="editSubmit" type="submit"
+                style="display: none;">Edit</button>
         </form>
 
         <hr class="my-4">
@@ -130,12 +161,12 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each errors}}
+                {{#each reservation}}
                 <tr>
-                    <td>{{reservation._id}}</th>
-                    <td>{{reservation.siteName}}</td>
-                    <td>{{reservation.date}}</td>
-                    <td>{{reservation.time}}</td>
+                    <td data-href="/reservation/{{this._id}}">{{this._id}}</th>
+                    <td>{{this.siteName}}</td>
+                    <td>{{this.date}}</td>
+                    <td>{{this.time}}</td>
                 </tr>
                 {{/each}}
             </tbody>
