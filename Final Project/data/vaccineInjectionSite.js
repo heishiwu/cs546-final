@@ -121,7 +121,7 @@ async function getAllSites(){
     let allSites = await vaccineCollection.find({}).toArray();
     return allSites;
 }
-async function updateSite(siteId, name, address, reservation_history, comments_history, Rating){
+async function updateSite(siteId, name, address,  Rating){
     //name check
     if (!name || typeof name !== 'string' || !name.trim()) throw 'invalid name';
     //address check
@@ -171,7 +171,7 @@ async function removeSite(siteId){
     }
     return deleteInfo;
 }
-async function createSite(name, address, reservation_history, comments_history, Rating){
+async function createSite(name, address, Rating){
      //name check
      if (!name || typeof name !== 'string' || !name.trim()) throw 'invalid name';
      //address check
@@ -186,6 +186,7 @@ async function createSite(name, address, reservation_history, comments_history, 
      if((/^[0-9]{5}(?:-[0-9]{4})?$/).test(address.postalCode)){
          throw "must provide correct format postalCode";
      }
+     
      //reservation_history check
      if (!reservation_history || typeof reservation_history !== 'object') throw 'invalid reservation_history';
      //comments_history check
