@@ -1,0 +1,50 @@
+<div class="container col-9 mt-3 ">
+    <h3 class="mb-3">Add Daily Data</h3>
+    <form id="addDailyDataForm" method="POST" action="/daily/dailyData" class="needs-validation">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="dailyCases" class="form-label">Daily Cases</label>
+                <input type="text" class="form-control" id="dailyCases">
+            </div>
+
+            <div class="col-md-6">
+                <label for="dailyDeath" class="form-label">Daily Death</label>
+                <input type="text" class="form-control" id="dailyDeath">
+            </div>
+
+            <div class="col-md-6">
+                <label for="dailyVaccination" class="form-label">Daily Vaccination</label>
+                <input type="text" class="form-control" id="dailyVaccination">
+            </div>
+
+            <div class="col-md-6">
+                <label for="dailyRecover" class="form-label">Daily Recover</label>
+                <input type="text" class="form-control" id="dailyRecover">
+            </div>
+
+            <div class="col-md-6">
+                <label for="sum_of_cases" class="form-label">Sum of Cases</label>
+                <input type="text" class="form-control" id="sum_of_cases">
+            </div>
+
+            <div class="col-md-6">
+                <label for="sum_of_death" class="form-label">Sum of Death</label>
+                <input type="text" class="form-control" id="sum_of_death">
+            </div>
+
+            <div class="col-md-6">
+                <label for="sum_of_vaccination" class="form-label">Sum of Vaccination</label>
+                <input type="text" class="form-control" id="sum_of_vaccination">
+            </div>
+
+            <div class="col-md-6">
+                <label for="sum_of_recover" class="form-label">Sum of Recover</label>
+                <input type="text" class="form-control" id="sum_of_recover">
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <button class="w-100 btn btn-primary btn-lg" type="submit">Add</button>
+    </form>
+</div>

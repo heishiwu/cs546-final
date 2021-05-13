@@ -53,6 +53,27 @@ router.post('/', async (req, res) =>{
     }
 });
 
+router.post('/update', async (req, res) =>{
+    const{siteId, name, address, reservation_history, comments_history, Rating} = req.body;
+    if(!req.session.siteId){
+        return res.redirect('/private');
+    }
+    let oldSite;
+    const siteId = req.session.siteId;
+    try{
+        oldSite = await vaccineData.getSiteById(siteId);
+    }catch (e){
+        res.status(404).json({error: 'Site not found'});
+        return ;
+    }
+    try{
+        const siteInfo = await vaccineData.updateSite(siteId, name, address, reservation_history, comments_history, Rating);
+        res.status(200).send(siteInfo)
+    }catch (e){
+        res.status(500).json({error:e})
+    }
+});
+
 router.delete('/', async (req, res) =>{
     let siteId = req.body;
     if(!siteId){
