@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 const handlebarsInstance = exphbs.create({
     defaultLayout: 'main',
     partialsDir: ['views/partials/']
-  });
+});
 
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
