@@ -1,6 +1,7 @@
 const mongoCollections = require('../config/mongoCollections');
 const { ObjectId } = require('mongodb');
 const vaccineInjectionSite = mongoCollections.vaccineInjectionSite;
+const commentsCollection = require("./comments");
 
 //vaccineInjectionSite database
 // {
@@ -208,6 +209,25 @@ async function createSite(name, address, reservation_history, comments_history, 
     return insertInfo;
 }
 
+async function getAllCommentsSiteId(siteId){
+    if(!siteId || typeof (siteId) !=="string"){
+        throw "input a string format siteId";
+    }
+
+    siteId = ObjectId.createFromHexString(siteId);
+    // const siteCollection = await vaccineInjectionSite();
+    let siteInformation = await getSiteById(siteId);
+    let commentsHistory = siteInformation.comments_history;
+    let result = []
+    for(let i of commentsHistory){
+        let commentIds = i._id;
+        commentIds = ObjectId.createFromHexString(commentIds);
+        let commentInformation = commentsCollection.getCommentById(commentIds);
+        result.push(commentInformation);
+    }
+    return result;
+}
+
 module.exports={
     getSiteById,
     getAllSites,
@@ -217,5 +237,6 @@ module.exports={
     removeCommentIdFromSite,
     removeReservationIdFromSite,
     addCommentIdFromSite,
-    addReservationIdFromSite
+    addReservationIdFromSite,
+    getAllCommentsSiteId
 }
