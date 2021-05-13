@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require("../data");
 const commentData = data.comments;
+const vaccineData = data.vaccineInjectionSite;
 
 
 router.get('/:id', async (req, res) =>{
@@ -81,5 +82,7 @@ router.get('/avgRating', async (req, res) =>{
         res.status(404).json({error: 'Site not found'});
     }
 });
+
+
 
 module.exports = router;
