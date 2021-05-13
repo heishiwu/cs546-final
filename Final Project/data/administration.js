@@ -76,10 +76,10 @@ async function updateAdminPassword(adminId, newPassword) {
     if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';   
     let parsedAdminId = ObjectId(adminId);
     const adminCollection = await administration();
-    let adminUpdateInfo = {
+    let updatedAdmin = {
         password: newPassword
     }
-    let adminUpdateInfo = await adminCollection.updateOne({ _id: parsedAdminId }, { $set: adminUpdateInfo });
+    let adminUpdateInfo = await adminCollection.updateOne({ _id: parsedAdminId }, { $set: updatedAdmin });
     if (adminUpdateInfo.modifiedCount === 0) {
         throw 'could not update the password successfully';
     }
@@ -90,9 +90,9 @@ async function updateAdminLoginDate(adminId, newLogIn) {
     if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';   
     let parsedAdminId = ObjectId(adminId);
     const adminCollection = await administration();
-    let adminUpdateInfo = adminCollection.FindOne({_id:parsedAdminId});
+    let updatedAdmin = adminCollection.FindOne({_id:parsedAdminId});
     adminUpdateInfo.log_in_date.push(new Date.now());
-    let adminUpdateInfo = await adminCollection.updateOne({ _id: parsedAdminId }, { $set: adminUpdateInfo });
+    let adminUpdateInfo = await adminCollection.updateOne({ _id: parsedAdminId }, { $set: updatedAdmin });
     if (adminUpdateInfo.modifiedCount === 0) {
         throw 'could not update the loginDate successfully';
     }
