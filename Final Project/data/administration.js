@@ -15,10 +15,13 @@ const administration = mongoCollections.administration;
 async function addAdmin(username, password){
     if (!username || typeof username != 'string' || !username.trim()) throw 'invalid username'
     if (!password || typeof password != 'string' || !password.trim()) throw 'invalid password'
-    var newAdmin = {
+    const newAdmin = {
         username: username,
         password: password,
         log_in_date: []
+    }
+    const newAdmin = {
+        
     }
     const adminCollection = await administration();
     let insertInfo = await adminCollection.insertOne(newAdmin);
