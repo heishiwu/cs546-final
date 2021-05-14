@@ -22,11 +22,11 @@
             <div class="dropdown" class="float-end">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    {{user.username}}
+                    {{userInformation.username}}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="#">User Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Logout</a></li>
+                    <li><a class="dropdown-item" href="/users/account">User Profile</a></li>
+                    <li><a class="dropdown-item" href="/users/logout">Logout</a></li>
                 </ul>
             </div>
             {{else}}

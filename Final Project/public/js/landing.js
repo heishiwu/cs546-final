@@ -10,18 +10,21 @@
         death.push(data.death);
         recover.push(data.recover)
     });
-    
+
+    // var arr = strDate.split("-");
+    // var date =  arr[1] +"/"+ arr[2] +"/"+ arr[0];
+
     // [{death:1, recover:2},{death:1, recover:2}]
     const data = {
         // "dailyCases ": "151234",
-//     "dailyDeath": "6757",
-//     "dailyVaccination": "6757",
-//     "dailyRecover": "5678",
-//     "sum_of_cases": "6666",
-//     "sum_of_death": "4573",
-//     "sum_of_vaccination": "7592",
-//     "sum_of_recover": "7824",
-//     "change_date ": "04/03/2021"
+        //     "dailyDeath": "6757",
+        //     "dailyVaccination": "6757",
+        //     "dailyRecover": "5678",
+        //     "sum_of_cases": "6666",
+        //     "sum_of_death": "4573",
+        //     "sum_of_vaccination": "7592",
+        //     "sum_of_recover": "7824",
+        //     "change_date ": "04/03/2021"
 
         labels: labels,   //x-axis
         datasets: [{
