@@ -1,23 +1,25 @@
 const mongoCollections = require('../config/mongoCollections');
 const { ObjectId } = require('mongodb');
 const administration = mongoCollections.administration;
-
+const bcrypt = require('bcrypt');
+const saltRounds = 16;
 //databases
 // {
 //     "_id":"12eg456-e89b-24d3-a456-426655440000",
 //     "username": "admin",
 //     "password": "123456",
 //     "log_in_date": [{1:timeStamp1},{2:timeStamp2},{3:timeStamp3}]
-//
+
 // }
 
 
 async function addAdmin(username, password){
-    if (!username || typeof username != 'string' || !username.trim()) throw 'invalid username'
-    if (!password || typeof password != 'string' || !password.trim()) throw 'invalid password'
+    if (!username || typeof username != 'string' || !username.trim()) throw 'invalid username';
+    if (!password || typeof password != 'string' || !password.trim()) throw 'invalid password';
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     var newAdmin = {
         username: username,
-        password: password,
+        password: hashedPassword,
         log_in_date: []
     }
     const adminCollection = await administration();

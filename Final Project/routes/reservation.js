@@ -8,14 +8,45 @@ const vaccineData = data.vaccineInjectionSite;
 /**
  * get reservation information by reservationId
  */
+// router.get('/:id', async (req, res) =>{
+//     try{
+//         const reservationInformation =  await reservationData.getReservationById(req.params.id);
+//         res.json(reservationInformation);
+//     }catch (e){
+//         res.status(404).json({error: 'Comment not found'});
+//     }
+// });
+
+
 router.get('/:id', async (req, res) =>{
+    // if(!req.session.user){
+    //     req.session.previousRoute = req.originalUrl;
+    //     res.redirect('/users/login');
+    //     return;
+    // }
+
     try{
-        const reservationInformation =  await reservationData.getReservationById(req.params.id);
-        res.json(reservationInformation);
+        let reservationId = req.params.id
+        const reservationInformation =  await reservationData.getReservationById(reservationId.toString());
+        let siteId = reservationInformation.siteId;
+        const siteInformation = await vaccineData.getSiteById(siteId);
+        let result = {
+            _id: reservationInformation._id,
+            userId: reservationInformation.userId,
+            siteId: reservationInformation.siteId,
+            date: reservationInformation.date,
+            time: reservationInformation.time,
+            sitename: siteInformation.name
+        };
+        // res.json(result);
+        res.status(200).render('reservation/myReservation', {partial: 'makeReservation-script', result: result});
+
     }catch (e){
         res.status(404).json({error: 'Comment not found'});
     }
 });
+
+
 
 /**
  * get all reservations, but is useless

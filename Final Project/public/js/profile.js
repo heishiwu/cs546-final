@@ -23,6 +23,7 @@
             $.ajax(requestConfig).then(function (result) {
                 $('#username').val(result.username);
                 $('#username').attr("disabled", "true");
+                $('#updateUser').remove();
             })
         } catch (error) {
             alert("No username provided");
@@ -54,6 +55,7 @@
                 $('#password').val(result.password);
                 $('#password').attr("type", "password");
                 $('#password').attr("disabled", "true");
+                $('#updatePsw').remove();
             })
         } catch (error) {
             alert("No password provided");
@@ -102,66 +104,75 @@
     $('#editForm').submit(function (event) {
         event.preventDefault();
         // $('#editForm').unbind().submit();
+
+
+
+
+
         let requestConfig = {
             method: "POST",
             url: '/users/account3/',
             // contentType: 'multipart/form-data',
-            dataType:'json',
+            dataType: 'json',
             data: $("#editForm").serialize(),
             // contentType: 'application/json',
             // data: JSON.stringify({
             //     password: password
             // })
         }
-        $.ajax(requestConfig).then(function (result) {
-            $('#firstName').val(result.name.firstName);
-            $('#firstName').attr("disabled","true");
-            $('#lastName').val(result.name.lastName);
-            $('#lastName').attr("disabled","true");
-            $('#email').val(result.email);
-            $('#email').attr("disabled","true");
-            $('#birthday').val(result.birthday);
-            $('#birthday').attr("disabled","true");
-            $('#addressLine').val(result.addressLine);
-            $('#addressLine').attr("disabled","true");
-            $('#apartment_suite_unitNumber').val(result.apartment_suite_unitNumber);
-            $('#apartment_suite_unitNumber').attr("disabled","true");
-            $('#city').val(result.city);
-            $('#city').attr("disabled","true");
-            $('#county').val(result.county);
-            $('#county').attr("disabled","true");
-            $('#state').val(result.state);
-            $('#state').attr("disabled","true");
-            $('#postalCode').val(result.postalCode);
-            $('#postalCode').attr("disabled","true");
-            $('#insuranceName').val(result.insuranceName);
-            $('#insuranceName').attr("disabled","true");
-            $('#medicalGroupNumber').val(result.medicalGroupNumber);
-            $('#medicalGroupNumber').attr("disabled","true");
-            $('#medicalid').val(result.medicalid);
-            $('#medicalid').attr("disabled","true");
+        try {
+            $.ajax(requestConfig).then(function (result) {
+                $('#firstName').val(result.name.firstName);
+                $('#firstName').attr("disabled", "true");
+                $('#lastName').val(result.name.lastName);
+                $('#lastName').attr("disabled", "true");
+                $('#email').val(result.email);
+                $('#email').attr("disabled", "true");
+                $('#birthday').val(result.birthday);
+                $('#birthday').attr("disabled", "true");
+                $('#addressLine').val(result.addressLine);
+                $('#addressLine').attr("disabled", "true");
+                $('#apartment_suite_unitNumber').val(result.apartment_suite_unitNumber);
+                $('#apartment_suite_unitNumber').attr("disabled", "true");
+                $('#city').val(result.city);
+                $('#city').attr("disabled", "true");
+                $('#county').val(result.county);
+                $('#county').attr("disabled", "true");
+                $('#state').val(result.state);
+                $('#state').attr("disabled", "true");
+                $('#postalCode').val(result.postalCode);
+                $('#postalCode').attr("disabled", "true");
+                $('#insuranceName').val(result.insuranceName);
+                $('#insuranceName').attr("disabled", "true");
+                $('#medicalGroupNumber').val(result.medicalGroupNumber);
+                $('#medicalGroupNumber').attr("disabled", "true");
+                $('#medicalid').val(result.medicalid);
+                $('#medicalid').attr("disabled", "true");
 
-            $('#genderLable').html(result.gender);
-            $('#genderLable').css({ display: "block" });
-            $('#genderDiv').css({ display: "none" });
+                $('#genderLable').html(result.gender);
+                $('#genderLable').css({ display: "block" });
+                $('#genderDiv').css({ display: "none" });
 
-            $('#racebef').val(result.race);
-            $('#racebef').text(result.race);
-            $('#racebef').css({ display: "block" });
-            $('#raceaft').css({ display: "none" });
+                $('#racebef').val(result.race);
+                $('#racebef').text(result.race);
+                $('#racebef').css({ display: "block" });
+                $('#raceaft').css({ display: "none" });
 
-            $('#ethnicitybef').val(result.ethnicity);
-            $('#ethnicitybef').text(result.ethnicity);
-            $('#ethnicitybef').css({ display: "block" });
-            $('#ethnicityaft').css({ display: "none" });
+                $('#ethnicitybef').val(result.ethnicity);
+                $('#ethnicitybef').text(result.ethnicity);
+                $('#ethnicitybef').css({ display: "block" });
+                $('#ethnicityaft').css({ display: "none" });
 
-            $('#insuranceTypebef').val(result.insurance);
-            $('#insuranceTypebef').text(result.insurance);
-            $('#insuranceTypebef').css({ display: "block" });
-            $('#insuranceTypeaft').css({ display: "none" });
+                $('#insuranceTypebef').val(result.insurance);
+                $('#insuranceTypebef').text(result.insurance);
+                $('#insuranceTypebef').css({ display: "block" });
+                $('#insuranceTypeaft').css({ display: "none" });
 
-            $("#editSubmit").css({ display: "none" })
-        })
+                $("#editSubmit").css({ display: "none" })
+            })
+        } catch (error) {
+            alert(error);
+        }
     });
 
 

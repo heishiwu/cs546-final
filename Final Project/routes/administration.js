@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const data = require("../data");
 const administrationData = data.administration;
+const bcrypt = require('bcrypt');
+const saltRounds = 16;
 
 router.get('/account', async (req, res) =>{
     try{
@@ -101,14 +103,16 @@ router.post('/login', async (req, res) =>{
         const allAdmin = await administrationData.getAllAdmin();
         for(let x of allAdmin){
             if(username === x.username){
+                console.log(await bcrypt.compare(password, x.password))
                 if(await bcrypt.compare(password, x.password)){
                     req.session.adminId = x._id.toHexString();
-                    return res.redirect('/private');
+                    let adminInformation = await administrationData.getAdminById((x._id).toString());
+                    res.status(200).render('admin/admin', { adminInformation, partial: 'admin-script', authenticated: true });
                 }
                 break;
             }
         }
-        res.status(401).render('/admin/adminLogin', {message: "Invaild username or password"});
+        res.status(401).render('admin/adminLogin', {message: "Invalid username or password", partial: 'login-script'});
     }
 });
 
@@ -121,5 +125,30 @@ router.get('/logout', async (req, res) => {
     }
 });
 
+router.get('/admin/addNewSite', async (req, res) => {
+    if(req.session.adminId){
+        res.render('admin/addNewSite', {partial:"addNewSite-script"});
+    }
+    else {
+        res.render('admin/adminLogin', {
+            title: 'admin Login',
+            partial: 'login-script'
+        });
+    }
+
+});
+
+router.get('/admin/addDailyData', async (req, res) => {
+    if(req.session.adminId){
+        res.render('admin/addDailyData', {partial:"addDailyData-script"});
+    }
+    else {
+        res.render('admin/adminLogin', {
+            title: 'admin Login',
+            partial: 'login-script'
+        });
+    }
+
+});
 
 module.exports = router;

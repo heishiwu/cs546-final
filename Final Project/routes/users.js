@@ -14,7 +14,7 @@ router.get('/account', async (req, res) => {
     try {
         const userId = req.session.userId;
         let userInformation = await userData.getUserById(userId);
-        res.render('users/profile', {userInformation, partial:'profile-script'});
+        res.render('users/profile', {userInformation, partial:'profile-script', authenticated: true});
 
     } catch (e) {
         res.status(404).json({ error: 'User not found' });
@@ -45,6 +45,7 @@ router.post('/account1', async (req, res) => {
     try {
         const userInfo = await userData.updateUsername(userId, username);
         res.status(200).send(userInfo)
+        // res.render("/users/login");
     } catch (e) {
         res.status(500).json({ error: e })
     }
@@ -88,22 +89,42 @@ router.post('/account2', async (req, res) => {
 /**
  * update userinformation except username and password
  */
-router.post('/account3', async (req, res) => {
-    const { name, email, address, birthday, gender, race,
-        ethnicity, insurance, medicalGroupNumber, medicalid } = req.body;
-    if (!req.session.userId) {
+router.post('/account3', async (req, res) =>{
+
+    const{firstName, lastName, email, addressLine, apartment_suite_unitNumber,
+        city, county, state, postalCode, birthday, gender, race,
+        ethnicity, insuranceType, insuranceName, medicalGroupNumber, medicalid} = req.body;
+
+    let name = {firstName: firstName, lastName: lastName};
+    let address = {
+        addressLine: addressLine,
+        apartment_suite_unitNumber: apartment_suite_unitNumber,
+        city: city,
+        county: county,
+        state: state,
+        postalCode: postalCode
+    };
+
+    let insurance = {
+        insuranceType: insuranceType,
+        insuranceName: insuranceName
+    };
+
+    // const{name, email, address, birthday, gender, race,
+    //     ethnicity, insurance, medicalGroupNumber, medicalid} = req.body;
+    if(!req.session.userId){
         return res.redirect('/private');
     }
     let oldUser;
     const userId = req.session.userId;
-    try {
+    try{
         oldUser = await userData.getUserById(userId);
-    } catch (e) {
-        res.status(404).json({ error: 'User not found' });
-        return;
+    }catch (e){
+        res.status(404).json({error: 'User not found'});
+        return ;
     }
     if (email === oldUser.email) {
-        res.status(400).json({ error: 'ou have to input different email' });
+        res.status(400).json({ error: 'you have to input different email' });
         return;
     }
 
