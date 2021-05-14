@@ -160,7 +160,7 @@ router.post('/account3', async (req, res) =>{
 // });
 
 
-router.get('/loginin', async (req, res) =>{
+router.get('/login', async (req, res) =>{
     if(!req.session.userId){
         return res.redirect('/private');
     }
@@ -169,7 +169,7 @@ router.get('/loginin', async (req, res) =>{
     }
 });
 
-router.post('/loginin', async (req, res) =>{
+router.post('/login', async (req, res) =>{
     if(!req.session.userId){
         return res.redirect('/private');
     }
@@ -270,7 +270,7 @@ router.delete('/remove', async (req, res) =>{
     }
 
     try{
-        const removeUser = await userData().removeUserByUserId(req.params.id);
+        const removeUser = await userData.removeUserByUserId(req.params.id);
         res.status(200).send(removeUser);
     }catch (e){
         res.status(500).json({ error: e });

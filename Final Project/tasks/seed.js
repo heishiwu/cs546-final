@@ -15,13 +15,14 @@ async function main() {
         {"addressLine": "1313 Grand St.", "apartment_suite_unitNumber": "APT 304", "city": "hoboken", "county": "hudson", "state": "NJ", "postalCode": "07030"}, "02/03/1998", "Male",
         "Asian", "Not Hispanic or latino", {"insuranceType":"Private Insurance",  "insuranceName":"HuHu"}, "HDEPO National HRA", "sdasdad-sdasd-sdsd");
     let u1_userid = u1._id.toHexString();
-    console.log("u1")
+    console.log("u1");
+    // console.log(u1_userid);
 
     let u2 = await users.createUser({"firstName": "Yi", "lastName": "Lin"}, "username2", "$2a$10$0A53QP0G0oeux7RFlNUqHuK7j5GU3zJjgYj3IQk02s4SznXUmcBLS","asdadas@gmail.com",
         {"addressLine": "1313 Grand St.", "apartment_suite_unitNumber": "APT 304", "city": "hoboken", "county": "hudson", "state": "NJ", "postalCode": "07030"}, "02/03/1998", "Male",
         "Asian", "Not Hispanic or latino", {"insuranceType":"Private Insurance",  "insuranceName":"HuHu"}, "HDEPO National HRA", "sdasdad-sdasd-sdsd");
     let u2_userid = u2._id.toHexString();
-    console.log("u2")
+    console.log("u2");
 
     let s1 = await vaccineInjectionSite.createSite("River Side1" ,
         { "addressLine": "1232 Grand St.",
@@ -35,7 +36,7 @@ async function main() {
     );
 
     let s1_siteid = s1._id.toHexString();
-    console.log("s1")
+    console.log("s1");
 
     let s2 = await vaccineInjectionSite.createSite("River Side2" ,
         { "addressLine": "1232 Grand St.",
@@ -49,28 +50,28 @@ async function main() {
     );
 
     let s2_siteid = s2._id.toHexString();
-    console.log("s2")
+    console.log("s2");
 
 
 
 
     let c1 = await comments.addComment(u1_userid, s1_siteid, "4.1", "Nice1 and Social distant");
-    console.log("c1")
+    console.log("c1");
     let c2 = await comments.addComment(u1_userid, s2_siteid, "4.2", "Nice2 and Social distant");
-    console.log("c2")
+    console.log("c2");
     let c3 = await comments.addComment(u2_userid, s1_siteid, "4.3", "Nice3 and Social distant");
-    console.log("c3")
+    console.log("c3");
     let c4 = await comments.addComment(u2_userid, s2_siteid, "4.4", "Nice4 and Social distant");
-    console.log("c4")
+    console.log("c4");
 
     let r1 = await reservations.addReservation(u1_userid, s1_siteid, "01/01/2021");
-    console.log("r1")
+    console.log("r1");
     let r2 = await reservations.addReservation(u1_userid, s2_siteid, "02/02/2021");
-    console.log("r1")
+    console.log("r1");
     let r3 = await reservations.addReservation(u2_userid, s1_siteid, "03/03/2021");
-    console.log("r1")
+    console.log("r1");
     let r4 = await reservations.addReservation(u2_userid, s2_siteid, "04/04/2021");
-    console.log("r1")
+    console.log("r1");
 
 
 

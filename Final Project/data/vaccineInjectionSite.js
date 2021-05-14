@@ -119,10 +119,11 @@ async function addReservationIdFromSite(siteId, reservationId){
 }
 
 async function getSiteById(siteId){
-    if (!siteId|| typeof siteId !== 'string' || !siteId.trim()){
+    if (!siteId|| typeof siteId !== 'string'){
         throw 'Site id is not a valid string.';
     }
-    siteId = ObjectId.createFromHexString(siteId);
+
+    siteId = ObjectId(siteId);
     const vaccineCollection = await vaccineInjectionSite();
     let vaccine = await vaccineCollection.findOne({_id: siteId});
     if(vaccine === null){

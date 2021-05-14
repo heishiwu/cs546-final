@@ -7,7 +7,7 @@ const vaccineData = data.vaccineInjectionSite;
 
 router.get('/:id', async (req, res) =>{
     try{
-        const commentInformation = commentData.getCommentById(req.params.id);
+        const commentInformation = await commentData.getCommentById(req.params.id);
         res.json(commentInformation);
     }catch (e){
         res.status(404).json({error: 'Comment not found'});
@@ -17,7 +17,7 @@ router.get('/:id', async (req, res) =>{
 
 router.get('/', async (req, res) =>{
     try{
-        const commentInformation = commentData.getAllComments();
+        const commentInformation = await commentData.getAllComments();
         res.json(commentInformation);
     }catch (e){
         res.status(500).send();
@@ -44,7 +44,7 @@ router.post('/', async (req, res) =>{
     }
 
     try{
-        const newComment = await commentData().addComment(userId, siteId, rating, comment);
+        const newComment = await commentData.addComment(userId, siteId, rating, comment);
         res.status(200).send(newComment);
     }catch (e){
         res.status(500).json({error:e});
@@ -58,6 +58,7 @@ router.delete('/', async (req, res) =>{
     if(!commentInfo){
         res.status(400).json({error: "You must input a data"});
     }
+
     const {commentId, userId, siteId} = commentInfo;
 
     try{
@@ -67,16 +68,16 @@ router.delete('/', async (req, res) =>{
     }
 
     try{
-        const deleteInfo = await commentData.removeComment(commentId, userId, siteId);
-        res.status(200).send(deleteInfo);
+        const message = await commentData.removeComment(commentId, userId, siteId);
+        res.status(200).send(message);
     }catch (e){
         res.status(500).json({ error: e});
     }
 });
 
-router.get('/avgRating', async (req, res) =>{
+router.get('/avgRating/:id', async (req, res) =>{
     try{
-        const commentInformation = commentData.averageRating(req.params.id);
+        const commentInformation = await commentData.averageRating(req.params.id);
         res.json(commentInformation);
     }catch (e){
         res.status(404).json({error: 'Site not found'});
