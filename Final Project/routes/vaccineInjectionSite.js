@@ -2,15 +2,23 @@ const express = require('express');
 const router = express.Router();
 const data = require("../data");
 const vaccineData = data.vaccineInjectionSite;
+const commentsData = data.comments;
 
 
 
 router.get('/:id', async (req, res) =>{
     try{
         const siteInfo = await vaccineData.getSiteById(req.params.id);
+        let commentHistArr = [];
+        for( let i = 0; i < siteInfo.comments_history.length; i++){
+            let commentHistObj = await commentsData.getCommentById(siteInfo.comments_history[i]);
+            commentHistArr.push(commentHistObj);
+        }
         res.render('sites/single', {
             partial: 'list-single-script',
-            siteInfo: siteInfo});
+            siteInfo: siteInfo,
+            comments: commentHistArr
+        });
     }catch (e){
         res.status(404).json({error: 'Site not found'});
     }
@@ -20,6 +28,7 @@ router.get('/:id', async (req, res) =>{
 router.get('/', async (req, res) =>{
     try{
         const siteInfo = await vaccineData.getAllSites();
+        
         res.render('sites/list', {
             partial: 'sites-list-script',
             sites: siteInfo});
