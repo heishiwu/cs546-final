@@ -66,7 +66,7 @@ async function removeReservationIdFromSite(siteId, reservationId){
         }
     }
     siteInformation.reservation_history = list2;
-    let updateInformation = await siteCollection.updateOne({ _id: userId }, { $set: { reservation_history: siteInformation.reservation_history} });
+    let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { reservation_history: siteInformation.reservation_history} });
     return updateInformation;
 }
 

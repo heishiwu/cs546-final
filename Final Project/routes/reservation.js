@@ -5,6 +5,9 @@ const reservationData = data.reservation;
 const usersData = data.users;
 const vaccineData = data.vaccineInjectionSite;
 
+/**
+ * get reservation information by reservationId
+ */
 router.get('/:id', async (req, res) =>{
     try{
         const reservationInformation =  await reservationData.getReservationById(req.params.id);
@@ -14,7 +17,9 @@ router.get('/:id', async (req, res) =>{
     }
 });
 
-
+/**
+ * get all reservations, but is useless
+ */
 router.get('/', async (req, res) =>{
     try{
         const reservationInformation = await reservationData.getAllReservation();
@@ -24,6 +29,10 @@ router.get('/', async (req, res) =>{
     }
 });
 
+/**
+ * create a new reservations, input userId, siteId, data, and it will automatically update
+ * reservation information in users and vaccineInjectionSite database.
+ */
 router.post('/', async (req, res) =>{
     let reservationInfo = req.body;
     if(!reservationInfo){
@@ -51,7 +60,10 @@ router.post('/', async (req, res) =>{
 });
 
 
-
+/**
+ * delete a reservation with reservationId,  and it will automatically delete
+ * reservation information in users and vaccineInjectionSite database.
+ */
 router.delete('/', async (req, res) =>{
     let reservationInfo = req.body;
     if(!reservationInfo){
@@ -66,14 +78,16 @@ router.delete('/', async (req, res) =>{
     }
 
     try{
-        const deleteInfo = await reservationData.removeReservation(reservationId, userId, siteId);
-        res.status(200).send(deleteInfo);
+        await usersData.removeReservationIdFromUser(userId,(reservationId).toString());
+        await vaccineData.removeReservationIdFromSite(siteId, (reservationId).toString());
+        const message = await reservationData.removeReservation(reservationId, userId, siteId);
+        res.status(200).send(message);
     }catch (e){
         res.status(500).json({ error: e});
     }
 });
 /**
- *  This is give all reservation results with userId
+ *  This is give all reservation results with one userId
  */
 router.get('/allReservation/:id', async (req, res) =>{
     let userId = req.params.id;

@@ -102,9 +102,9 @@ async function removeComment(commentId, userId, siteId){
     commentId = ObjectId(commentId);
     const commentCollection = await comments();
     let deletionInfo = await commentCollection.removeOne({ _id: commentId });
-    // if (deletionInfo.deletedCount === 0) {
-    //     throw `Could not delete the comment`;
-    // }
+    if (deletionInfo.deletedCount === 0) {
+        throw `Could not delete the comment`;
+    }
 
     return true;
 }

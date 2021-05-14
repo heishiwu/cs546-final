@@ -6,6 +6,7 @@ const saltRounds = 5;
 const userData = data.users;
 const xss = require('xss');
 
+
 router.get('/account', async (req, res) =>{
     if(!req.session.userId){
         return res.redirect('/private');
@@ -20,6 +21,9 @@ router.get('/account', async (req, res) =>{
     }
 });
 
+/**
+ * update username
+ */
 router.post('/account1', async (req, res) =>{
     const{username} = req.body;
     if(!req.session.userId){
@@ -47,6 +51,9 @@ router.post('/account1', async (req, res) =>{
 
 });
 
+/**
+ * update password
+ */
 router.post('/account2', async (req, res) =>{
     const{password, repeatPassword} = req.body;
     if(!req.session.userId){
@@ -78,6 +85,9 @@ router.post('/account2', async (req, res) =>{
     }
 });
 
+/**
+ * update userinformation except username and password
+ */
 router.post('/account3', async (req, res) =>{
     const{name, email, address, birthday, gender, race,
         ethnicity, insurance, medicalGroupNumber, medicalid} = req.body;
@@ -169,6 +179,9 @@ router.get('/login', async (req, res) =>{
     }
 });
 
+/**
+ * log in users with username and password
+ */
 router.post('/login', async (req, res) =>{
     if(req.session.userId){
         return res.redirect('/private');
@@ -199,6 +212,10 @@ router.get('/signup', async (req, res) =>{
     }
 });
 
+/**
+ * signup username with name, username, password, email, address, birthday, gender, race,
+ ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword
+ */
 //only name, username, password, email birthday and insurance are necessary, and username and email are unique.
 router.post('/signup', async (req, res) =>{
     if (req.session.userId) {
@@ -248,7 +265,9 @@ router.post('/signup', async (req, res) =>{
 
 });
 
-
+/**
+ * logout users
+ */
 router.get('/logout', async (req, res) => {
     if (!req.session.userId) {
         return res.redirect('/private');
@@ -268,6 +287,9 @@ router.get('/all', async (req, res) =>{
     }
 });
 
+/**
+ * remove users by usersId
+ */
 router.delete('/remove', async (req, res) =>{
     try{
         await userData.getUserById(req.params.id);
