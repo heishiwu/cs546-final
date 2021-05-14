@@ -9,10 +9,20 @@ const { ObjectId } = require('mongodb');
 /**
  * get comment information by commentId
  */
+// router.get('/:id', async (req, res) =>{
+//     try{
+//         const commentInformation = await commentData.getCommentById(req.params.id);
+//         res.json(commentInformation);
+//     }catch (e){
+//         res.status(404).json({error: 'Comment not found'});
+//     }
+// });
+
 router.get('/:id', async (req, res) =>{
     try{
         const commentInformation = await commentData.getCommentById(req.params.id);
-        res.json(commentInformation);
+        res.status(200).render('sites/single', {partial: 'list-single-script', result: commentInformation});
+        // res.json(commentInformation);
     }catch (e){
         res.status(404).json({error: 'Comment not found'});
     }
