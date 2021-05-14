@@ -8,7 +8,9 @@ const vaccineData = data.vaccineInjectionSite;
 router.get('/:id', async (req, res) =>{
     try{
         const siteInfo = await vaccineData.getSiteById(req.params.id);
-        res.render({siteInfo:siteInfo});
+        res.render('sites/single', {
+            partial: 'list-single-script',
+            siteInfo: siteInfo});
     }catch (e){
         res.status(404).json({error: 'Site not found'});
     }
@@ -18,7 +20,9 @@ router.get('/:id', async (req, res) =>{
 router.get('/', async (req, res) =>{
     try{
         const siteInfo = await vaccineData.getAllSites();
-        res.render('sites/list', {sites: siteInfo});
+        res.render('sites/list', {
+            partial: 'sites-list-script',
+            sites: siteInfo});
     }catch (e){
         res.status(500).send();
     }
