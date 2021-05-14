@@ -231,7 +231,7 @@ router.post('/signup', async (req, res) =>{
             if(!insurance){
                 throw "you must input a insurance";
             }
-            if(password === repeatPassword){
+            if(password !== repeatPassword){
                 throw "you must input a same password";
             }
 
