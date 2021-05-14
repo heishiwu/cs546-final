@@ -14,7 +14,7 @@ router.get('/account', async (req, res) => {
     try {
         const userId = req.session.userId;
         let userInformation = await userData.getUserById(userId);
-        res.render('users/profile', {userInformation, partial:'profile-script'});
+        res.render('users/profile', {userInformation, partial:'profile-script', authenticated: true});
 
     } catch (e) {
         res.status(404).json({ error: 'User not found' });
@@ -45,6 +45,7 @@ router.post('/account1', async (req, res) => {
     try {
         const userInfo = await userData.updateUsername(userId, username);
         res.status(200).send(userInfo)
+        // res.render("/users/login");
     } catch (e) {
         res.status(500).json({ error: e })
     }
@@ -103,7 +104,7 @@ router.post('/account3', async (req, res) => {
         return;
     }
     if (email === oldUser.email) {
-        res.status(400).json({ error: 'ou have to input different email' });
+        res.status(400).json({ error: 'you have to input different email' });
         return;
     }
 
