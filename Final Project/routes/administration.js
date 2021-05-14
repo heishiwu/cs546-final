@@ -3,7 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const administrationData = data.administration;
 
-router.get('/:id', async (req, res) =>{
+router.get('/account', async (req, res) =>{
     try{
         const adminInformation = await administrationData.getAdminById(req.params.id);
         res.json(adminInformation);
@@ -83,7 +83,10 @@ router.get('/login', async (req, res) =>{
         return res.redirect('/private');
     }
     else {
-        res.render('/admin/adminLogin');
+        res.render('admin/adminLogin', {
+            title: 'admin Login',
+            partial: 'login-script'
+        });
     }
 });
 
