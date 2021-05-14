@@ -8,7 +8,7 @@ const vaccineData = data.vaccineInjectionSite;
 router.get('/:id', async (req, res) =>{
     try{
         const siteInfo = await vaccineData.getSiteById(req.params.id);
-        res.json(siteInfo);
+        res.render({siteInfo:siteInfo});
     }catch (e){
         res.status(404).json({error: 'Site not found'});
     }
