@@ -79,11 +79,11 @@ router.delete('/', async (req, res) =>{
 
 //login and logout
 router.get('/login', async (req, res) =>{
-    if(req.session.userId){
+    if(req.session.adminId){
         return res.redirect('/private');
     }
     else {
-        res.render('/users/login');
+        res.render('/admin/adminLogin');
     }
 });
 
@@ -95,22 +95,22 @@ router.post('/login', async (req, res) =>{
         let {username, password} = req.body;
         // const username = xss(req.body.username.trim());
         // const password = xss(req.body.password.trim());
-        const allUser = await userData.getAllUsers();
-        for(let x of allUser){
+        const allAdmin = await administrationData.getAllAdmin();
+        for(let x of allAdmin){
             if(username === x.username){
                 if(await bcrypt.compare(password, x.password)){
-                    req.session.userId = x._id.toHexString();
+                    req.session.adminId = x._id.toHexString();
                     return res.redirect('/private');
                 }
                 break;
             }
         }
-        res.status(401).render('/users/login', {message: "Invaild username or password"});
+        res.status(401).render('/admin/adminLogin', {message: "Invaild username or password"});
     }
 });
 
 router.get('/logout', async (req, res) => {
-    if (!req.session.userId) {
+    if (!req.session.adminId) {
         return res.redirect('/private');
     }else {
         req.session.destroy();
