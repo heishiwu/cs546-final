@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) =>{
 router.get('/', async (req, res) =>{
     try{
         const siteInfo = await vaccineData.getAllSites();
-        res.json(siteInfo);
+        res.render('sites/list', {id: siteInfo._id, name : siteInfo.name, address: siteInfo.address, rating: siteInfo.rating})(siteInfo);
     }catch (e){
         res.status(500).send();
     }
