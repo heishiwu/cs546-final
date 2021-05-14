@@ -26,8 +26,20 @@ router.get('/:id', async (req, res) =>{
     // }
 
     try{
-        const reservationInformation =  await reservationData.getReservationById(req.params.id);
-        res.status(200).render('reservation/makeReservation', {partial: 'makeReservation-script', result: reservationInformation});
+        let reservationId = req.params.id
+        const reservationInformation =  await reservationData.getReservationById(reservationId.toString());
+        let siteId = reservationInformation.siteId;
+        const siteInformation = await vaccineData.getSiteById(siteId);
+        let result = {
+            _id: reservationInformation._id,
+            userId: reservationInformation.userId,
+            siteId: reservationInformation.siteId,
+            date: reservationInformation.date,
+            time: reservationInformation.time,
+            sitename: siteInformation.name
+        };
+        // res.json(result);
+        res.status(200).render('reservation/myReservation', {partial: 'makeReservation-script', result: result});
 
     }catch (e){
         res.status(404).json({error: 'Comment not found'});
