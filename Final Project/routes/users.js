@@ -191,7 +191,7 @@ router.post('/login', async (req, res) =>{
     }
 });
 
-router.get('/logup', async (req, res) =>{
+router.get('/signup', async (req, res) =>{
     if (!req.session.userId) {
         return res.redirect('/private');
     }else {
@@ -200,7 +200,7 @@ router.get('/logup', async (req, res) =>{
 });
 
 //only name, username, password, email birthday and insurance are necessary, and username and email are unique.
-router.post('/logup', async (req, res) =>{
+router.post('/signup', async (req, res) =>{
     if (req.session.userId) {
         return res.redirect('/private');
     }{
