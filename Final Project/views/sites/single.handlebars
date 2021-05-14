@@ -13,15 +13,12 @@
             </div>
 
             <div class="border-bottom mt-3">
-                <h1 class="display-4 font-weight-bold">{{site.name}}</h1>
+                <h1 class="display-4 font-weight-bold">{{siteInfo.name}}</h1>
 
                 <span class="error font-italic" hidden></span>
-                <h2 id="addressLine" class="font-italic h5">{{site.address.addressLine}}</h2>
-                <h2 id="city" class="font-italic h5">{{site.address.city}}</h2>
-                <h2 id="county" class="font-italic h5">{{site.address.county}}</h2>
-                <h2 id="state" class="font-italic h5">{{site.address.state}}</h2>
-                <h2 id="postalCode" class="font-italic h5">{{site.address.postalCode}}</h2>
-                <h2 id="rating" class="font-italic h5">{{site.rating}}</h2>
+                <h2 id="addressLine" class="font-italic h6">{{siteInfo.address.addressLine}}, {{siteInfo.address.apartment_suite_unitNumber}}</h2>
+                <h2 id="city" class="font-italic h6">{{siteInfo.address.city}}, {{siteInfo.address.county}}, {{siteInfo.address.state}}, {{siteInfo.address.postalCode}}</h2>
+                <h2 id="rating" class="font-italic h6">Rating: {{siteInfo.rating}}</h2>
             </div>
 
             <div class="container comment-input-box">
@@ -29,7 +26,7 @@
                     <div class="container"> 
                         <div class="row">
                             <div class="col form-group">
-                                <label for="comment-rating">Rating</label>
+                                <label for="comment-rating" class="font-weight-bold mb-2 mt-5">Your Rating:</label>
                                 <input type="number" class="form-control" name="commentRating" id="comment-rating" min="1" max="5">
                                 <div class="invalid-feedback">
                                     Please enter a vaild rating number
@@ -37,11 +34,11 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <h3 class="font-weight-bold mb-4">Comments</h3>    
+                            <h3 class="font-weight-bold mb-3 mt-5">Comments</h3>    
                         </div>
                         <div class="form-group mw-50%">
-                            <label for="comment-text">Write your comment</label>
-                            <input type="text" name="commentText" class="form-control" id="comment-text" cols="30" rows="10" placeholder="Enter a comment here"></input>
+                            <label for="comment-text" class="mb-1">Write your comment</label>
+                            <input type="text" name="commentText" class="form-control mb-3" id="comment-text" cols="30" rows="10" placeholder="Enter a comment here"></input>
                             <div class="invalid-feedback">
                                 Please enter your comment
                             </div>
@@ -56,12 +53,12 @@
                     {{/each}}
                 </form>
 
-                <ul class="list-group list-group-flush" id="comment-list">
+                <ul class="list-group list-group-flush mt-5" id="comment-list">
                     {{#each comments}}
                     <li class="list-group-item mb-4"> 
                         <div class="container">
                             <div class="row">
-                                <h4 class="font-weight-bold h5">{{this.name}}</h4>
+                                <h4 class="font-weight-bold h5">{{this.userId}}</h4>
                             </div>
 
                             <div class="row mt-3">
@@ -80,7 +77,7 @@
 
         <div class="col col-5 mt-5 ml-3">
             <div class="container p-3 border border-light rounded shadow-sm mb-5">
-                <a href="/reservation/{{site._id}}">
+                <a href="/reservation/{{siteInfo._id}}">
                     <svg class="bi bi-calendar2-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
                         <path fill-rule="evenodd" d="M14 2H2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zM2 1a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
