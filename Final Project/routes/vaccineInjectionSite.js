@@ -74,16 +74,16 @@ router.post('/update', async (req, res) =>{
 });
 
 router.delete('/', async (req, res) =>{
-    let siteId = req.body;
+    let siteId = req.body._id;
     if(!siteId){
         res.status(400).json({error: "You must input a data"});
     }
 
-    try{
-        await vaccineData.getSiteById(siteId);
-    }catch (e){
-        res.status(404).json({error: "Site not found"});
-    }
+    // try{
+    //     await vaccineData.getSiteById(siteId);
+    // }catch (e){
+    //     res.status(404).json({error: "Site not found"});
+    // }
 
     try{
         const deleteInfo = await vaccineData.removeSite(siteId);
