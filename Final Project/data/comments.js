@@ -102,9 +102,9 @@ async function removeComment(commentId, userId, siteId){
     commentId = ObjectId(commentId);
     const commentCollection = await comments();
     let deletionInfo = await commentCollection.removeOne({ _id: commentId });
-    if (deletionInfo.deletedCount === 0) {
-        throw `Could not delete the comment`;
-    }
+    // if (deletionInfo.deletedCount === 0) {
+    //     throw `Could not delete the comment`;
+    // }
 
     return true;
 }
@@ -113,7 +113,7 @@ async function averageRating(siteId){
     if(!siteId || typeof (siteId) !=="string"){
         throw "input a string format commentId";
     }
-    const commentCollection = await comments();
+    const commentCollection =  comments();
     const siteInfo =  getSiteById(siteId);
     let commentsHistory;
     if(!siteInfo.comments_history || typeof (siteInfo.comments_history) ==='undefined'){
@@ -137,13 +137,13 @@ async function averageRating(siteId){
 
 }
 
-async function getSiteById(siteId){
+ async function getSiteById(siteId){
     if (!siteId|| typeof siteId !== 'string'){
         throw 'Site id is not a valid string.';
     }
 
     siteId = ObjectId(siteId);
-    const vaccineCollection = await vaccineInjectionSite();
+    const vaccineCollection = vaccineInjectionSite();
     let vaccine = await vaccineCollection.findOne({_id: siteId});
     if(vaccine === null){
         throw "No site found";

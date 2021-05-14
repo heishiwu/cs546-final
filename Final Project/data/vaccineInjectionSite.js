@@ -34,7 +34,7 @@ async function removeCommentIdFromSite(siteId, commentId){
     if(!commentId || typeof (commentId) !=="string"){
         throw "input a string format commentId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
     let siteInformation = await getSiteById(siteId);
     let list = [];
@@ -56,16 +56,16 @@ async function removeReservationIdFromSite(siteId, reservationId){
     if(!reservationId || typeof (reservationId) !=="string"){
         throw "input a string format reservationId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
     let siteInformation = await getSiteById(siteId);
-    let list = [];
+    let list2 = [];
     for(let i of siteInformation.reservation_history){
         if (i !== reservationId){
-            list.push(i);
+            list2.push(i);
         }
     }
-    siteInformation.reservation_history = list;
+    siteInformation.reservation_history = list2;
     let updateInformation = await siteCollection.updateOne({ _id: userId }, { $set: { reservation_history: siteInformation.reservation_history} });
     return updateInformation;
 }
@@ -79,7 +79,7 @@ async function addCommentIdFromSite(siteId, commentId){
     if(!commentId || typeof (commentId) !=="string"){
         throw "input a string format commentId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
     let siteInformation = await getSiteById(siteId.toString());
     if(!siteInformation.comments_history){
@@ -103,7 +103,7 @@ async function addReservationIdFromSite(siteId, reservationId){
     if(!reservationId || typeof (reservationId) !=="string"){
         throw "input a string format reservationId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
     let siteInformation = await getSiteById(siteId.toString());
     if(!siteInformation.reservation_history){

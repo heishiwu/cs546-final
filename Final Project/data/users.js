@@ -415,7 +415,7 @@ async function removeCommentIdFromUser(userId, commentId){
     if(!commentId || typeof (commentId) !=="string"){
         throw "input a string format commentId";
     }
-    userId = ObjectId.createFromHexString(userId);
+    // userId = ObjectId.createFromHexString(userId);
     const userCollection = await users();
     let userInformation = await getUserById(userId);
     let list = [];
@@ -437,7 +437,7 @@ async function removeReservationIdFromUser(userId, reservationId){
     if(!reservationId || typeof (reservationId) !=="string"){
         throw "input a string format reservationId";
     }
-    userId = ObjectId.createFromHexString(userId);
+    // userId = ObjectId.createFromHexString(userId);
     const userCollection = await users();
     let userInformation = await getUserById(userId);
     let list = [];
@@ -460,7 +460,7 @@ async function addCommentIdFromUser(userId, commentId){
     if(!commentId || typeof (commentId) !=="string"){
         throw "input a string format commentId";
     }
-    userId = ObjectId.createFromHexString(userId);
+    // userId = ObjectId.createFromHexString(userId);
     const userCollection = await users();
     let userInformation = await getUserById(userId.toString());
     if(!userInformation.comments_history){
@@ -483,7 +483,7 @@ async function addReservationIdFromUser(userId, reservationId){
     if(!reservationId || typeof (reservationId) !=="string"){
         throw "input a string format reservationId";
     }
-    userId = ObjectId.createFromHexString(userId);
+    // userId = ObjectId.createFromHexString(userId);
     const userCollection = await users();
     let userInformation = await getUserById(userId);
     if(!userInformation.reservation_history){
@@ -505,7 +505,7 @@ async function removeCommentIdFromSite(siteId, commentId){
     if(!commentId || typeof (commentId) !=="string"){
         throw "input a string format commentId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
     let siteInformation = await getSiteById(siteId);
     let list = [];
@@ -527,7 +527,7 @@ async function removeReservationIdFromSite(siteId, reservationId){
     if(!reservationId || typeof (reservationId) !=="string"){
         throw "input a string format reservationId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
     let siteInformation = await getSiteById(siteId);
     let list = [];
