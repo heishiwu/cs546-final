@@ -200,7 +200,7 @@ router.post('/login', async (req, res) =>{
                     req.session.userId = x._id.toHexString();
                     // return res.redirect('/private');
                     let userInformation = await userData.getUserById((x._id).toString());
-                    res.status(200).render('landing/landing', {partial:'login-script', result: userInformation});
+                    res.status(200).render('landing/landing', {userInformation, partial:'login-script'});
                     // res.status(200).json({result: userInformation});
                 }
                 break;
