@@ -8,17 +8,17 @@ const dailyData = data.dailyData;
 
 router.get('/:id', async (req, res) =>{
     try{
-        const dailyDataInfo = await dailyData.getCommentById(req.params.id);
+        const dailyDataInfo = await dailyData.getDataById(req.params.id);
         res.json(dailyDataInfo);
     }catch (e){
-        res.status(404).json({error: 'Comment not found'});
+        res.status(404).json({error: 'data not found'});
     }
 });
 
 
 router.get('/', async (req, res) =>{
     try{
-        const dailyDataInfo = await dailyData.getAllComments();
+        const dailyDataInfo = await dailyData.getAllData();
         res.json(dailyDataInfo);
     }catch (e){
         res.status(500).send();
@@ -26,6 +26,7 @@ router.get('/', async (req, res) =>{
 });
 
 router.post('/', async (req, res) =>{
+    
     let dailyDataInfo = req.body;
     if(!dailyDataInfo){
         res.status(400).json({error: "You must input a data"});
@@ -58,9 +59,8 @@ router.post('/', async (req, res) =>{
     if(!change_date){
         res.status(400).json({error: "You must input a change_date"});
     }
-
     try{
-        const newDailyData = await dailyData().addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date);
+        const newDailyData = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date);
         res.status(200).send(newDailyData);
     }catch (e){
         res.status(500).json({error:e});
@@ -68,19 +68,19 @@ router.post('/', async (req, res) =>{
 });
 
 router.delete('/', async (req, res) =>{
-    let dailyDataId = req.body;
+    let dailyDataId = req.body._id;
     if(!dailyDataId){
         res.status(400).json({error: "You must input a data"});
     }
 
-    try{
-        await commentData.getDailyDataById(userId);
-    }catch (e){
-        res.status(404).json({error: "Daily data not found"});
-    }
+    // try{
+    //     await commentData.getDataById(dailyDataId);
+    // }catch (e){
+    //     res.status(404).json({error: "Daily data not found"});
+    // }
 
     try{
-        const deleteInfo = await dailyData.removeDailyDataById(dailyDataId);
+        const deleteInfo = await dailyData.removeDataById(dailyDataId);
         res.status(200).send(deleteInfo);
     }catch (e){
         res.status(500).json({ error: e});

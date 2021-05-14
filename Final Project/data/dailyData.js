@@ -5,7 +5,7 @@ const dailyData = mongoCollections.dailyData;
 //databases
 // {
 //     "_id": "12eg456-e89b-24d3-a456-426655440000",
-//     "dailyCases ": "151234",
+//     "dailyCases": "151234",
 //     "dailyDeath": "6757",
 //     "dailyVaccination": "6757",
 //     "dailyRecover": "5678",
@@ -13,7 +13,7 @@ const dailyData = mongoCollections.dailyData;
 //     "sum_of_death": "4573",
 //     "sum_of_vaccination": "7592",
 //     "sum_of_recover": "7824",
-//     "change_date ": "04/03/2021"
+//     "change_date": "04/03/2021"
 // }
 
 async function getDataById(dataId){
@@ -51,7 +51,7 @@ async function removeDataById(dataId){
     if (deleteInfo.deletedCount === 0) {
         throw 'Could not delete the data';
     }
-    return true;
+    return deleteInfo;
 }
 
 async function addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date){
@@ -79,7 +79,7 @@ async function addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, s
     const dataCollection = await dailyData();
     let insertInfo = await dataCollection.insertOne(newData);
     if (!insertInfo || insertInfo === null) throw 'failed to add the newData';
-    return insertInfo;
+    return await getDataById(ObjectId(insertInfo.ops[0]._id).toString());
 }
 
 
