@@ -8,14 +8,33 @@ const vaccineData = data.vaccineInjectionSite;
 /**
  * get reservation information by reservationId
  */
+// router.get('/:id', async (req, res) =>{
+//     try{
+//         const reservationInformation =  await reservationData.getReservationById(req.params.id);
+//         res.json(reservationInformation);
+//     }catch (e){
+//         res.status(404).json({error: 'Comment not found'});
+//     }
+// });
+
+
 router.get('/:id', async (req, res) =>{
+    // if(!req.session.user){
+    //     req.session.previousRoute = req.originalUrl;
+    //     res.redirect('/users/login');
+    //     return;
+    // }
+
     try{
         const reservationInformation =  await reservationData.getReservationById(req.params.id);
-        res.json(reservationInformation);
+        res.status(200).render('reservation/makeReservation', {partial: 'makeReservation-script', result: reservationInformation});
+
     }catch (e){
         res.status(404).json({error: 'Comment not found'});
     }
 });
+
+
 
 /**
  * get all reservations, but is useless
