@@ -196,6 +196,8 @@ router.post('/login', async (req, res) =>{
                 if(await bcrypt.compare(password, x.password)){
                     req.session.userId = x._id.toHexString();
                     return res.redirect('/private');
+                    // let userInformation = await userData.getUserById((x._id._id).toString());
+                    // res.status(200).json({result: userInformation});
                 }
                 break;
             }
@@ -266,8 +268,8 @@ router.post('/signup', async (req, res) =>{
                 throw "you must input a same password";
             }
 
-            const hashPassword = await bcrypt.hash(password, saltRounds);
-            const newUser = await userData.createUser(name, username, hashPassword, email, address, birthday, gender,race,
+            // const hashPassword = await bcrypt.hash(password, saltRounds);
+            const newUser = await userData.createUser(name, username, password, email, address, birthday, gender,race,
                 ethnicity, insurance, medicalGroupNumber, medicalid);
             req.session.userId = newUser._id.toHexString();
             let userInformation = await userData.getUserById((newUser._id).toString());
