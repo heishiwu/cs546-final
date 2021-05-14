@@ -16,7 +16,7 @@ const saltRounds = 16;
 async function addAdmin(username, password){
     if (!username || typeof username != 'string' || !username.trim()) throw 'invalid username';
     if (!password || typeof password != 'string' || !password.trim()) throw 'invalid password';
-    const hashedPassword = await bcrypt.hash(password, saltRounds);;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     var newAdmin = {
         username: username,
         password: hashedPassword,

@@ -24,8 +24,7 @@ async function main() {
     let u2_userid = u2._id.toHexString();
     console.log("u2");
 
-    let a1 = await administration.addAdmin("sfuid", "123456")
-    
+
     let s1 = await vaccineInjectionSite.createSite("River Side1" ,
         { "addressLine": "1313 Grand St.",
             "apartment_suite_unitNumber": "APT 304",
