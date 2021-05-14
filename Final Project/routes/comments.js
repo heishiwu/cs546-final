@@ -20,9 +20,22 @@ const { ObjectId } = require('mongodb');
 
 router.get('/:id', async (req, res) =>{
     try{
-        const commentInformation = await commentData.getCommentById(req.params.id);
-        res.status(200).render('sites/single', {partial: 'list-single-script', result: commentInformation});
-        // res.json(commentInformation);
+        let commentId = req.params.id;
+        const commentInformation = await commentData.getCommentById(commentId.toString());
+        let userId = commentInformation.userId;
+        const userInformation = await usersData.getUserById(userId);
+        let result = {
+            _id: commentInformation._id,
+            userId: commentInformation.userId,
+            siteId: commentInformation.siteId,
+            date: commentInformation.date,
+            rating: commentInformation.rating,
+            comment: commentInformation.comment,
+            name: userInformation.name
+        }
+
+        res.status(200).render('sites/single', {partial: 'list-single-script', result: result});
+        // res.json(result);
     }catch (e){
         res.status(404).json({error: 'Comment not found'});
     }
