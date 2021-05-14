@@ -198,8 +198,9 @@ router.post('/login', async (req, res) =>{
             if(username === x.username){
                 if(await bcrypt.compare(password, x.password)){
                     req.session.userId = x._id.toHexString();
-                    return res.redirect('/private');
-                    // let userInformation = await userData.getUserById((x._id._id).toString());
+                    // return res.redirect('/private');
+                    let userInformation = await userData.getUserById((x._id).toString());
+                    res.status(200).render('landing/landing', {partial:'login-script', result: userInformation});
                     // res.status(200).json({result: userInformation});
                 }
                 break;
