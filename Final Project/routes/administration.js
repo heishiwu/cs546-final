@@ -103,14 +103,16 @@ router.post('/login', async (req, res) =>{
         const allAdmin = await administrationData.getAllAdmin();
         for(let x of allAdmin){
             if(username === x.username){
+                console.log(await bcrypt.compare(password, x.password))
                 if(await bcrypt.compare(password, x.password)){
                     req.session.adminId = x._id.toHexString();
-                    return res.redirect('/private');
+                    let adminInformation = await administrationData.getAdminById((x._id).toString());
+                    res.status(200).render('admin/admin', { adminInformation, partial: 'admin-script', authenticated: true });
                 }
                 break;
             }
         }
-        res.status(401).render('/admin/adminLogin', {message: "Invaild username or password"});
+        res.status(401).render('admin/adminLogin', {message: "Invalid username or password", partial: 'login-script'});
     }
 });
 
