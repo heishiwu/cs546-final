@@ -125,5 +125,30 @@ router.get('/logout', async (req, res) => {
     }
 });
 
+router.get('/admin/addNewSite', async (req, res) => {
+    if(req.session.adminId){
+        res.render('admin/addNewSite', {partial:"addNewSite-script"});
+    }
+    else {
+        res.render('admin/adminLogin', {
+            title: 'admin Login',
+            partial: 'login-script'
+        });
+    }
+
+});
+
+router.get('/admin/addDailyData', async (req, res) => {
+    if(req.session.adminId){
+        res.render('admin/addDailyData', {partial:"addDailyData-script"});
+    }
+    else {
+        res.render('admin/adminLogin', {
+            title: 'admin Login',
+            partial: 'login-script'
+        });
+    }
+
+});
 
 module.exports = router;
