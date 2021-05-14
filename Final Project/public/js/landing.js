@@ -1,7 +1,17 @@
 (function ($) {
-    let chartLabels = $("#chart_labels").val();
-    let chartData = $("#chart_data").val();
+    let chartLabels = $("#chart_labels");
+    let lable = chartLabels.html();
+    let chartData = $("#chart_data");
+    let cd = chartData.html().trim();
     const labels = chartLabels;
+    let death = [];
+    let recover = [];
+    chartData.forEach(data => {
+        death.push(data.death);
+        recover.push(data.recover)
+    });
+    
+    // [{death:1, recover:2},{death:1, recover:2}]
     const data = {
         // "dailyCases ": "151234",
 //     "dailyDeath": "6757",
@@ -19,13 +29,13 @@
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             fill: false,
-            data: chartData[0]    //data
+            data: death    //data
         }, {
             label: 'dailyDeath',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             fill: false,
-            data: chartData[1],
+            data: recover,
         }]
     };
     // </block:setup>

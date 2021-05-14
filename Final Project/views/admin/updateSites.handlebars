@@ -1,0 +1,41 @@
+<div class="container col-9 mt-3 ">
+    <h3 class="mb-3">Add New Site</h3>
+    <form id="addNewSiteForm" method="POST" action="/vaccine/vaccineInjectionSite" class="needs-validation">
+        <div class="row g-3">
+            <div class="col-12">
+                <label for="sitename" class="form-label">Site Name</label>
+                <input type="text" class="form-control" id="sitename">
+            </div>
+
+            <div class="col-12">
+                <label for="addressLine" class="form-label">Address Line</label>
+                <input type="text" class="form-control" id="addressLine" placeholder="1234 Main St">
+            </div>
+
+            <div class="col-md-3">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city" placeholder="">
+            </div>
+
+            <div class="col-md-3">
+                <label for="county" class="form-label">County</label>
+                <input type="text" class="form-control" id="county" placeholder="">
+            </div>
+
+            <div class="col-md-3">
+                <label for="state" class="form-label">State</label>
+                <input type="text" class="form-control" id="state" placeholder="">
+            </div>
+
+            <div class="col-md-3">
+                <label for="postalCode" class="form-label">PostalCode</label>
+                <input type="text" class="form-control" id="postalCode" placeholder="">
+            </div>
+
+        </div>
+
+        <hr class="my-4">
+
+        <button class="w-100 btn btn-primary btn-lg" type="submit">Add</button>
+    </form>
+</div>

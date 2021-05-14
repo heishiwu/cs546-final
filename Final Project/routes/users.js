@@ -175,7 +175,10 @@ router.get('/login', async (req, res) =>{
         return res.redirect('/private');
     }
     else {
-        res.render('/users/login');
+        res.render('users/login', {
+            title: 'User Login',
+            partial: 'login-script'
+        });
     }
 });
 
@@ -202,15 +205,15 @@ router.post('/login', async (req, res) =>{
                 break;
             }
         }
-        res.status(401).render('/users/login', {message: "Invaild username or password"});
+        res.status(401).render('users/login', {message: "Invaild username or password", partial:'login-script'});
     }
 });
 
 router.get('/signup', async (req, res) =>{
-    if (!req.session.userId) {
+    if (req.session.userId) {
         return res.redirect('/private');
     }else {
-        return res.render('/users/signup');
+        return res.render('users/signup', {partial:'signup-script'});
     }
 });
 
@@ -277,8 +280,7 @@ router.post('/signup', async (req, res) =>{
             // res.status(200).json({result: userInformation});
             return res.redirect('/private');
         }catch (e){
-            res.status(404).render('/users/signup',{message:e});
-            // res.status(404).json({message: e});
+            res.status(404).render('users/signup',{message:e, partial:'signup-script'});
         }
     }
 

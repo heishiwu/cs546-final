@@ -1,11 +1,14 @@
 <div class="container col-9 mt-3 ">
     <h3 class="mb-3">Sign Up</h3>
-    <form id="signupForm" class="needs-validation" novalidate method="POST" action="#">
+    <form id="signupForm" class="needs-validation" novalidate method="POST" action="/users/signup">
+        {{#if message}}
+            <div class = "error font-italic" id="errors">{{message}}</div>
+        {{/if}}
         <div class="row g-3">
-            <div class="col-sm-6">
+            <div class="col-12">
                 <label for="username" class="form-label">Username</label>
                 <div class="input-group has-validation">
-                    <input type="text" class="form-control" id="username" required>
+                    <input type="text" class="form-control" name="username" id="username" required>
                     <div class="invalid-feedback">
                         Your username is required.
                     </div>
@@ -15,16 +18,26 @@
             <div class="col-sm-6">
                 <label for="password" class="form-label">Password</label>
                 <div class="input-group has-validation">
-                    <input type="password" class="form-control" id="password" required>
+                    <input type="password" class="form-control" name="password" id="password" required>
                     <div class="invalid-feedback">
-                        Your username is required.
+                        Your password is required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <label for="repeatPassword" class="form-label">Repeat Password</label>
+                <div class="input-group has-validation">
+                    <input type="password" class="form-control" name="repeatPassword" id="repeatPassword" required>
+                    <div class="invalid-feedback">
+                        Your repeat password is required.
                     </div>
                 </div>
             </div>
 
             <div class="col-sm-6">
                 <label for="firstName" class="form-label">First name</label>
-                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                <input type="text" class="form-control" name="firstName" id="firstName" required>
                 <div class="invalid-feedback">
                     Valid first name is required.
                 </div>
@@ -32,7 +45,7 @@
 
             <div class="col-sm-6">
                 <label for="lastName" class="form-label">Last name</label>
-                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                <input type="text" class="form-control" name="lastName" id="lastName" required>
                 <div class="invalid-feedback">
                     Valid last name is required.
                 </div>
@@ -40,7 +53,7 @@
 
             <div class="col-12">
                 <label for="email" class="form-label">Email <span class="text-muted"></span></label>
-                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                <input type="email" class="form-control" name="email" id="email" placeholder="you@example.com" required>
                 <div class="invalid-feedback">
                     Please enter a valid email address.
                 </div>
@@ -48,7 +61,33 @@
 
             <div class="col-12">
                 <label for="birthday" class="form-label">Birthday</label>
-                <input type="date" class="form-control" id="birthday" placeholder="">
+                <input type="date" class="form-control" name="birthday" id="birthday" placeholder="">
+                <div class="invalid-feedback">
+                    Please enter a valid birthday.
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="insuranceType" class="form-label">Insurance Type</label>
+                <select class="form-select" id="insuranceType" name="insuranceType">
+                    <option value="">Choose...</option>
+                    <option value="No Health Insurance">No Health Insurance</option>
+                    <option value="Private Insurance">Private Insurance</option>
+                    <option value="Medicare">Medicare</option>
+                    <option value="Medicaid">Medicaid</option>
+                    <option value="CHIP">CHIP</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please enter a Insurance Type.
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="insuranceName" class="form-label">Insurance Name</label>
+                <input type="text" class="form-control" name="insuranceName" id="insuranceName" placeholder="">
+                <div class="invalid-feedback">
+                    Please enter an Insurance Name.
+                </div>
             </div>
 
             <hr class="my-4">
@@ -57,33 +96,33 @@
 
             <div class="col-12">
                 <label for="addressLine" class="form-label">Address Line</label>
-                <input type="text" class="form-control" id="addressLine" placeholder="1234 Main St">
+                <input type="text" class="form-control" name="addressLine" id="addressLine" placeholder="1234 Main St">
             </div>
 
             <div class="col-12">
                 <label for="apartment_suite_unitNumber" class="form-label">Apartment Suite UnitNumber</label>
-                <input type="text" class="form-control" id="apartment_suite_unitNumber"
+                <input type="text" class="form-control" name="apartment_suite_unitNumber" id="apartment_suite_unitNumber"
                     placeholder="Apartment or suite">
             </div>
 
             <div class="col-md-3">
                 <label for="city" class="form-label">City</label>
-                <input type="text" class="form-control" id="city" placeholder="">
+                <input type="text" class="form-control" name="city" id="city" placeholder="">
             </div>
 
             <div class="col-md-3">
                 <label for="county" class="form-label">County</label>
-                <input type="text" class="form-control" id="county" placeholder="">
+                <input type="text" class="form-control" name="county" id="county" placeholder="">
             </div>
 
             <div class="col-md-3">
                 <label for="state" class="form-label">State</label>
-                <input type="text" class="form-control" id="state" placeholder="">
+                <input type="text" class="form-control" name="state" id="state" placeholder="">
             </div>
 
             <div class="col-md-3">
                 <label for="postalCode" class="form-label">PostalCode</label>
-                <input type="text" class="form-control" id="postalCode" placeholder="">
+                <input type="text" class="form-control" name="postalCode" id="postalCode" placeholder="">
             </div>
 
             <div class="col-12">
@@ -104,7 +143,7 @@
 
             <div class="col-md-6">
                 <label for="race" class="form-label">Race</label>
-                <select class="form-select" id="race">
+                <select class="form-select" name="race" id="race">
                     <option value="">Prefer not to say</option>
                     <option value="African American or Black">African American or Black</option>
                     <option value="White">White</option>
@@ -118,7 +157,7 @@
 
             <div class="col-md-6">
                 <label for="ethnicity" class="form-label">Ethnicity</label>
-                <select class="form-select" id="ethnicity">
+                <select class="form-select" name="ethnicity" id="ethnicity">
                     <option value="">Prefer not to say</option>
                     <option value="Hispanic or Latino">Hispanic or Latino</option>
                     <option value="Not Hispanic or Latino">Not Hispanic or Latino</option>
@@ -126,29 +165,13 @@
             </div>
 
             <div class="col-md-6">
-                <label for="insuranceType" class="form-label">Insurance Type</label>
-                <select class="form-select" id="insuranceType">
-                    <option value="No Health Insurance">No Health Insurance</option>
-                    <option value="Private Insurance">Private Insurance</option>
-                    <option value="Medicare">Medicare</option>
-                    <option value="Medicaid">Medicaid</option>
-                    <option value="CHIP">CHIP</option>
-                </select>
-            </div>
-
-            <div class="col-md-6">
-                <label for="insuranceName" class="form-label">Insurance Name</label>
-                <input type="text" class="form-control" id="insuranceName" placeholder="">
-            </div>
-
-            <div class="col-md-6">
                 <label for="medicalGroupNumber" class="form-label">Medical GroupNumber</label>
-                <input type="text" class="form-control" id="medicalGroupNumber" placeholder="">
+                <input type="text" class="form-control" name="medicalGroupNumber" id="medicalGroupNumber" placeholder="">
             </div>
 
             <div class="col-md-6">
                 <label for="medicalid" class="form-label">Medical Id</label>
-                <input type="text" class="form-control" id="medicalid" placeholder="">
+                <input type="text" class="form-control" name="medicalid" id="medicalid" placeholder="">
             </div>
 
         </div>

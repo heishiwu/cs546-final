@@ -11,7 +11,7 @@ router.get('/', async (req, res) =>{
                 userInformation = await userData.getUserById(req.params.userId);
             }
         }
-        res.render('landing/landing', {userInformation});
+        res.render('landing/landing', {userInformation,partial:'landing-script'});
     }catch (e){
         res.redirect('/private');
     }

@@ -16,7 +16,7 @@
 <body>
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Home</a>
+            <a class="navbar-brand" href="/private">Home</a>
 
             {{#if authenticated}}
             <div class="dropdown" class="float-end">
@@ -32,8 +32,9 @@
             {{else}}
             <div class="float-end">
                 <span>
-                    <a href="#" class="btn btn-light px-3 mx-1 border">Log In</a>
-                    <a href="#" class="btn btn-primary px-3 mx-1">Sign Up</a>
+                    <a href="admin/" class="btn btn-light px-3 mx-1 border">Admin Log In</a>
+                    <a href="/users/login" class="btn btn-light px-3 mx-1 border">User Log In</a>
+                    <a href="/users/signup" class="btn btn-primary px-3 mx-1">Sign Up</a>
                 </span>
             </div>
             {{/if}}

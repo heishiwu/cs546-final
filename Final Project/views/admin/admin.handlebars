@@ -63,7 +63,6 @@
                 <th scope="col">Sum of Vaccination</th>
                 <th scope="col">Sum of Recover</th>
                 <th scope="col">Change Date</th>
-                <th scope="col">Operation</th>
             </tr>
         </thead>
         <tbody  id="dailydataBody">
@@ -78,10 +77,6 @@
                 <td>{{this.sum_of_vaccination}}</td>
                 <td>{{this.sum_of_recover}}</td>
                 <td>{{this.change_date}}</td>
-                <td>
-                    <p hidden>{{this._id}}</p>
-                    <a class="updateData" href="#">Update</a> <a class="deleteData" href="#">Delete</a>
-                </td>
             </tr>
             {{/each}}
         </tbody>
