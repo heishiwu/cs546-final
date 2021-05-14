@@ -75,8 +75,6 @@ router.delete('/', async (req, res) =>{
         // await usersData.removeCommentIdFromUser(userId, (commentId).toString());
         // await vaccineData.removeReservationIdFromSite(siteId, (commentId).toString());
         const message = await commentData.removeComment(commentId, userId, siteId);
-        // await usersData.removeCommentIdFromUser(userId, (commentId).toString());
-        // await vaccineData.removeReservationIdFromSite(siteId, (commentId).toString());
         res.status(200).send(message);
     }catch (e){
         res.status(500).json({ error: e});

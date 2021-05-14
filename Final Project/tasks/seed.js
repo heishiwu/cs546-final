@@ -56,24 +56,54 @@ async function main() {
 
 
     let c1 = await comments.addComment(u1_userid, s1_siteid, "4.1", "Nice1 and Social distant");
+    let c1_id = c1._id.toHexString();
     console.log("c1");
     let c2 = await comments.addComment(u1_userid, s2_siteid, "4.2", "Nice2 and Social distant");
+    let c2_id = c2._id.toHexString();
     console.log("c2");
     let c3 = await comments.addComment(u2_userid, s1_siteid, "4.3", "Nice3 and Social distant");
+    let c3_id = c3._id.toHexString();
     console.log("c3");
     let c4 = await comments.addComment(u2_userid, s2_siteid, "4.4", "Nice4 and Social distant");
+    let c4_id = c4._id.toHexString();
     console.log("c4");
 
     let r1 = await reservations.addReservation(u1_userid, s1_siteid, "01/01/2021");
+    let r1_id = r1._id.toHexString();
     console.log("r1");
     let r2 = await reservations.addReservation(u1_userid, s2_siteid, "02/02/2021");
+    let r2_id = r2._id.toHexString();
     console.log("r1");
     let r3 = await reservations.addReservation(u2_userid, s1_siteid, "03/03/2021");
+    let r3_id = r3._id.toHexString();
     console.log("r1");
     let r4 = await reservations.addReservation(u2_userid, s2_siteid, "04/04/2021");
+    let r4_id = r4._id.toHexString();
     console.log("r1");
 
+    u1 = await users.addCommentAndReservation(u1_userid, c1_id, r1_id);
+    console.log("u1");
 
+    u2 = await users.addCommentAndReservation(u1_userid, c2_id, r2_id);
+    console.log("u2");
+
+    u3 = await users.addCommentAndReservation(u2_userid, c3_id, r3_id);
+    console.log("u3");
+
+    u4 = await users.addCommentAndReservation(u2_userid, c4_id, r4_id);
+    console.log("u4");
+
+    s1 = await vaccineInjectionSite.addCommentAndReservation(s1_siteid, c1_id, r1_id);
+    console.log("s1");
+
+    s2 = await vaccineInjectionSite.addCommentAndReservation(s2_siteid, c2_id, r2_id);
+    console.log("s1");
+
+    s1 = await vaccineInjectionSite.addCommentAndReservation(s2_siteid, c4_id, r4_id);
+    console.log("s1");
+
+    s1 = await vaccineInjectionSite.addCommentAndReservation(s1_siteid, c3_id, r3_id);
+    console.log("s1");
 
 
     await db.serverConfig.close();
