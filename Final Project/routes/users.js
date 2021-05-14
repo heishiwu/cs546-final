@@ -6,6 +6,7 @@ const saltRounds = 5;
 const userData = data.users;
 const xss = require('xss');
 
+
 router.get('/account', async (req, res) =>{
     if(!req.session.userId){
         return res.redirect('/private');
@@ -20,6 +21,9 @@ router.get('/account', async (req, res) =>{
     }
 });
 
+/**
+ * update username
+ */
 router.post('/account1', async (req, res) =>{
     const{username} = req.body;
     if(!req.session.userId){
@@ -47,6 +51,9 @@ router.post('/account1', async (req, res) =>{
 
 });
 
+/**
+ * update password
+ */
 router.post('/account2', async (req, res) =>{
     const{password, repeatPassword} = req.body;
     if(!req.session.userId){
@@ -78,6 +85,9 @@ router.post('/account2', async (req, res) =>{
     }
 });
 
+/**
+ * update userinformation except username and password
+ */
 router.post('/account3', async (req, res) =>{
     const{name, email, address, birthday, gender, race,
         ethnicity, insurance, medicalGroupNumber, medicalid} = req.body;
@@ -172,6 +182,9 @@ router.get('/login', async (req, res) =>{
     }
 });
 
+/**
+ * log in users with username and password
+ */
 router.post('/login', async (req, res) =>{
     if(req.session.userId){
         return res.redirect('/private');
@@ -186,6 +199,8 @@ router.post('/login', async (req, res) =>{
                 if(await bcrypt.compare(password, x.password)){
                     req.session.userId = x._id.toHexString();
                     return res.redirect('/private');
+                    // let userInformation = await userData.getUserById((x._id._id).toString());
+                    // res.status(200).json({result: userInformation});
                 }
                 break;
             }
@@ -202,6 +217,11 @@ router.get('/signup', async (req, res) =>{
     }
 });
 
+/**
+ * signup username with name, username, password, email, address, birthday, gender, race,
+ ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword
+ */
+
 //only name, username, password, email birthday and insurance are necessary, and username and email are unique.
 router.post('/signup', async (req, res) =>{
     if (req.session.userId) {
@@ -212,9 +232,22 @@ router.post('/signup', async (req, res) =>{
             res.status(400).json({ error: 'You must provide data to create a userInfo' });
             return;
         }
-
-        const{name, username, password, email, address, birthday, gender, race,
-            ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = userInfo;
+        const{firstName, lastName, username, password, email, addressLine,
+            apartment_suite_unitNumber, city, county, state, postalCode, birthday,
+            gender, race, ethnicity, insuranceType, insuranceName,
+            medicalGroupNumber, medicalid, repeatPassword} = userInfo;
+        let name = {firstName: firstName, lastName: lastName};
+        let address = {
+            addressLine: addressLine,
+            apartment_suite_unitNumber: apartment_suite_unitNumber,
+            city: city,
+            county: county,
+            state: state,
+            postalCode: postalCode
+        };
+        let insurance = {insuranceType: insuranceType, insuranceName: insuranceName};
+        // const{name, username, password, email, address, birthday, gender, race,
+        //     ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = userInfo;
         try{
             if(!name){
                 throw "You must input a name";
@@ -238,10 +271,13 @@ router.post('/signup', async (req, res) =>{
                 throw "you must input a same password";
             }
 
-            const hashPassword = await bcrypt.hash(password, saltRounds);
-            const newUser = await userData.createUser(name, username, hashPassword, email, address, birthday, gender,race,
+            // const hashPassword = await bcrypt.hash(password, saltRounds);
+            const newUser = await userData.createUser(name, username, password, email, address, birthday, gender,race,
                 ethnicity, insurance, medicalGroupNumber, medicalid);
             req.session.userId = newUser._id.toHexString();
+            let userInformation = await userData.getUserById((newUser._id).toString());
+            // return userInformation;
+            // res.status(200).json({result: userInformation});
             return res.redirect('/private');
         }catch (e){
             res.status(404).render('users/signup',{message:e, partial:'signup-script'});
@@ -251,7 +287,9 @@ router.post('/signup', async (req, res) =>{
 
 });
 
-
+/**
+ * logout users
+ */
 router.get('/logout', async (req, res) => {
     if (!req.session.userId) {
         return res.redirect('/private');
@@ -271,6 +309,9 @@ router.get('/all', async (req, res) =>{
     }
 });
 
+/**
+ * remove users by usersId
+ */
 router.delete('/remove', async (req, res) =>{
     try{
         await userData.getUserById(req.params.id);

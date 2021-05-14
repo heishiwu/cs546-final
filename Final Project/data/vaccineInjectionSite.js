@@ -66,7 +66,7 @@ async function removeReservationIdFromSite(siteId, reservationId){
         }
     }
     siteInformation.reservation_history = list2;
-    let updateInformation = await siteCollection.updateOne({ _id: userId }, { $set: { reservation_history: siteInformation.reservation_history} });
+    let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { reservation_history: siteInformation.reservation_history} });
     return updateInformation;
 }
 
@@ -259,6 +259,72 @@ async function getAllCommentsSiteId(siteId){
     return result;
 }
 
+async function addCommentAndReservation(siteId, commentId, reservationId) {
+    if (!siteId || typeof siteId !== 'string') {
+        throw 'User id is not a valid string.';
+    }
+    if (!commentId || typeof commentId !== 'string') {
+        throw 'commentId is not a valid string.';
+    }
+    if (!reservationId || typeof reservationId !== 'string') {
+        throw 'reservationId is not a valid string.';
+    }
+
+    siteId = ObjectId.createFromHexString(siteId);
+
+    const vaccineCollection = await vaccineInjectionSite();
+    let site = await vaccineCollection.findOne({_id: siteId});
+    if (site === null) {
+        throw "No site found";
+    } else {
+        if (!site.comments_history || typeof (site.comments_history) === 'undefined') {
+            let temp1 = [];
+            temp1.push(commentId);
+            site.comments_history = temp1;
+        } else {
+            let comment_temp;
+            for (let i of site.comments_history) {
+                comment_temp = [];
+                if (i !== commentId) {
+                    comment_temp.push(i);
+                }
+            }
+            comment_temp.push(commentId);
+            site.comments_history = comment_temp;
+        }
+
+        if (!site.reservation_history || typeof (site.reservation_history) === 'undefined') {
+            let temp2 = [];
+            temp2.push(reservationId);
+            site.reservation_history = temp2;
+        } else {
+            let reservation_temp;
+            for (let j of site.reservation_history) {
+                reservation_temp = [];
+                if (j !== reservationId) {
+                    reservation_temp.push(j);
+                }
+            }
+            reservation_temp.push(reservationId);
+            site.reservation_history = reservation_temp;
+        }
+
+        let userUpdateInfo = {
+            name: site.name,
+            address: site.address,
+            comments_history: site.comments_history,
+            reservation_history: site.reservation_history,
+            rating: site.rating
+
+        };
+        let updatedInfo = await vaccineCollection.updateOne({_id: siteId}, {$set: userUpdateInfo});
+        // if (updatedInfo.modifiedCount === 0) {
+        //     throw 'could not edit the username successfully';
+        // }
+        return this.getSiteById(siteId.toString());
+    }
+}
+
 module.exports={
     getSiteById,
     getAllSites,
@@ -269,5 +335,6 @@ module.exports={
     removeReservationIdFromSite,
     addCommentIdFromSite,
     addReservationIdFromSite,
-    getAllCommentsSiteId
+    getAllCommentsSiteId,
+    addCommentAndReservation
 }

@@ -602,6 +602,103 @@ async function getSiteById(siteId){
     return vaccine;
 }
 
+async function addCommentAndReservation(userId, commentId, reservationId){
+    if (!userId || typeof userId !== 'string'){
+        throw 'User id is not a valid string.';
+    }
+    if (!commentId || typeof commentId !== 'string'){
+        throw 'commentId is not a valid string.';
+    }
+    if (!reservationId || typeof reservationId !== 'string' ){
+        throw 'reservationId is not a valid string.';
+    }
+
+    userId = ObjectId.createFromHexString(userId);
+
+    const userCollection = await users();
+    let user = await userCollection.findOne({_id: userId});
+    if(user === null){
+        throw "No user found";
+    }else {
+        if(!user.comments_history || typeof(user.comments_history) ==='undefined' ){
+            let temp1 = [];
+            temp1.push(commentId);
+            user.comments_history = temp1;
+        }else {
+            let comment_temp;
+            for(let i of user.comments_history){
+                comment_temp = [];
+                if(i !== commentId){
+                    comment_temp.push(i);
+                }
+            }
+            comment_temp.push(commentId);
+            user.comments_history = comment_temp;
+        }
+
+        if(!user.reservation_history || typeof(user.reservation_history) ==='undefined' ){
+            let temp2 = [];
+            temp2.push(reservationId);
+            user.reservation_history = temp2;
+        }else {
+            let reservation_temp;
+            for(let j of user.reservation_history){
+                reservation_temp = [];
+                if(j !== reservationId){
+                    reservation_temp.push(j);
+                }
+            }
+            reservation_temp.push(reservationId);
+            user.reservation_history = reservation_temp;
+        }
+
+        let userUpdateInfo = {
+            name: user.name,
+            email: user.email,
+            address: user.address,
+            birthday: user.birthday,
+            gender: user.gender,
+            race: user.race,
+            ethnicity: user.ethnicity,
+            insurance: user.insurance,
+            medicalGroupNumber: user.medicalGroupNumber,
+            medicalid: user.medicalid,
+            comments_history: user.comments_history,
+            reservation_history: user.reservation_history
+
+        };
+        let updatedInfo = await userCollection.updateOne({ _id: userId }, { $set: userUpdateInfo });
+        // if (updatedInfo.modifiedCount === 0) {
+        //     throw 'could not edit the username successfully';
+        // }
+        return this.getUserById(userId.toString());
+    }
+
+
+    if(userInformation !== null){
+        throw "the email is already exisited";
+    }else {
+        let userUpdateInfo = {
+            name: name,
+            email: email,
+            address: address,
+            birthday: birthday,
+            gender: gender,
+            race: race,
+            ethnicity: ethnicity,
+            insurance: insurance,
+            medicalGroupNumber: medicalGroupNumber,
+            medicalid: medicalid,
+        };
+        let updatedInfo = await userCollection.updateOne({ _id: userObjId }, { $set: userUpdateInfo });
+        if (updatedInfo.modifiedCount === 0) {
+            throw 'could not edit the username successfully';
+        }
+        return this.getUserById(userId);
+    }
+
+}
+
 
 
 
@@ -621,5 +718,6 @@ module.exports = {
     addCommentIdFromSite,
     addReservationIdFromSite,
     removeReservationIdFromSite,
-    removeCommentIdFromSite
+    removeCommentIdFromSite,
+    addCommentAndReservation
 }

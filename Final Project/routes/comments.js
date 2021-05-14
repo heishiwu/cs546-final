@@ -6,7 +6,9 @@ const vaccineData = data.vaccineInjectionSite;
 const usersData = data.users;
 const { ObjectId } = require('mongodb');
 
-
+/**
+ * get comment information by commentId
+ */
 router.get('/:id', async (req, res) =>{
     try{
         const commentInformation = await commentData.getCommentById(req.params.id);
@@ -16,7 +18,9 @@ router.get('/:id', async (req, res) =>{
     }
 });
 
-
+/**
+ * get all comments, but is useless
+ */
 router.get('/', async (req, res) =>{
     try{
         const commentInformation = await commentData.getAllComments();
@@ -26,6 +30,10 @@ router.get('/', async (req, res) =>{
     }
 });
 
+/**
+ * create a new comments, input userId, siteId, rating, comment, and it will automatically update
+ * comments information in users and vaccineInjectionSite database.
+ */
 router.post('/', async (req, res) =>{
     let commentInfo = req.body;
     if(!commentInfo){
@@ -56,7 +64,10 @@ router.post('/', async (req, res) =>{
 });
 
 
-
+/**
+ * delete a comments with commentId,  and it will automatically delete
+ * reservation and comments information in users and vaccineInjectionSite database.
+ */
 router.delete('/', async (req, res) =>{
     let commentInfo = req.body;
     if(!commentInfo){
@@ -72,17 +83,18 @@ router.delete('/', async (req, res) =>{
     // }
 
     try{
-        // await usersData.removeCommentIdFromUser(userId, (commentId).toString());
-        // await vaccineData.removeReservationIdFromSite(siteId, (commentId).toString());
+        await usersData.removeCommentIdFromUser(userId, (commentId).toString());
+        await vaccineData.removeReservationIdFromSite(siteId, (commentId).toString());
         const message = await commentData.removeComment(commentId, userId, siteId);
-        // await usersData.removeCommentIdFromUser(userId, (commentId).toString());
-        // await vaccineData.removeReservationIdFromSite(siteId, (commentId).toString());
         res.status(200).send(message);
     }catch (e){
         res.status(500).json({ error: e});
     }
 });
 
+/**
+ * get avgRating data in one siteId.
+ */
 router.get('/avgRating/:id', async (req, res) =>{
     // try{
     //     const commentInformation = await commentData.averageRating(req.params.id);
