@@ -3,7 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const administrationData = data.administration;
 
-router.get('/:id', async (req, res) =>{
+router.get('/account', async (req, res) =>{
     try{
         const adminInformation = await administrationData.getAdminById(req.params.id);
         res.json(adminInformation);
@@ -77,6 +77,49 @@ router.delete('/', async (req, res) =>{
     }
 });
 
+//login and logout
+router.get('/login', async (req, res) =>{
+    if(req.session.adminId){
+        return res.redirect('/private');
+    }
+    else {
+        res.render('admin/adminLogin', {
+            title: 'admin Login',
+            partial: 'login-script'
+        });
+    }
+});
+
+router.post('/login', async (req, res) =>{
+    if(req.session.adminId){
+        return res.redirect('/private');
+    }
+    else {
+        let {username, password} = req.body;
+        // const username = xss(req.body.username.trim());
+        // const password = xss(req.body.password.trim());
+        const allAdmin = await administrationData.getAllAdmin();
+        for(let x of allAdmin){
+            if(username === x.username){
+                if(await bcrypt.compare(password, x.password)){
+                    req.session.adminId = x._id.toHexString();
+                    return res.redirect('/private');
+                }
+                break;
+            }
+        }
+        res.status(401).render('/admin/adminLogin', {message: "Invaild username or password"});
+    }
+});
+
+router.get('/logout', async (req, res) => {
+    if (!req.session.adminId) {
+        return res.redirect('/private');
+    }else {
+        req.session.destroy();
+        return res.redirect('/private');
+    }
+});
 
 
 module.exports = router;
