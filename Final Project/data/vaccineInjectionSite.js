@@ -136,6 +136,29 @@ async function getAllSites(){
     let allSites = await vaccineCollection.find({}).toArray();
     return allSites;
 }
+async function updateRating(siteId, rating){
+    if (!siteId|| typeof siteId !== 'string'){
+        throw 'Site id is not a valid string.';
+    }
+    if (!rating|| typeof rating !== 'string'){
+        throw 'Site id is not a valid rating.';
+    }
+    const vaccineCollection = await vaccineInjectionSite();
+
+    let siteUpdateInfo = {
+        rating: rating
+    }
+    siteId = ObjectId.createFromHexString(siteId);
+    let updatedInfo = await vaccineCollection.updateOne({ _id: siteId }, { $set: siteUpdateInfo});
+    if (updatedInfo.modifiedCount === 0) {
+        throw 'could not edit the rating successfully';
+    }
+    return this.getSiteById(siteId.toString());
+
+}
+
+
+
 async function updateSite(siteId, name, address, Rating){
     //name check
     if (!name || typeof name !== 'string' || !name.trim()) throw 'invalid name';
@@ -336,5 +359,6 @@ module.exports={
     addCommentIdFromSite,
     addReservationIdFromSite,
     getAllCommentsSiteId,
-    addCommentAndReservation
+    addCommentAndReservation,
+    updateRating
 }

@@ -127,12 +127,18 @@ router.get('/avgRating/:id', async (req, res) =>{
     // }
 
     let siteId = req.params.id;
-    const siteInformation = await vaccineData.getSiteById(siteId);
-    if(!(siteInformation.comments_history) || typeof (siteInformation.comments_history) === 'undefined') {
+    let siteInformation;
+    try{
+        siteInformation =  await vaccineData.getSiteById(siteId);
+    }catch (e){
+        throw "error";
+    }
+    let CH = siteInformation.comments_history;
+    if(!(CH) || typeof (CH) === 'undefined') {
         return res.render('sites/single', {partial: 'sites-list-script', rating: null});
         // if NULL, return null to sites/singles
     }else {
-        let commentsHistory = siteInformation.comments_history;
+        let commentsHistory = CH;
         let temp = [];
         for(let i = 0; i <commentsHistory.length; i++){
             // let a = commentsHistory[i];
@@ -143,9 +149,11 @@ router.get('/avgRating/:id', async (req, res) =>{
         for(let j = 0; j < temp.length; j++){
             sum += parseFloat(temp[j].rating);
         }
-        let sum1 = sum/ temp.length
-        return res.render('sites/single',
-            {partial: 'sites-list-script',rating: sum1});
+        let sum1 = (sum/ temp.length).toFixed(1);
+        let siteInformation = await vaccineData.updateRating(siteId.toString(), sum1.toString());
+        res.status(200).json({siteInformation});
+        // return res.render('sites/single',
+        //     {partial: 'sites-list-script',siteInformation: siteInformation});
 
         // let result = {
         //     rating: sum1
