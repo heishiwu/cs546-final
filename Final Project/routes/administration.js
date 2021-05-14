@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const data = require("../data");
 const administrationData = data.administration;
+const bcrypt = require('bcrypt');
+const saltRounds = 16;
 
 router.get('/account', async (req, res) =>{
     try{
