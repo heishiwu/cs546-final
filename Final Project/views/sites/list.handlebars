@@ -6,14 +6,14 @@
         </div>
         <div class="col col-4">
             <label for="input2"></label>
-            <input type="text" id="input2" onkeyup="fName('input2, 4')" placeholder="Search by state">
+            <input type="text" id="input2" onkeyup="fName('input2', 5)" placeholder="Search by state">
         </div>
     </div>
     <div class="row">
         <div class="col col-4">
             <div class="rating-slider w-100">
                 <label for="rating" class="font-weight-bold">Rating above: <span id="rate" class="ml-2"></span></label>
-                <input type="range" value="1" min="1" max="5" step="0.1" id="rating" onmouseup="fNum('rating', 3)" onkeyup="fNum('rating', 3)">
+                <input type="range" value="1" min="1" max="5" step="0.1" id="rating" onmouseup="fNum('rating', 7)" onkeyup="fNum('rating', 7)">
             </div>
 
         </div>
@@ -26,6 +26,7 @@
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">AddressLine</th>
+                <th scope="col">Apt No.</th>
                 <th scope="col">City</th>
                 <th scope="col">County</th>
                 <th scope="col">State</th>
@@ -35,9 +36,10 @@
         </thead>
         <tbody>
             {{#each sites}}
-            <tr class="clickable-row" id="{{this._id}}" data-href="/sites/{{this._id}}">
+            <tr class="clickable-row" id="{{this._id}}" data-href="/vaccineInjectionSite/{{this._id}}">
                 <td>{{this.name}}</td>
                 <td>{{this.address.addressLine}}</td>
+                <td>{{this.address.apartment_suite_unitNumber}}</td>
                 <td>{{this.address.city}}</td>
                 <td>{{this.address.county}}</td>
                 <td>{{this.address.state}}</td>
