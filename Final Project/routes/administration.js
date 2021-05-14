@@ -44,18 +44,34 @@ router.post('/', async (req, res) =>{
     }
 });
 
-
-
-router.delete('/', async (req, res) =>{
-    try{
-        await administrationData.getAdminById(req.params.id);
-    }catch (e){
-        res.status(404).json({error: "No message found"});
+router.post('/updateAdminUsername', async (req, res) =>{
+    let username = req.body.username;
+    let adminId = req.body._id
+    if(!username){
+        res.status(400).json({error: "You must input a username"});
+    }
+    if(!adminId){
+        res.status(400).json({error: "You must input a adminId"});
     }
 
     try{
-        const removeAdmin = await administrationData().removeAdminById(req.params.id);
-        res.status(200).send(removeUser);
+        const newAdmin = await administrationData.updateAdminUsername(adminId,username);
+        res.status(200).send(newAdmin);
+    }catch (e){
+        res.status(500).json({error:e});
+    }
+});
+
+router.delete('/', async (req, res) =>{
+    try{
+        await administrationData.getAdminById(req.body._id);
+    }catch (e){
+        res.status(404).json({error: "Could not delete the admin"});
+    }
+
+    try{
+        const removeAdmin = await administrationData.removeAdminById(req.body._id);
+        res.status(200).send(removeAdmin);
     }catch (e){
         res.status(500).json({ error: e });
     }
