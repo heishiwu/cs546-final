@@ -195,7 +195,7 @@ router.post('/loginin', async (req, res) =>{
 });
 
 router.get('/logup', async (req, res) =>{
-    if (req.session.userId) {
+    if (!req.session.userId) {
         return res.redirect('/private');
     }else {
         return res.render('users/signup', {partial:'signup-script'});
