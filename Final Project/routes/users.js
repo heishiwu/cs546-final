@@ -216,6 +216,7 @@ router.get('/signup', async (req, res) =>{
  * signup username with name, username, password, email, address, birthday, gender, race,
  ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword
  */
+
 //only name, username, password, email birthday and insurance are necessary, and username and email are unique.
 router.post('/signup', async (req, res) =>{
     if (req.session.userId) {
@@ -226,9 +227,22 @@ router.post('/signup', async (req, res) =>{
             res.status(400).json({ error: 'You must provide data to create a userInfo' });
             return;
         }
-
-        const{name, username, password, email, address, birthday, gender, race,
-            ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = userInfo;
+        const{firstName, lastName, username, password, email, addressLine,
+            apartment_suite_unitNumber, city, county, state, postalCode, birthday,
+            gender, race, ethnicity, insuranceType, insuranceName,
+            medicalGroupNumber, medicalid, repeatPassword} = userInfo;
+        let name = {firstName: firstName, lastName: lastName};
+        let address = {
+            addressLine: addressLine,
+            apartment_suite_unitNumber: apartment_suite_unitNumber,
+            city: city,
+            county: county,
+            state: state,
+            postalCode: postalCode
+        };
+        let insurance = {insuranceType: insuranceType, insuranceName: insuranceName};
+        // const{name, username, password, email, address, birthday, gender, race,
+        //     ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = userInfo;
         try{
             if(!name){
                 throw "You must input a name";
@@ -256,9 +270,13 @@ router.post('/signup', async (req, res) =>{
             const newUser = await userData.createUser(name, username, hashPassword, email, address, birthday, gender,race,
                 ethnicity, insurance, medicalGroupNumber, medicalid);
             req.session.userId = newUser._id.toHexString();
+            let userInformation = await userData.getUserById((newUser._id).toString());
+            // return userInformation;
+            // res.status(200).json({result: userInformation});
             return res.redirect('/private');
         }catch (e){
             res.status(404).render('/users/signup',{message:e});
+            // res.status(404).json({message: e});
         }
     }
 
