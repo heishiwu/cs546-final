@@ -98,7 +98,7 @@ router.post('/account3', async (req, res) =>{
     }
 
     try{
-        const userInfo = await userData.updateUsername(userId, name, email, address, birthday, gender, race,
+        const userInfo = await userData.updateUserInformation(userId, name, email, address, birthday, gender, race,
             ethnicity, insurance, medicalGroupNumber, medicalid);
         res.status(200).send(userInfo)
     }catch (e){
@@ -160,8 +160,8 @@ router.post('/account3', async (req, res) =>{
 // });
 
 
-router.get('/loginin', async (req, res) =>{
-    if(!req.session.userId){
+router.get('/login', async (req, res) =>{
+    if(req.session.userId){
         return res.redirect('/private');
     }
     else {
@@ -172,8 +172,8 @@ router.get('/loginin', async (req, res) =>{
     }
 });
 
-router.post('/loginin', async (req, res) =>{
-    if(!req.session.userId){
+router.post('/login', async (req, res) =>{
+    if(req.session.userId){
         return res.redirect('/private');
     }
     else {
@@ -190,12 +190,12 @@ router.post('/loginin', async (req, res) =>{
                 break;
             }
         }
-        res.status(401).render('users/login', {message: "Invaild username or password"});
+        res.status(401).render('users/login', {message: "Invaild username or password", partial:'login-script'});
     }
 });
 
-router.get('/logup', async (req, res) =>{
-    if (!req.session.userId) {
+router.get('/signup', async (req, res) =>{
+    if (req.session.userId) {
         return res.redirect('/private');
     }else {
         return res.render('users/signup', {partial:'signup-script'});
@@ -203,46 +203,52 @@ router.get('/logup', async (req, res) =>{
 });
 
 //only name, username, password, email birthday and insurance are necessary, and username and email are unique.
-router.post('/logup', async (req, res) =>{
-    let userInfo = req.body;
-    if (!userInfo) {
-        res.status(400).json({ error: 'You must provide data to create a userInfo' });
-        return;
-    }
-
-    const{name, username, password, email, address, birthday, gender, race,
-        ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = userInfo;
-    try{
-        if(!name){
-            throw "You must input a name";
-        }
-        if(!username){
-            throw "You must input a username";
-        }
-        if(!password){
-            throw "You must input a password";
-        }
-        if(!email){
-            throw "You must input a email";
-        }
-        if(!birthday){
-            throw "you must input a birthday";
-        }
-        if(!insurance){
-            throw "you must input a insurance";
-        }
-        if(password === repeatPassword){
-            throw "you must input a same password";
+router.post('/signup', async (req, res) =>{
+    if (req.session.userId) {
+        return res.redirect('/private');
+    }{
+        let userInfo = req.body;
+        if (!userInfo) {
+            res.status(400).json({ error: 'You must provide data to create a userInfo' });
+            return;
         }
 
-        const hashPassword = await bcrypt.hash(password, saltRounds);
-        const newUser = await userData.createUser(name, username, hashPassword, email, address, birthday, gender,race,
-            ethnicity, insurance, medicalGroupNumber, medicalid);
-        req.session.userId = newUser._id.toHexString();
-        return res.redirect('/private',{partial:'landing-script'});
-    }catch (e){
-        res.status(404).render('users/signup',{partial:'signup-script', message:e});
+        const{name, username, password, email, address, birthday, gender, race,
+            ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = userInfo;
+        try{
+            if(!name){
+                throw "You must input a name";
+            }
+            if(!username){
+                throw "You must input a username";
+            }
+            if(!password){
+                throw "You must input a password";
+            }
+            if(!email){
+                throw "You must input a email";
+            }
+            if(!birthday){
+                throw "you must input a birthday";
+            }
+            if(!insurance){
+                throw "you must input a insurance";
+            }
+            if(password !== repeatPassword){
+                throw "you must input a same password";
+            }
+
+            const hashPassword = await bcrypt.hash(password, saltRounds);
+            const newUser = await userData.createUser(name, username, hashPassword, email, address, birthday, gender,race,
+                ethnicity, insurance, medicalGroupNumber, medicalid);
+            req.session.userId = newUser._id.toHexString();
+            return res.redirect('/private');
+        }catch (e){
+            res.status(404).render('users/signup',{message:e, partial:'signup-script'});
+        }
     }
+
+
 });
 
 
@@ -273,7 +279,7 @@ router.delete('/remove', async (req, res) =>{
     }
 
     try{
-        const removeUser = await userData().removeUserByUserId(req.params.id);
+        const removeUser = await userData.removeUserByUserId(req.params.id);
         res.status(200).send(removeUser);
     }catch (e){
         res.status(500).json({ error: e });

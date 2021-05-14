@@ -34,7 +34,7 @@ async function removeCommentIdFromSite(siteId, commentId){
     if(!commentId || typeof (commentId) !=="string"){
         throw "input a string format commentId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
     let siteInformation = await getSiteById(siteId);
     let list = [];
@@ -56,16 +56,16 @@ async function removeReservationIdFromSite(siteId, reservationId){
     if(!reservationId || typeof (reservationId) !=="string"){
         throw "input a string format reservationId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
     let siteInformation = await getSiteById(siteId);
-    let list = [];
+    let list2 = [];
     for(let i of siteInformation.reservation_history){
         if (i !== reservationId){
-            list.push(i);
+            list2.push(i);
         }
     }
-    siteInformation.reservation_history = list;
+    siteInformation.reservation_history = list2;
     let updateInformation = await siteCollection.updateOne({ _id: userId }, { $set: { reservation_history: siteInformation.reservation_history} });
     return updateInformation;
 }
@@ -79,10 +79,17 @@ async function addCommentIdFromSite(siteId, commentId){
     if(!commentId || typeof (commentId) !=="string"){
         throw "input a string format commentId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
-    let siteInformation = await getSiteById(siteId);
-    siteInformation.comments_history.push(commentId);
+    let siteInformation = await getSiteById(siteId.toString());
+    if(!siteInformation.comments_history){
+        let temp = [];
+        siteInformation.comments_history = temp;
+        siteInformation.comments_history.push(commentId);
+    }else {
+        siteInformation.comments_history.push(commentId);
+    }
+    // siteInformation.comments_history.push(commentId);
     let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { comments_history: siteInformation.comments_history} });
     return updateInformation;
 }
@@ -96,19 +103,27 @@ async function addReservationIdFromSite(siteId, reservationId){
     if(!reservationId || typeof (reservationId) !=="string"){
         throw "input a string format reservationId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
-    let siteInformation = await getSiteById(siteId);
-    siteInformation.reservation_history.push(reservationId);
+    let siteInformation = await getSiteById(siteId.toString());
+    if(!siteInformation.reservation_history){
+        let temp = [];
+        siteInformation.reservation_history = temp;
+        siteInformation.reservation_history.push(reservationId);
+    }else {
+        siteInformation.reservation_history.push(reservationId);
+    }
+    // siteInformation.reservation_history.push(reservationId);
     let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { reservation_history: siteInformation.reservation_history} });
     return updateInformation;
 }
 
 async function getSiteById(siteId){
-    if (!siteId|| typeof siteId !== 'string' || !siteId.trim()){
+    if (!siteId|| typeof siteId !== 'string'){
         throw 'Site id is not a valid string.';
     }
-    siteId = ObjectId.createFromHexString(siteId);
+
+    siteId = ObjectId(siteId);
     const vaccineCollection = await vaccineInjectionSite();
     let vaccine = await vaccineCollection.findOne({_id: siteId});
     if(vaccine === null){
@@ -121,7 +136,7 @@ async function getAllSites(){
     let allSites = await vaccineCollection.find({}).toArray();
     return allSites;
 }
-async function updateSite(siteId, name, address, reservation_history, comments_history, Rating){
+async function updateSite(siteId, name, address, Rating){
     //name check
     if (!name || typeof name !== 'string' || !name.trim()) throw 'invalid name';
     //address check
@@ -133,13 +148,13 @@ async function updateSite(siteId, name, address, reservation_history, comments_h
     if (!address.state || typeof address.state !== 'string' || !address.state.trim()) throw 'invalid state';
     if (!address.postalCode || typeof address.postalCode !== 'string' || !address.postalCode.trim()) throw 'Please provide postalCode';
     //test postalCode using regular expression.
-    if((/^[0-9]{5}(?:-[0-9]{4})?$/).test(address.postalCode)){
+    if(!(/^[0-9]{5}?$/).test(address.postalCode)){
         throw "must provide correct format postalCode";
     }
     //reservation_history check
-    if (!reservation_history || typeof reservation_history !== 'object') throw 'invalid reservation_history';
-    //comments_history check
-    if (!comments_history || typeof comments_history !== 'object') throw 'invalid comments_history';
+    // if (!reservation_history || typeof reservation_history !== 'object') throw 'invalid reservation_history';
+    // //comments_history check
+    // if (!comments_history || typeof comments_history !== 'object') throw 'invalid comments_history';
     //rating check
     if (!Rating || typeof Rating !== 'string' || !Rating.trim()) throw 'invalid Rating';
 
@@ -150,8 +165,8 @@ async function updateSite(siteId, name, address, reservation_history, comments_h
     let siteUpdateInfo = {
         name: name,
         address: address,
-        reservation_history: reservation_history,
-        comments_history: comments_history,
+        // reservation_history: reservation_history,
+        // comments_history: comments_history,
         Rating: Rating
     };
     let updatedInfo = await vaccineCollection.updateOne({ _id: parsedSiteId }, { $set: siteUpdateInfo });
@@ -171,7 +186,7 @@ async function removeSite(siteId){
     }
     return deleteInfo;
 }
-async function createSite(name, address, reservation_history, comments_history, Rating){
+async function createSite(name, address, rating){
      //name check
      if (!name || typeof name !== 'string' || !name.trim()) throw 'invalid name';
      //address check
@@ -183,30 +198,46 @@ async function createSite(name, address, reservation_history, comments_history, 
      if (!address.state || typeof address.state !== 'string' || !address.state.trim()) throw 'invalid state';
      if (!address.postalCode || typeof address.postalCode !== 'string' || !address.postalCode.trim()) throw 'Please provide postalCode';
      //test postalCode using regular expression.
-     if((/^[0-9]{5}(?:-[0-9]{4})?$/).test(address.postalCode)){
+     if(!(/^[0-9]{5}?$/).test(address.postalCode)){
          throw "must provide correct format postalCode";
      }
+     
      //reservation_history check
-     if (!reservation_history || typeof reservation_history !== 'object') throw 'invalid reservation_history';
-     //comments_history check
-     if (!comments_history || typeof comments_history !== 'object') throw 'invalid comments_history';
+     // if (!reservation_history || typeof reservation_history !== 'object') throw 'invalid reservation_history';
+     // //comments_history check
+     // if (!comments_history || typeof comments_history !== 'object') throw 'invalid comments_history';
      //rating check
-     if (!Rating || typeof Rating !== 'string' || !Rating.trim()) throw 'invalid Rating';
+     if (!rating || typeof rating !== 'string' || !rating.trim()) throw 'invalid rating';
  
  
-     let parsedSiteId = ObjectId(siteId);
-     const vaccineCollection = await vaccineInjectionSite();
+     // let parsedSiteId = ObjectId(siteId);
+
  
      let newSite = {
          name: name,
          address: address,
-         reservation_history: reservation_history,
-         comments_history: comments_history,
-         Rating: Rating
+         // reservation_history: reservation_history,
+         // comments_history: comments_history,
+         rating: rating
     };
-    let insertInfo = vaccineCollection.insertOne(newSite);
-    if (!insertInfo || insertInfo === null) throw 'failed to add the site';
-    return insertInfo;
+
+    const vaccineCollection = await vaccineInjectionSite();
+
+    const insertInfo = await vaccineCollection.insertOne(newSite);
+
+    if (insertInfo.insertedCount === 0) throw 'Could not add site.';
+
+    const newId = insertInfo.insertedId;
+    const site = await this.getSiteById(newId.toString());
+
+    return site;
+    // let insertInfo = vaccineCollection.insertOne(newSite);
+    // if (!insertInfo || insertInfo === null) throw 'failed to add the site';
+    //
+    // const newId = insertInfo.insertedId;
+    // const finsite = await this.getSiteById(newId.toString());
+    //
+    // return finsite;
 }
 
 async function getAllCommentsSiteId(siteId){

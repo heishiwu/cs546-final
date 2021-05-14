@@ -23,7 +23,8 @@ async function addAdmin(username, password){
     const adminCollection = await administration();
     let insertInfo = await adminCollection.insertOne(newAdmin);
     if (!insertInfo || insertInfo === null) throw 'failed to add the admin';
-    return insertInfo;
+    // Remember change object id to string
+    return await getAdminById(ObjectId(insertInfo.ops[0]._id).toString());
 
 }
 
@@ -52,7 +53,7 @@ async function removeAdminById(adminId){
     if (deleteInfo.deletedCount === 0) {
         throw 'Could not delete the admin';
     }
-    return deleteInfo;
+    return true;
 }
 
 async function updateAdminUsername(adminId, newUsername) {

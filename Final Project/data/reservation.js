@@ -21,8 +21,9 @@ async function getReservationById(reservationId){
         throw "input a not string format reservationId"
     }
     const reservationCollection = await reservation();
-    reservationId = ObjectId.createFromHexString(reservationId);
-    let reservationGoal = await reservationCollection.findOne({ _id: reservationId });
+    reservationId = reservationId.slice(0,24);
+    let objectId = ObjectId(reservationId);
+    let reservationGoal = await reservationCollection.findOne({ _id: objectId });
     if (reservationGoal === null)
         throw 'No comment with that id';
     return reservationGoal;
@@ -67,14 +68,14 @@ async function addReservation(userId, siteId, data){
     if (insertInfo === null)
         throw 'Something wrong when adding the reservation';
     let newReservationId = insertInfo.insertedId;
-    let reservationCreated = await getCommentById(newReservationId.toHexString());
+    let reservationCreated = await getReservationById(newReservationId.toHexString());
 
     //add two methods
-    await usersCollection.addReservationIdFromUser(userId, newReservationId);
-    await sitesCollection.addReservationIdFromSite(siteId, newReservationId);
+    // await usersCollection.addReservationIdFromUser(userId, newReservationId);
+    // await sitesCollection.addReservationIdFromSite(siteId, newReservationId);
 
-    siteId = ObjectId.createFromHexString(siteId);
-    let siteInformation = await vaccineCollection.getSiteById(siteId);
+    siteId = ObjectId(siteId);
+    let siteInformation = await vaccineCollection.getSiteById(siteId.toString());
 
     let result = {
         _id: reservationCreated._id,
@@ -104,10 +105,10 @@ async function removeReservation(reservationId, userId, siteId){
         throw "input a string format siteId";
     }
     //add two methods
-    await usersCollection.removeReservationIdFromUser(userId, reservationId);
-    await sitesCollection.removeReservationIdFromSite(siteId, reservationId);
+    // await usersCollection.removeReservationIdFromUser(userId, reservationId);
+    // await sitesCollection.removeReservationIdFromSite(siteId, reservationId);
 
-    reservationId = ObjectId.createFromHexString(reservationId);
+    reservationId = ObjectId(reservationId);
     const reservationCollection = await reservation();
     let deletionInfo = await reservationCollection.removeOne({ _id: reservationId });
     if (deletionInfo.deletedCount === 0) {
@@ -116,6 +117,10 @@ async function removeReservation(reservationId, userId, siteId){
 
     return true;
 }
+
+
+
+
 
 
 

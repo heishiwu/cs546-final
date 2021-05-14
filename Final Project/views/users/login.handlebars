@@ -1,5 +1,5 @@
 <div class="container col-3 mt-3 text-center">
-    <form method="POST" action="/users/loginin" id="login-form">
+    <form method="POST" action="/users/login" id="login-form">
         <h1 class="h3 mb-3 fw-normal">User Log in</h1>
         <div class="form-floating">
             <input type="text" class="form-control" id="username" name="username" placeholder="Username">
@@ -10,8 +10,8 @@
             <label for="floatingPassword">Password</label>
         </div>
         <input class="w-100 btn btn-lg btn-primary" type="submit" id="loginSubmit" value="Log in">
-        {{#each errors}}
-            <div class = "error font-italic" id="errors">{{this}}</div>
-        {{/each}}
+        {{#if message}}
+            <div class = "error font-italic" id="errors">{{message}}</div>
+        {{/if}}
     </form>
 </div>

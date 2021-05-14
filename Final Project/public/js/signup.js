@@ -13,6 +13,7 @@
     let lastNameInput = $('#lastName');
     let usernameInput = $('#username');
     let passwordInput = $('#password');
+    let repeatPasswordInput = $('#repeatPassword');
     let emailInput = $('#email');
     let birthdayInput = $('#birthday');
     let insuranceNameInput = $('#insuranceName');
@@ -28,6 +29,7 @@
         lastNameInput.removeClass('is-invalid is-valid');
         usernameInput.removeClass('is-invalid is-valid');
         passwordInput.removeClass('is-invalid is-valid');
+        repeatPasswordInput.removeClass('is-invalid is-valid');
         emailInput.removeClass('is-invalid is-valid');
         birthdayInput.removeClass('is-invalid is-valid');
         insuranceNameInput.removeClass('is-invalid is-valid');
@@ -38,6 +40,7 @@
             lastName: lastNameInput.val().trim(),
             username: usernameInput.val().trim(),
             password: passwordInput.val().trim(),
+            repeatPassword: repeatPasswordInput.val().trim(),
             email: emailInput.val().trim(),
             birthday: birthdayInput.val().trim(),
             insuranceName: insuranceNameInput.val().trim(),
@@ -48,6 +51,7 @@
         if (!validString(info.lastName)) lastNameInput.addClass('is-invalid');
         if (!validString(info.username)) usernameInput.addClass('is-invalid');
         if (!validString(info.password)) passwordInput.addClass('is-invalid');
+        if (!validString(info.repeatPassword)) repeatPasswordInput.addClass('is-invalid');
         if (!validString(info.email)) emailInput.addClass('is-invalid');
         if (!validString(info.birthday)) birthdayInput.addClass('is-invalid');
         if (!validString(info.insuranceName)) insuranceNameInput.addClass('is-invalid');

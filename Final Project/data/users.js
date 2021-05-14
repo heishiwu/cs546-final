@@ -4,6 +4,8 @@ ObjectId = require('mongodb').ObjectID;
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
 const moment = require("moment");
+const vaccineInjectionSite = mongoCollections.vaccineInjectionSite;
+const commentsCollection = require("./comments");
 
 
 //create user by some information, only name, username, password, email birthday and insurance are necessary, and username and email are unique.
@@ -76,7 +78,7 @@ async function createUser(name, username, password, email, address, birthday, ge
         throw "must provide email";
     }
     //test email using regular expression.
-    if((/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(email)){
+    if(!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(email)){
         throw "must provide correct format email";
     }
     if(address){
@@ -98,8 +100,8 @@ async function createUser(name, username, password, email, address, birthday, ge
         if(!address.postalCode || typeof (address.postalCode) !=="string"){
             throw "must provide postalCode";
         }
-        //test postalCode using regular expression.
-        if((/^[0-9]{5}(?:-[0-9]{4})?$/).test(address.postalCode)){
+        // test postalCode using regular expression.
+        if(!(/^[0-9]{5}?$/).test(address.postalCode)){
             throw "must provide correct format postalCode";
         }
     }
@@ -198,7 +200,7 @@ async function createUser(name, username, password, email, address, birthday, ge
 
 // get user all information by userId
 async function getUserById(userId){
-    if (!userId || typeof userId !== 'string' || !userId.trim()){
+    if (!userId || typeof userId !== 'string'){
         throw 'User id is not a valid string.';
     }
     userId = ObjectId.createFromHexString(userId);
@@ -308,7 +310,7 @@ async function updateUserInformation(userId, name, email, address, birthday, gen
             throw "must provide postalCode";
         }
         //test postalCode using regular expression.
-        if((/^[0-9]{5}(?:-[0-9]{4})?$/).test(address.postalCode)){
+        if(!(/^[0-9]{5}?$/).test(address.postalCode)){
             throw "must provide correct format postalCode";
         }
     }
@@ -413,7 +415,7 @@ async function removeCommentIdFromUser(userId, commentId){
     if(!commentId || typeof (commentId) !=="string"){
         throw "input a string format commentId";
     }
-    userId = ObjectId.createFromHexString(userId);
+    // userId = ObjectId.createFromHexString(userId);
     const userCollection = await users();
     let userInformation = await getUserById(userId);
     let list = [];
@@ -435,7 +437,7 @@ async function removeReservationIdFromUser(userId, reservationId){
     if(!reservationId || typeof (reservationId) !=="string"){
         throw "input a string format reservationId";
     }
-    userId = ObjectId.createFromHexString(userId);
+    // userId = ObjectId.createFromHexString(userId);
     const userCollection = await users();
     let userInformation = await getUserById(userId);
     let list = [];
@@ -449,6 +451,7 @@ async function removeReservationIdFromUser(userId, reservationId){
     return updateInformation;
 }
 
+
 //this function is used in ./data/comment.js
 async function addCommentIdFromUser(userId, commentId){
     if(!userId || typeof (userId) !=="string"){
@@ -457,10 +460,17 @@ async function addCommentIdFromUser(userId, commentId){
     if(!commentId || typeof (commentId) !=="string"){
         throw "input a string format commentId";
     }
-    userId = ObjectId.createFromHexString(userId);
+    // userId = ObjectId.createFromHexString(userId);
     const userCollection = await users();
-    let userInformation = await getUserById(userId);
-    userInformation.comments_history.push(commentId);
+    let userInformation = await getUserById(userId.toString());
+    if(!userInformation.comments_history){
+        let temp = [];
+        userInformation.comments_history = temp;
+        userInformation.comments_history.push(commentId);
+    }else {
+        userInformation.comments_history.push(commentId);
+    }
+    // userInformation.comments_history.push(commentId);
     let updateInformation = await userCollection.updateOne({ _id: userId }, { $set: { comments_history: userInformation.comments_history} });
     return updateInformation;
 }
@@ -473,15 +483,124 @@ async function addReservationIdFromUser(userId, reservationId){
     if(!reservationId || typeof (reservationId) !=="string"){
         throw "input a string format reservationId";
     }
-    userId = ObjectId.createFromHexString(userId);
+    // userId = ObjectId.createFromHexString(userId);
     const userCollection = await users();
     let userInformation = await getUserById(userId);
-    userInformation.reservation_history.push(reservationId);
+    if(!userInformation.reservation_history){
+        let temp = [];
+        userInformation.reservation_history = temp;
+        userInformation.reservation_history.push(reservationId);
+    }else {
+        userInformation.reservation_history.push(reservationId);
+    }
+    // userInformation.reservation_history.push(reservationId);
     let updateInformation = await userCollection.updateOne({ _id: userId }, { $set: { reservation_history: userInformation.reservation_history} });
     return updateInformation;
 }
 
+async function removeCommentIdFromSite(siteId, commentId){
+    if(!siteId || typeof (siteId) !=="string"){
+        throw "input a string format siteId";
+    }
+    if(!commentId || typeof (commentId) !=="string"){
+        throw "input a string format commentId";
+    }
+    // siteId = ObjectId.createFromHexString(siteId);
+    const siteCollection = await vaccineInjectionSite();
+    let siteInformation = await getSiteById(siteId);
+    let list = [];
+    for(let i of siteInformation.comments_history){
+        if (i !== commentId){
+            list.push(i);
+        }
+    }
+    siteInformation.comments_history = list;
+    let updateInformation = await siteCollection.updateOne({ _id: userId }, { $set: { comments_history: siteInformation.comments_history} });
+    return updateInformation;
+}
 
+//this function is used in ./data/reservation.js
+async function removeReservationIdFromSite(siteId, reservationId){
+    if(!siteId || typeof (siteId) !=="string"){
+        throw "input a string format siteId";
+    }
+    if(!reservationId || typeof (reservationId) !=="string"){
+        throw "input a string format reservationId";
+    }
+    // siteId = ObjectId.createFromHexString(siteId);
+    const siteCollection = await vaccineInjectionSite();
+    let siteInformation = await getSiteById(siteId);
+    let list = [];
+    for(let i of siteInformation.reservation_history){
+        if (i !== reservationId){
+            list.push(i);
+        }
+    }
+    siteInformation.reservation_history = list;
+    let updateInformation = await siteCollection.updateOne({ _id: userId }, { $set: { reservation_history: siteInformation.reservation_history} });
+    return updateInformation;
+}
+
+//this function is used in ./data/comment.js
+async function addCommentIdFromSite(siteId, commentId){
+    if(!siteId || typeof (siteId) !=="string"){
+        throw "input a string format siteId";
+    }
+
+    if(!commentId || typeof (commentId) !=="string"){
+        throw "input a string format commentId";
+    }
+    siteId = ObjectId.createFromHexString(siteId);
+    const siteCollection = await vaccineInjectionSite();
+    let siteInformation = await getSiteById(siteId.toString());
+    if(!siteInformation.comments_history){
+        let temp = [];
+        siteInformation.comments_history = temp;
+        siteInformation.comments_history.push(commentId);
+    }else {
+        siteInformation.comments_history.push(commentId);
+    }
+    // siteInformation.comments_history.push(commentId);
+    let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { comments_history: siteInformation.comments_history} });
+    return updateInformation;
+}
+
+//this function is used in ./data/reservation.js
+async function addReservationIdFromSite(siteId, reservationId){
+    if(!siteId || typeof (siteId) !=="string"){
+        throw "input a string format siteId";
+    }
+
+    if(!reservationId || typeof (reservationId) !=="string"){
+        throw "input a string format reservationId";
+    }
+    siteId = ObjectId.createFromHexString(siteId);
+    const siteCollection = await vaccineInjectionSite();
+    let siteInformation = await getSiteById(siteId.toString());
+    if(!siteInformation.reservation_history){
+        let temp = [];
+        siteInformation.reservation_history = temp;
+        siteInformation.reservation_history.push(reservationId);
+    }else {
+        siteInformation.reservation_history.push(reservationId);
+    }
+    // siteInformation.reservation_history.push(reservationId);
+    let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { reservation_history: siteInformation.reservation_history} });
+    return updateInformation;
+}
+
+async function getSiteById(siteId){
+    if (!siteId|| typeof siteId !== 'string' || !siteId.trim()){
+        throw 'Site id is not a valid string.';
+    }
+    siteId = ObjectId.createFromHexString(siteId);
+    const vaccineCollection = await vaccineInjectionSite();
+    let vaccine = await vaccineCollection.findOne({_id: siteId});
+    if(vaccine === null){
+        throw "No site found";
+    }
+    return vaccine;
+}
 
 
 
@@ -498,5 +617,9 @@ module.exports = {
     removeCommentIdFromUser,
     removeReservationIdFromUser,
     addCommentIdFromUser,
-    addReservationIdFromUser
+    addReservationIdFromUser,
+    addCommentIdFromSite,
+    addReservationIdFromSite,
+    removeReservationIdFromSite,
+    removeCommentIdFromSite
 }
