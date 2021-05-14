@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const vaccineData = data.vaccineInjectionSite;
 const commentsData = data.comments;
+const userDate = data.users;
 
 
 
@@ -12,6 +13,9 @@ router.get('/:id', async (req, res) =>{
         let commentHistArr = [];
         for( let i = 0; i < siteInfo.comments_history.length; i++){
             let commentHistObj = await commentsData.getCommentById(siteInfo.comments_history[i]);
+            let userObj = await userDate.getUserById(commentHistObj.userId);
+            let userName = userObj.name;
+            commentHistObj['name'] = userName;
             commentHistArr.push(commentHistObj);
         }
         res.render('sites/single', {
