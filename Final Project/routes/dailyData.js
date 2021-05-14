@@ -8,7 +8,7 @@ const dailyData = data.dailyData;
 
 router.get('/:id', async (req, res) =>{
     try{
-        const dailyDataInfo = dailyData.getCommentById(req.params.id);
+        const dailyDataInfo = await dailyData.getCommentById(req.params.id);
         res.json(dailyDataInfo);
     }catch (e){
         res.status(404).json({error: 'Comment not found'});
@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) =>{
 
 router.get('/', async (req, res) =>{
     try{
-        const dailyDataInfo = dailyData.getAllComments();
+        const dailyDataInfo = await dailyData.getAllComments();
         res.json(dailyDataInfo);
     }catch (e){
         res.status(500).send();

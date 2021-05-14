@@ -7,7 +7,7 @@ const vaccineData = data.vaccineInjectionSite;
 
 router.get('/:id', async (req, res) =>{
     try{
-        const siteInfo = vaccineData.getSiteById(req.params.id);
+        const siteInfo = await vaccineData.getSiteById(req.params.id);
         res.json(siteInfo);
     }catch (e){
         res.status(404).json({error: 'Site not found'});
@@ -17,7 +17,7 @@ router.get('/:id', async (req, res) =>{
 
 router.get('/', async (req, res) =>{
     try{
-        const siteInfo = vaccineData.getAllSites();
+        const siteInfo = await vaccineData.getAllSites();
         res.json(siteInfo);
     }catch (e){
         res.status(500).send();
@@ -46,7 +46,7 @@ router.post('/', async (req, res) =>{
         res.status(400).json({error: "You must input a rating"});
     }
     try{
-        const newSite = await vaccineData().createSite(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date);
+        const newSite = await vaccineData.createSite(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date);
         res.status(200).send(newSite);
     }catch (e){
         res.status(500).json({error:e});

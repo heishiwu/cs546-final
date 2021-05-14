@@ -5,7 +5,7 @@ const administrationData = data.administration;
 
 router.get('/:id', async (req, res) =>{
     try{
-        const adminInformation = administrationData.getAdminById(req.params.id);
+        const adminInformation = await administrationData.getAdminById(req.params.id);
         res.json(adminInformation);
     }catch (e){
         res.status(404).json({error: 'admin not found'});
@@ -15,7 +15,8 @@ router.get('/:id', async (req, res) =>{
 
 router.get('/', async (req, res) =>{
     try{
-        const adminInformation = administrationData.getAllAdmin();
+        const adminInformation = await administrationData.getAllAdmin();
+        console.log(adminInformation)
         res.json(adminInformation);
     }catch (e){
         res.status(500).send();
@@ -36,7 +37,7 @@ router.post('/', async (req, res) =>{
     }
 
     try{
-        const newAdmin = await administrationData().addAdmin(username, password);
+        const newAdmin = await administrationData.addAdmin(username, password);
         res.status(200).send(newAdmin);
     }catch (e){
         res.status(500).json({error:e});
