@@ -165,7 +165,10 @@ router.get('/loginin', async (req, res) =>{
         return res.redirect('/private');
     }
     else {
-        res.render('/users/login');
+        res.render('users/login', {
+            title: 'User Login',
+            partial: 'login-script'
+        });
     }
 });
 
@@ -187,15 +190,15 @@ router.post('/loginin', async (req, res) =>{
                 break;
             }
         }
-        res.status(401).render('/users/login', {message: "Invaild username or password"});
+        res.status(401).render('users/login', {message: "Invaild username or password"});
     }
 });
 
 router.get('/logup', async (req, res) =>{
-    if (!req.session.userId) {
+    if (req.session.userId) {
         return res.redirect('/private');
     }else {
-        return res.render('/users/signup');
+        return res.render('users/signup', {partial:'signup-script'});
     }
 });
 
@@ -236,9 +239,9 @@ router.post('/logup', async (req, res) =>{
         const newUser = await userData.createUser(name, username, hashPassword, email, address, birthday, gender,race,
             ethnicity, insurance, medicalGroupNumber, medicalid);
         req.session.userId = newUser._id.toHexString();
-        return res.redirect('/private');
+        return res.redirect('/private',{partial:'landing-script'});
     }catch (e){
-        res.status(404).render('/users/signup',{message:e});
+        res.status(404).render('users/signup',{partial:'signup-script', message:e});
     }
 });
 
