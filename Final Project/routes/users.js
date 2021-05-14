@@ -161,7 +161,7 @@ router.post('/account3', async (req, res) =>{
 
 
 router.get('/login', async (req, res) =>{
-    if(!req.session.userId){
+    if(req.session.userId){
         return res.redirect('/private');
     }
     else {
@@ -170,7 +170,7 @@ router.get('/login', async (req, res) =>{
 });
 
 router.post('/login', async (req, res) =>{
-    if(!req.session.userId){
+    if(req.session.userId){
         return res.redirect('/private');
     }
     else {
@@ -201,45 +201,51 @@ router.get('/logup', async (req, res) =>{
 
 //only name, username, password, email birthday and insurance are necessary, and username and email are unique.
 router.post('/logup', async (req, res) =>{
-    let userInfo = req.body;
-    if (!userInfo) {
-        res.status(400).json({ error: 'You must provide data to create a userInfo' });
-        return;
-    }
-
-    const{name, username, password, email, address, birthday, gender, race,
-        ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = userInfo;
-    try{
-        if(!name){
-            throw "You must input a name";
-        }
-        if(!username){
-            throw "You must input a username";
-        }
-        if(!password){
-            throw "You must input a password";
-        }
-        if(!email){
-            throw "You must input a email";
-        }
-        if(!birthday){
-            throw "you must input a birthday";
-        }
-        if(!insurance){
-            throw "you must input a insurance";
-        }
-        if(password === repeatPassword){
-            throw "you must input a same password";
-        }
-
-        const hashPassword = await bcrypt.hash(password, saltRounds);
-        const newUser = await userData.createUser(name, username, hashPassword, email, address, birthday, gender,race,
-            ethnicity, insurance, medicalGroupNumber, medicalid);
-        req.session.userId = newUser._id.toHexString();
+    if (req.session.userId) {
         return res.redirect('/private');
-    }catch (e){
-        res.status(404).render('/users/signup',{message:e});
+    }{
+        let userInfo = req.body;
+        if (!userInfo) {
+            res.status(400).json({ error: 'You must provide data to create a userInfo' });
+            return;
+        }
+
+        const{name, username, password, email, address, birthday, gender, race,
+            ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = userInfo;
+        try{
+            if(!name){
+                throw "You must input a name";
+            }
+            if(!username){
+                throw "You must input a username";
+            }
+            if(!password){
+                throw "You must input a password";
+            }
+            if(!email){
+                throw "You must input a email";
+            }
+            if(!birthday){
+                throw "you must input a birthday";
+            }
+            if(!insurance){
+                throw "you must input a insurance";
+            }
+            if(password === repeatPassword){
+                throw "you must input a same password";
+            }
+
+            const hashPassword = await bcrypt.hash(password, saltRounds);
+            const newUser = await userData.createUser(name, username, hashPassword, email, address, birthday, gender,race,
+                ethnicity, insurance, medicalGroupNumber, medicalid);
+            req.session.userId = newUser._id.toHexString();
+            return res.redirect('/private');
+        }catch (e){
+            res.status(404).render('/users/signup',{message:e});
+        }
     }
+
+
 });
 
 

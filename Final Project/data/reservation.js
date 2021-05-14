@@ -119,6 +119,12 @@ async function removeReservation(reservationId, userId, siteId){
 }
 
 
+async function getAllReservation(userId, siteId){
+
+}
+
+
+
 
 
 module.exports={

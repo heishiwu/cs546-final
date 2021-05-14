@@ -25,7 +25,7 @@ async function main() {
     console.log("u2");
 
     let s1 = await vaccineInjectionSite.createSite("River Side1" ,
-        { "addressLine": "1232 Grand St.",
+        { "addressLine": "1313 Grand St.",
             "apartment_suite_unitNumber": "APT 304",
             "city": "hoboken",
             "county": "hudson",
@@ -39,7 +39,7 @@ async function main() {
     console.log("s1");
 
     let s2 = await vaccineInjectionSite.createSite("River Side2" ,
-        { "addressLine": "1232 Grand St.",
+        { "addressLine": "1313 Grand St.",
             "apartment_suite_unitNumber": "APT 304",
             "city": "hoboken",
             "county": "hudson",
