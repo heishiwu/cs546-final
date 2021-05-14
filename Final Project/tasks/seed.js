@@ -53,6 +53,10 @@ async function main() {
     console.log("s2");
 
 
+    let a1 = await administration.addAdmin("admin", "123456");
+
+    console.log("a1");
+
 
 
     let c1 = await comments.addComment(u1_userid, s1_siteid, "4.1", "Nice1 and Social distant");
