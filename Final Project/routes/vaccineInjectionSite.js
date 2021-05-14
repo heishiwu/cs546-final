@@ -29,24 +29,24 @@ router.post('/', async (req, res) =>{
     if(!siteInfo){
         res.status(400).json({error: "You must input a data"});
     }
-    const {name, address, reservation_history, comments_history, rating} = siteInfo;
+    const {name, address, rating} = siteInfo;
     if(!name){
         res.status(400).json({error: "You must input a name"});
     }
     if(!address){
         res.status(400).json({error: "You must input a address"});
     }
-    if(!reservation_history){
-        res.status(400).json({error: "You must input a reservation_history"});
-    }
-    if(!comments_history){
-        res.status(400).json({error: "You must input a comments_history"});
-    }
+    // if(!reservation_history){
+    //     res.status(400).json({error: "You must input a reservation_history"});
+    // }
+    // if(!comments_history){
+    //     res.status(400).json({error: "You must input a comments_history"});
+    // }
     if(!rating){
         res.status(400).json({error: "You must input a rating"});
     }
     try{
-        const newSite = await vaccineData.createSite(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date);
+        const newSite = await vaccineData.createSite(name, address, rating);
         res.status(200).send(newSite);
     }catch (e){
         res.status(500).json({error:e});

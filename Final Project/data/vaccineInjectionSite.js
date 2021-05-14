@@ -185,7 +185,7 @@ async function removeSite(siteId){
     }
     return deleteInfo;
 }
-async function createSite(name, address, Rating){
+async function createSite(name, address, rating){
      //name check
      if (!name || typeof name !== 'string' || !name.trim()) throw 'invalid name';
      //address check
@@ -206,7 +206,7 @@ async function createSite(name, address, Rating){
      // //comments_history check
      // if (!comments_history || typeof comments_history !== 'object') throw 'invalid comments_history';
      //rating check
-     if (!Rating || typeof Rating !== 'string' || !Rating.trim()) throw 'invalid Rating';
+     if (!rating || typeof rating !== 'string' || !rating.trim()) throw 'invalid rating';
  
  
      // let parsedSiteId = ObjectId(siteId);
@@ -217,7 +217,7 @@ async function createSite(name, address, Rating){
          address: address,
          // reservation_history: reservation_history,
          // comments_history: comments_history,
-         Rating: Rating
+         rating: rating
     };
 
     const vaccineCollection = await vaccineInjectionSite();
