@@ -36,7 +36,7 @@ router.get('/', async (req, res) =>{
             res.render('landing/landing', {userInformation,partial:'landing-script'});
         }
     }catch (e){
-        res.redirect('/private');
+        res.render('error/error',{errors:e})
     }
 });
 
