@@ -16,9 +16,9 @@
                     </thead>
                     <tbody>
                         {{#each result}}
-                        <tr class="clickable-row" id="{{this.siteId}}" data-href="/vaccineInjectionSite/{{this.siteId}}">
-                            <td>{{this.name}}</td>
-                            <td>{{this.address.addressLine}}, {{this.address.city}}</td>
+                        <tr class="clickable-row" id="{{this.siteId}}" data-href="../../vaccineInjectionSite/{{this.siteId}}">
+                            <td>{{this.siteName}}</td>
+                            <td>{{this.siteAddress.addressLine}}, {{this.siteAddress.city}}</td>
                             <td>{{this.date}}</td>
                             <td>{{this.time}}</td>
                         </tr>
