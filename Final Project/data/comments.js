@@ -54,7 +54,6 @@ async function addComment(userId, siteId, rating, comment){
     if(!comment || typeof (comment) !=="string"){
         throw "input a string format comment";
     }
-
     const commentCollection = await comments();
     let newComment = {
         userId: userId,
@@ -63,6 +62,7 @@ async function addComment(userId, siteId, rating, comment){
         rating: rating,
         comment: comment
     }
+    
     let insertInfo = await commentCollection.insertOne(newComment);
     if (insertInfo === null)
         throw 'Something wrong when adding the comment';

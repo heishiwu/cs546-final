@@ -77,8 +77,9 @@ router.post('/', async (req, res) =>{
 
     try{
         const newComment = await commentData.addComment(userId, siteId, rating, comment);
-        await usersData.addCommentIdFromUser(userId, (newComment._id).toString());
-        await vaccineData.addCommentIdFromSite(siteId, (newComment._id).toString());
+        const updateUser = await usersData.addCommentIdFromUser(userId, (newComment._id).toString());
+        const updateSite = await vaccineData.addCommentIdFromSite(siteId, (newComment._id).toString());
+        // res.status(200).json({commentInfo: newComment, userInfo: updateUser, updateSite: updateSite});
         res.status(200).send(newComment);
     }catch (e){
         res.status(500).json({error:e});
@@ -105,9 +106,10 @@ router.delete('/', async (req, res) =>{
     // }
 
     try{
-        await usersData.removeCommentIdFromUser(userId, (commentId).toString());
-        await vaccineData.removeReservationIdFromSite(siteId, (commentId).toString());
+        const userInfo = await usersData.removeCommentIdFromUser(userId, (commentId).toString());
+        const siteInfo = await vaccineData.removeCommentIdFromSite(siteId, (commentId).toString());
         const message = await commentData.removeComment(commentId, userId, siteId);
+        // res.status(200).json({commentInfo: message, userInfo: userInfo, updateSite: siteInfo});
         res.status(200).send(message);
     }catch (e){
         res.status(500).json({ error: e});

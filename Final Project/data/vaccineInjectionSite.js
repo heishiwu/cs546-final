@@ -44,8 +44,12 @@ async function removeCommentIdFromSite(siteId, commentId){
         }
     }
     siteInformation.comments_history = list;
-    let updateInformation = await siteCollection.updateOne({ _id: userId }, { $set: { comments_history: siteInformation.comments_history} });
-    return updateInformation;
+    let updateInformation = await siteCollection.updateOne({ _id: ObjectId(siteId) }, { $set: { comments_history: siteInformation.comments_history} });
+    if (updateInformation.modifiedCount === 0) {
+        throw 'could not edit the username successfully';
+    }
+    return this.getSiteById(siteId);
+    // return updateInformation;
 }
 
 //this function is used in ./data/reservation.js
@@ -66,8 +70,12 @@ async function removeReservationIdFromSite(siteId, reservationId){
         }
     }
     siteInformation.reservation_history = list2;
-    let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { reservation_history: siteInformation.reservation_history} });
-    return updateInformation;
+    let updateInformation = await siteCollection.updateOne({ _id: ObjectId(siteId) }, { $set: { reservation_history: siteInformation.reservation_history} });
+    if (updateInformation.modifiedCount === 0) {
+        throw 'could not edit the username successfully';
+    }
+    return this.getSiteById(siteId);
+    // return updateInformation;
 }
 
 //this function is used in ./data/comment.js
@@ -90,8 +98,12 @@ async function addCommentIdFromSite(siteId, commentId){
         siteInformation.comments_history.push(commentId);
     }
     // siteInformation.comments_history.push(commentId);
-    let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { comments_history: siteInformation.comments_history} });
-    return updateInformation;
+    let updateInformation = await siteCollection.updateOne({ _id: ObjectId(siteId) }, { $set: { comments_history: siteInformation.comments_history} });
+    if (updateInformation.modifiedCount === 0) {
+        throw 'could not edit the username successfully';
+    }
+    return this.getSiteById(siteId);
+    // return updateInformation;
 }
 
 //this function is used in ./data/reservation.js
@@ -114,16 +126,34 @@ async function addReservationIdFromSite(siteId, reservationId){
         siteInformation.reservation_history.push(reservationId);
     }
     // siteInformation.reservation_history.push(reservationId);
-    let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { reservation_history: siteInformation.reservation_history} });
-    return updateInformation;
+    let updateInformation = await siteCollection.updateOne({ _id: ObjectId(siteId) }, { $set: { reservation_history: siteInformation.reservation_history} });
+    if (updateInformation.modifiedCount === 0) {
+        throw 'could not edit the username successfully';
+    }
+    return this.getSiteById(siteId);
 }
+
+// async function getSiteById(siteId){
+//     if (!siteId|| typeof siteId !== 'string'){
+//         throw 'Site id is not a valid string.';
+//     }
+//
+//     siteId = ObjectId(siteId);
+//     const vaccineCollection = await vaccineInjectionSite();
+//     let vaccine = await vaccineCollection.findOne({_id: siteId});
+//     if(vaccine === null){
+//         throw "No site found";
+//     }
+//     console.log(vaccine)
+//     return vaccine;
+// }
+
 
 async function getSiteById(siteId){
     if (!siteId|| typeof siteId !== 'string'){
         throw 'Site id is not a valid string.';
     }
-
-    siteId = ObjectId(siteId);
+    siteId = ObjectId.createFromHexString(siteId);
     const vaccineCollection = await vaccineInjectionSite();
     let vaccine = await vaccineCollection.findOne({_id: siteId});
     if(vaccine === null){

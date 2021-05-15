@@ -3,7 +3,8 @@ const router = express.Router();
 const data = require("../data");
 const vaccineData = data.vaccineInjectionSite;
 const commentsData = data.comments;
-const userDate = data.users;
+const userData = data.users;
+const adminData = data.administration;
 
 
 
@@ -13,18 +14,39 @@ router.get('/:id', async (req, res) =>{
         let commentHistArr = [];
         for( let i = 0; i < siteInfo.comments_history.length; i++){
             let commentHistObj = await commentsData.getCommentById(siteInfo.comments_history[i]);
-            let userObj = await userDate.getUserById(commentHistObj.userId);
+            let userObj = await userData.getUserById(commentHistObj.userId);
             let userName = userObj.name;
             commentHistObj['name'] = userName;
             commentHistArr.push(commentHistObj);
         }
-        res.render('sites/single', {
-            partial: 'list-single-script',
-            siteInfo: siteInfo,
-            comments: commentHistArr
-        });
+        if (req.session.userId){
+            let userInformation = await userData.getUserById((req.session.userId).toString());
+            res.render('sites/single', {
+                userInformation,
+                partial: 'list-single-script',
+                siteInfo: siteInfo,
+                comments: commentHistArr,
+                authenticated : true
+            });
+        }else if(req.session.adminId){
+            let userInformation = await adminData.getAdminById((req.session.adminId).toString());
+            res.render('sites/single', {
+                userInformation,
+                partial: 'list-single-script',
+                siteInfo: siteInfo,
+                comments: commentHistArr,
+                authenticated : true
+            });
+        }else {
+            res.render('sites/single', {
+                partial: 'list-single-script',
+                siteInfo: siteInfo,
+                comments: commentHistArr
+            });
+        }
+
     }catch (e){
-        res.status(404).json({error: 'Site not found'});
+        res.status(404).json({error: e});
     }
 });
 
@@ -32,10 +54,25 @@ router.get('/:id', async (req, res) =>{
 router.get('/', async (req, res) =>{
     try{
         const siteInfo = await vaccineData.getAllSites();
-        
+        if (req.session.adminId){
+            let userInformation = await adminData.getUserById((req.session.admin).toString());
+            res.render('sites/list', {
+                userInformation,
+                partial: 'sites-list-script',
+                sites: siteInfo,
+                authenticated: true});
+        } else if (req.session.userId){
+            let userInformation = await userData.getUserById((req.session.userId).toString());
+            res.render('sites/list', {
+                userInformation,
+                partial: 'sites-list-script',
+                sites: siteInfo,
+                authenticated: true});
+        } else {
         res.render('sites/list', {
             partial: 'sites-list-script',
             sites: siteInfo});
+        }
     }catch (e){
         res.status(500).send();
     }
@@ -111,6 +148,45 @@ router.post('/update', async (req, res) =>{
         res.status(200).send(siteInfo)
     }catch (e){
         res.status(500).json({error:e})
+    }
+});
+
+router.post('/:id', async (req, res) =>{
+    let commentInfo = req.body;
+    
+    // if(!req.session.userId) throw 'Please log in first';
+    // let userId = req.session.userId;
+    // let siteId = req.params.id;
+    let userId = "123";
+    let siteId = "321";
+    if(!commentInfo){
+        res.status(400).json({error: "You must input a data"});
+    }
+    const {rating, comment} = commentInfo;
+    if(!userId){
+        res.status(400).json({error: "You must input a userId"});
+    }
+    if(!siteId){
+        res.status(400).json({error: "You must input a siteId"});
+    }
+    if(!rating || typeof (rating) !=="string"){
+        res.status(400).json({error: "You must input a string rating"});
+    }
+    if(!comment || typeof (comment) !=="string"){
+        res.status(400).json({error: "You must input a string rating"});
+    }
+    
+    try{
+       
+        const newComment = await commentsData.addComment(userId, siteId, rating, comment);
+        
+        await userData.addCommentIdFromUser(userId, (newComment._id).toString());
+        console.log(userId, siteId, rating, comment)
+        await vaccineData.addCommentIdFromSite(siteId, (newComment._id).toString());
+        
+        res.status(200).send(newComment);
+    }catch (e){
+        res.status(500).json({error:e});
     }
 });
 
