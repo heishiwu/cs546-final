@@ -19,7 +19,8 @@ router.get('/:id', async (req, res) =>{
 router.get('/', async (req, res) =>{
     try{
         const dailyDataInfo = await dailyData.getAllData();
-        res.json(dailyDataInfo);
+        // res.json(dailyDataInfo);
+        res.status(200).send(dailyDataInfo)
     }catch (e){
         res.status(500).send();
     }

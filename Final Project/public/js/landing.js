@@ -1,90 +1,122 @@
 (function ($) {
-    let chartLabels = $("#chart_labels");
-    let lable = chartLabels.html();
-    let chartData = $("#chart_data");
-    let cd = chartData.html().trim();
-    const labels = chartLabels;
-    let death = [];
-    let recover = [];
-    chartData.forEach(data => {
-        death.push(data.death);
-        recover.push(data.recover)
-    });
+    let dailydataLabels = [];
+    let dailyCases = [];
+    let dailyVaccination = [];
+    let dailyRecover = [];
+    let sum_of_cases = [];
+    let sum_of_death = [];
+    let sum_of_vaccination = [];
+    let sum_of_recover = [];
 
-    // var arr = strDate.split("-");
-    // var date =  arr[1] +"/"+ arr[2] +"/"+ arr[0];
+    const COLORS = [
+        '#4dc9f6',
+        '#f67019',
+        '#f53794',
+        '#537bc4',
+        '#acc236',
+        '#166a8f',
+        '#00a950'
+      ]
 
-    // [{death:1, recover:2},{death:1, recover:2}]
-    const data = {
-        // "dailyCases ": "151234",
-        //     "dailyDeath": "6757",
-        //     "dailyVaccination": "6757",
-        //     "dailyRecover": "5678",
-        //     "sum_of_cases": "6666",
-        //     "sum_of_death": "4573",
-        //     "sum_of_vaccination": "7592",
-        //     "sum_of_recover": "7824",
-        //     "change_date ": "04/03/2021"
+    let requestConfig = {
+        method: "get",
+        url: '/dailyData',
+    }
+    $.ajax(requestConfig).then(function (result) {
+        for (let i = 0; i < result.length; i++) {
+            dailydataLabels.push(result[i].change_date);
+            dailyCases.push(result[i].dailyCases);
+            dailyVaccination.push(result[i].dailyVaccination);
+            dailyRecover.push(result[i].dailyRecover);
+            sum_of_cases.push(result[i].sum_of_cases);
+            sum_of_death.push(result[i].sum_of_death);
+            sum_of_vaccination.push(result[i].sum_of_vaccination);
+            sum_of_recover.push(result[i].sum_of_recover);
+        }
 
-        labels: labels,   //x-axis
-        datasets: [{
-            label: 'dailyCases',   //
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            fill: false,
-            data: death    //data
-        }, {
-            label: 'dailyDeath',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            fill: false,
-            data: recover,
-        }]
-    };
-    // </block:setup>
+        const data = {
+            labels: dailydataLabels,   //x-axis
+            datasets: [{
+                label: 'dailyCases',   //
+                backgroundColor: COLORS[0],
+                borderColor: COLORS[0],
+                fill: false,
+                data: dailyCases    //data
+            }, {
+                label: 'dailyVaccination',
+                backgroundColor: COLORS[1],
+                borderColor: COLORS[1],
+                fill: false,
+                data: dailyVaccination,
+            }, {
+                label: 'dailyRecover',
+                backgroundColor: COLORS[2],
+                borderColor: COLORS[2],
+                fill: false,
+                data: dailyRecover,
+            }, {
+                label: 'sum_of_cases',
+                backgroundColor: COLORS[3],
+                borderColor: COLORS[3],
+                fill: false,
+                data: sum_of_cases,
+            }, {
+                label: 'sum_of_death',
+                backgroundColor: COLORS[4],
+                borderColor: COLORS[4],
+                fill: false,
+                data: sum_of_death,
+            }, {
+                label: 'sum_of_vaccination',
+                backgroundColor: COLORS[5],
+                borderColor: COLORS[5],
+                fill: false,
+                data: sum_of_vaccination,
+            }, {
+                label: 'sum_of_recover',
+                backgroundColor: COLORS[6],
+                borderColor: COLORS[6],
+                fill: false,
+                data: sum_of_recover,
+            }]
+        };
 
-    // <block:config:0>
-    const config = {
-        type: 'line',
-        data,
-        options: {
-            plugins: {
-                title: {
-                    text: 'Chart.js Time Scale',
-                    display: true
-                }
-            },
-        },
-        scales: {
-            x: {
-                type: 'time',
-                time: {
-                    // Luxon format string
-                    tooltipFormat: 'DD T'
+        const config = {
+            type: 'line',
+            data,
+            options: {
+                plugins: {
+                    title: {
+                        text: 'COVID-19 Daily Data',
+                        display: true
+                    }
                 },
-                title: {
-                    display: true,
-                    text: 'Date'
-                }
             },
-            y: {
-                title: {
-                    display: true,
-                    text: 'value'
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        // Luxon format string
+                        tooltipFormat: 'DD T'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'value'
+                    }
                 }
             }
-        }
-    };
-    // </block:config>
+        };
 
-    // module.exports = {
-    //     actions: [],
-    //     config: config,
-    // };
-    // === include 'setup' then 'config' above ===
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    })
 
-    var myChart = new Chart(
-        document.getElementById('myChart'),
-        config
-    );
 })(jQuery)
