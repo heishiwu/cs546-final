@@ -118,18 +118,19 @@ async function addReservationIdFromSite(siteId, reservationId){
     return updateInformation;
 }
 
-async function getSiteById(siteId){
-    if (!siteId|| typeof siteId !== 'string'){
-        throw 'Site id is not a valid string.';
-    }
-
-    siteId = ObjectId(siteId);
-    const vaccineCollection = await vaccineInjectionSite();
-    let vaccine = await vaccineCollection.findOne({_id: siteId});
-    if(vaccine === null){
-        throw "No site found";
-    }
-    return vaccine;
+async function getSiteById(siteId){
+    if (!siteId|| typeof siteId !== 'string'){
+        throw 'Site id is not a valid string.';
+    }
+    
+    siteId = ObjectId(siteId);
+    const vaccineCollection = await vaccineInjectionSite();
+    let vaccine = await vaccineCollection.findOne({_id: siteId});
+    if(vaccine === null){
+        throw "No site found";
+    }
+    console.log(vaccine)
+    return vaccine;
 }
 async function getAllSites(){
     const vaccineCollection = await vaccineInjectionSite();
