@@ -17,7 +17,6 @@ const usersCollection = require("./users");
 // }
 
 async function getCommentById(commentId){
-    console.log("11111111")
     if(!commentId || typeof (commentId) !== "string"){
         throw "input a not string format commentId"
     }
