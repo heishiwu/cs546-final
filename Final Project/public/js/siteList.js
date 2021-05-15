@@ -1,11 +1,11 @@
 (function ($) {
-    $(".clickable-row").click(function() {
-        let href = $(this).find("a").attr("href");
-        if (href) {
-            window.location = href;
-        }
+    $(".clickable-row").mouseup( (event) => {
+        let href = event.currentTarget.getAttribute('data-href')
+        console.log(href);
+        console.log(window.location);
+        window.location = href;
     });
-});
+})(jQuery);
 
 // for name or state filter
 function fName(id, col) {
@@ -17,7 +17,7 @@ function fName(id, col) {
 
     for (i = 0; i < rows.length; i++) {
         row = rows[i]; // traverse sites
-        txtValue = row.cell[col].innerHTML;
+        txtValue = row.cells[col].innerHTML;
         if (txtValue.toUpperCase().indexOf(filter) > -1) { //returns -1 if cannot find filter in any position of txtValue
             row.style.display = "";
             count += 1;
@@ -47,7 +47,7 @@ function fNum(id, col, compareFn = (a, b) => a >= b) { // rating above
     let count = 0;
     for (i = 0; i < rows.length; i++) {
         row = rows[i];
-        txtValue = parseFloat(row.cell[col].innerHTML);
+        txtValue = parseFloat(row.cells[col].innerHTML);
         if (compareFn(txtValue, filter)) {
             row.style.display = "";
             count += 1;
