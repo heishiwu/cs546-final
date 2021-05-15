@@ -19,11 +19,32 @@ router.get('/:id', async (req, res) =>{
             commentHistObj['name'] = userName;
             commentHistArr.push(commentHistObj);
         }
-        res.render('sites/single', {
-            partial: 'list-single-script',
-            siteInfo: siteInfo,
-            comments: commentHistArr
-        });
+        if (req.session.userId){
+            let userInformation = await userData.getUserById((req.session.userId).toString());
+            res.render('sites/single', {
+                userInformation,
+                partial: 'list-single-script',
+                siteInfo: siteInfo,
+                comments: commentHistArr,
+                authenticated : true
+            });
+        }else if(req.session.adminId){
+            let userInformation = await adminData.getAdminById((req.session.adminId).toString());
+            res.render('sites/single', {
+                userInformation,
+                partial: 'list-single-script',
+                siteInfo: siteInfo,
+                comments: commentHistArr,
+                authenticated : true
+            });
+        }else {
+            res.render('sites/single', {
+                partial: 'list-single-script',
+                siteInfo: siteInfo,
+                comments: commentHistArr
+            });
+        }
+
     }catch (e){
         res.status(404).json({error: e});
     }
@@ -41,7 +62,6 @@ router.get('/', async (req, res) =>{
                 sites: siteInfo,
                 authenticated: true});
         } else if (req.session.userId){
-            console.log((req.session.userId).toString())
             let userInformation = await userData.getUserById((req.session.userId).toString());
             res.render('sites/list', {
                 userInformation,
@@ -54,7 +74,6 @@ router.get('/', async (req, res) =>{
             sites: siteInfo});
         }
     }catch (e){
-        console.log(e)
         res.status(500).send();
     }
 });
