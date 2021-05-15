@@ -161,13 +161,10 @@ router.post('/update', async (req, res) =>{
 });
 
 router.post('/:id', async (req, res) =>{
-    let commentInfo = req.body;
-    
-    // if(!req.session.userId) throw 'Please log in first';
-    // let userId = req.session.userId;
-    // let siteId = req.params.id;
-    let userId = "123";
-    let siteId = "321";
+    let commentInfo = req.body;   
+    if(!req.session.userId) throw 'Please log in first';
+    let userId = req.session.userId;
+    let siteId = req.params.id;
     if(!commentInfo){
         res.status(400).json({error: "You must input a data"});
     }

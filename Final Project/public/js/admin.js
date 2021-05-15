@@ -55,7 +55,7 @@
                 contentType: 'application/json',
                 data: JSON.stringify({
                     siteId: siteid,
-                    name: nameValue,
+                    name:  nameInput.children().val(),
                     address: {
                         addressLine: addressLineInput.children().val(),
                         apartment_suite_unitNumber: apartment_suite_unitNumberInput.children().val(),

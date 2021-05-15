@@ -70,9 +70,10 @@
                 }
                 
                 if (!hasErrors) {
+                    let siteId = $('#siteId').html().trim();
                     let requestConfig = {
                         method: 'POST',
-                        url: '/comments',
+                        url: '/vaccineInjectionSite/' + siteId,
                         contentType: 'application/json',
                         data: JSON.stringify({
                             rating: rating,
@@ -82,6 +83,7 @@
 
                     $.ajax(requestConfig).then((response) => {
                         let commentList = $('#comment-list');
+                        commentList.append("<input type='text' name='comment' class='comment' value='" + response.comment + "'>")
                         commentList.append(response);
                     })
                 }
