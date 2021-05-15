@@ -369,7 +369,7 @@ async function updateUserInformation(userId, name, email, address, birthday, gen
 
     let userObjId = ObjectId.createFromHexString(userId);
     const userCollection = await users();
-    let userInformation = await userCollection.findOne({_id: userObjId});
+    let userInformation = await userCollection.findOne({email: email});
     if(userInformation !== null){
         throw "the email is already exisited";
     }else {
