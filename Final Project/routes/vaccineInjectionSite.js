@@ -81,29 +81,37 @@ router.get('/', async (req, res) =>{
 router.post('/', async (req, res) =>{
     let siteInfo = req.body;
     if(!siteInfo){
-        res.status(400).json({error: "You must input a data"});
+        res.status(400).render('admin/addNewSite', { message: "You must input a data", partial: 'addDailyData-script' });
+        // res.status(400).json({error: "You must input a data"});
     }
     const {name, addressLine, apartment_suite_unitNumber, city, county, state, postalCode} = siteInfo;
     if(!name){
-        res.status(400).json({error: "You must input a name"});
+        // res.status(400).json({error: "You must input a name"});
+        res.status(400).render('admin/addNewSite', { message: "You must input a sitename", partial: 'addDailyData-script' });
     }
     if(!addressLine){
-        res.status(400).json({error: "You must input a addressLine"});
+        // res.status(400).json({error: "You must input a addressLine"});
+        res.status(400).render('admin/addNewSite', { message: "You must input a addressLine", partial: 'addDailyData-script' });
     }
     if(!apartment_suite_unitNumber){
-        res.status(400).json({error: "You must input a apartment_suite_unitNumber"});
+        // res.status(400).json({error: "You must input a apartment_suite_unitNumber"});
+        res.status(400).render('admin/addNewSite', { message: "You must input a apartment_suite_unitNumber", partial: 'addDailyData-script' });
     }
     if(!city){
-        res.status(400).json({error: "You must input a city"});
+        // res.status(400).json({error: "You must input a city"});
+        res.status(400).render('admin/addNewSite', { message: "You must input a city", partial: 'addDailyData-script' });
     }
     if(!county){
-        res.status(400).json({error: "You must input a county"});
+        // res.status(400).json({error: "You must input a county"});
+        res.status(400).render('admin/addNewSite', { message: "You must input a county", partial: 'addDailyData-script' });
     }
     if(!state){
-        res.status(400).json({error: "You must input a state"});
+        // res.status(400).json({error: "You must input a state"});
+        res.status(400).render('admin/addNewSite', { message: "You must input a state", partial: 'addDailyData-script' });
     }
     if(!postalCode){
-        res.status(400).json({error: "You must input a postalCode"});
+        // res.status(400).json({error: "You must input a postalCode"});
+        res.status(400).render('admin/addNewSite', { message: "You must input a postalCode", partial: 'addDailyData-script' });
     }
     let address = {
         addressLine: addressLine,
@@ -127,7 +135,8 @@ router.post('/', async (req, res) =>{
         // res.render('admin/addNewSite', {partial:"addNewSite-script"});
         res.redirect('/administration/getInfo');
     }catch (e){
-        res.status(500).json({error:e});
+        // res.status(500).json({error:e});
+        res.status(500).render('admin/addNewSite', { message: e, partial: 'addDailyData-script' });
     }
 });
 

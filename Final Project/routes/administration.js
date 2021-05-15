@@ -143,7 +143,7 @@ router.get('/logout', async (req, res) => {
 
 router.get('/admin/addNewSite', async (req, res) => {
     if(req.session.adminId){
-        res.render('admin/addNewSite', {partial:"addNewSite-script"});
+        res.render('admin/addNewSite', {partial:"addNewSite-script", authenticated: true});
     }
     else {
         res.render('admin/adminLogin', {
@@ -155,7 +155,7 @@ router.get('/admin/addNewSite', async (req, res) => {
 
 router.get('/admin/addDailyData', async (req, res) => {
     if(req.session.adminId){
-        res.render('admin/addDailyData', {partial:"addDailyData-script"});
+        res.render('admin/addDailyData', {partial:"addDailyData-script", authenticated: true});
     }
     else {
         res.render('admin/adminLogin', {

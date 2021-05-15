@@ -1,46 +1,71 @@
 <div class="container col-9 mt-3 ">
     <h3 class="mb-3">Add New Site</h3>
-    <form id="addNewSiteForm" method="POST" action="/vaccineInjectionSite" class="needs-validation">
+    <form id="addNewSiteForm" method="POST" action="/vaccineInjectionSite" class="needs-validation" novalidate>
+        {{#if message}}
+        <div class="error font-italic" id="errors">{{message}}</div>
+        {{/if}}
         <div class="row g-3">
             <div class="col-12">
                 <label for="sitename" class="form-label">Site Name</label>
-                <input type="text" class="form-control" name="name" id="sitename">
+                <input type="text" class="form-control" name="name" id="sitename" required>
+                <div class="invalid-feedback">
+                    Site Name is required.
+                </div>
             </div>
 
             <div class="col-12">
                 <label for="addressLine" class="form-label">Address Line</label>
                 <input type="text" class="form-control" name="addressLine" id="addressLine" placeholder="1234 Main St">
+                <div class="invalid-feedback">
+                    Address Line is required.
+                </div>
             </div>
 
             <div class="col-12">
                 <label for="addressLine" class="form-label">Apartment Suite UnitNumber</label>
-                <input type="text" class="form-control" name="apartment_suite_unitNumber" id="apartment_suite_unitNumber" placeholder="">
+                <input type="text" class="form-control" name="apartment_suite_unitNumber"
+                    id="apartment_suite_unitNumber" placeholder="">
+                <div class="invalid-feedback">
+                    Apartment Suite UnitNumber is required.
+                </div>
             </div>
 
             <div class="col-md-3">
                 <label for="city" class="form-label">City</label>
                 <input type="text" class="form-control" name="city" id="city" placeholder="">
+                <div class="invalid-feedback">
+                    City is required.
+                </div>
             </div>
 
             <div class="col-md-3">
                 <label for="county" class="form-label">County</label>
                 <input type="text" class="form-control" name="county" id="county" placeholder="">
+                <div class="invalid-feedback">
+                    County is required.
+                </div>
             </div>
 
             <div class="col-md-3">
                 <label for="state" class="form-label">State</label>
                 <input type="text" class="form-control" name="state" id="state" placeholder="">
+                <div class="invalid-feedback">
+                    State is required.
+                </div>
             </div>
 
             <div class="col-md-3">
                 <label for="postalCode" class="form-label">PostalCode</label>
                 <input type="text" class="form-control" name="postalCode" id="postalCode" placeholder="">
+                <div class="invalid-feedback">
+                    PostalCode is required.
+                </div>
             </div>
 
         </div>
 
         <hr class="my-4">
 
-        <button class="w-100 btn btn-primary btn-lg" type="submit">Add</button>
+        <button class="w-100 btn btn-primary btn-lg" id="addSite" type="submit">Add</button>
     </form>
 </div>
