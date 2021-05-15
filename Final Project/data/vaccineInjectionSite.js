@@ -180,9 +180,9 @@ async function updateRating(siteId, rating){
     }
     siteId = ObjectId.createFromHexString(siteId);
     let updatedInfo = await vaccineCollection.updateOne({ _id: siteId }, { $set: siteUpdateInfo});
-    if (updatedInfo.modifiedCount === 0) {
-        throw 'could not edit the rating successfully';
-    }
+    // if (updatedInfo.modifiedCount === 0) {
+    //     throw 'could not edit the rating successfully';
+    // }
     return this.getSiteById(siteId.toString());
 
 }

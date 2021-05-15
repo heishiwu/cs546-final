@@ -17,9 +17,11 @@ const usersCollection = require("./users");
 // }
 
 async function getCommentById(commentId){
+    console.log("11111111")
     if(!commentId || typeof (commentId) !== "string"){
         throw "input a not string format commentId"
     }
+    
     commentId = commentId.slice(0,24); // fucking \n in postman
     // console.log(commentId.length);
     const commentCollection = await comments();

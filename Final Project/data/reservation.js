@@ -46,7 +46,7 @@ async function addReservation(userId, siteId, date){
     if(!date || typeof (date) !== "string"){
         throw "must provide a date";
     }
-    let arr =date.split("-");
+    let arr = date.split("-");
     date = arr[1] + "/" + arr[2] + "/" + arr[0];
     //test birthday using regular expression.
     if(!moment(date, "MM/DD/YYYY", true).isValid() &&
