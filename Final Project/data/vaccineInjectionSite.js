@@ -189,8 +189,9 @@ async function updateRating(siteId, rating){
 
 
 
-async function updateSite(siteId, name, address, Rating){
+async function updateSite(siteId, name, address){
     //name check
+    
     if (!name || typeof name !== 'string' || !name.trim()) throw 'invalid name';
     //address check
     if (!address || typeof address !== 'object') throw 'invalid address';
@@ -209,7 +210,7 @@ async function updateSite(siteId, name, address, Rating){
     // //comments_history check
     // if (!comments_history || typeof comments_history !== 'object') throw 'invalid comments_history';
     //rating check
-    if (!Rating || typeof Rating !== 'string' || !Rating.trim()) throw 'invalid Rating';
+    //if (!Rating || typeof Rating !== 'string' || !Rating.trim()) throw 'invalid Rating';
 
 
     let parsedSiteId = ObjectId(siteId);
@@ -220,7 +221,7 @@ async function updateSite(siteId, name, address, Rating){
         address: address,
         // reservation_history: reservation_history,
         // comments_history: comments_history,
-        Rating: Rating
+        //Rating: Rating
     };
     let updatedInfo = await vaccineCollection.updateOne({ _id: parsedSiteId }, { $set: siteUpdateInfo });
     if (updatedInfo.modifiedCount === 0) {
