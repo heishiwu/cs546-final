@@ -74,7 +74,7 @@
         $('#state').removeAttr("disabled");
         $('#postalCode').removeAttr("disabled");
 
-        let genderValue = $('#genderLable').html().trim();
+        let genderValue = $('#genderLable').html().trim().toLowerCase();
         $('#genderLable').css({ display: "none" });
         $('#genderDiv').css({ display: "block" });
         $('.genderRadio[value = ' + genderValue + ']').prop('checked', true)
@@ -105,10 +105,6 @@
         event.preventDefault();
         // $('#editForm').unbind().submit();
 
-
-
-
-
         let requestConfig = {
             method: "POST",
             url: '/users/account3/',
@@ -128,21 +124,23 @@
                 $('#lastName').attr("disabled", "true");
                 $('#email').val(result.email);
                 $('#email').attr("disabled", "true");
-                $('#birthday').val(result.birthday);
+                let arr = result.birthday.split("/");
+                let birthdayFormat = arr[2] + "-" + arr[0] + "-" + arr[1];
+                $('#birthday').val(birthdayFormat);
                 $('#birthday').attr("disabled", "true");
-                $('#addressLine').val(result.addressLine);
+                $('#addressLine').val(result.address.addressLine);
                 $('#addressLine').attr("disabled", "true");
-                $('#apartment_suite_unitNumber').val(result.apartment_suite_unitNumber);
+                $('#apartment_suite_unitNumber').val(result.address.apartment_suite_unitNumber);
                 $('#apartment_suite_unitNumber').attr("disabled", "true");
-                $('#city').val(result.city);
+                $('#city').val(result.address.city);
                 $('#city').attr("disabled", "true");
-                $('#county').val(result.county);
+                $('#county').val(result.address.county);
                 $('#county').attr("disabled", "true");
-                $('#state').val(result.state);
+                $('#state').val(result.address.state);
                 $('#state').attr("disabled", "true");
-                $('#postalCode').val(result.postalCode);
+                $('#postalCode').val(result.address.postalCode);
                 $('#postalCode').attr("disabled", "true");
-                $('#insuranceName').val(result.insuranceName);
+                $('#insuranceName').val(result.insurance.insuranceName);
                 $('#insuranceName').attr("disabled", "true");
                 $('#medicalGroupNumber').val(result.medicalGroupNumber);
                 $('#medicalGroupNumber').attr("disabled", "true");
@@ -150,23 +148,23 @@
                 $('#medicalid').attr("disabled", "true");
 
                 $('#genderLable').html(result.gender);
-                $('#genderLable').css({ display: "block" });
+                $('#genderLable').css({ display: "inline" });
                 $('#genderDiv').css({ display: "none" });
 
-                $('#racebef').val(result.race);
-                $('#racebef').text(result.race);
-                $('#racebef').css({ display: "block" });
+                let raceValue = $('#raceaft').val();
+                $('#racebef').val(raceValue);
                 $('#raceaft').css({ display: "none" });
+                $('#racebef').css({ display: "block" });
 
-                $('#ethnicitybef').val(result.ethnicity);
-                $('#ethnicitybef').text(result.ethnicity);
-                $('#ethnicitybef').css({ display: "block" });
+                let ethnicityValue = $('#ethnicityaft').val();
+                $('#ethnicitybef').val(ethnicityValue);
                 $('#ethnicityaft').css({ display: "none" });
+                $('#ethnicitybef').css({ display: "block" });
 
-                $('#insuranceTypebef').val(result.insurance);
-                $('#insuranceTypebef').text(result.insurance);
-                $('#insuranceTypebef').css({ display: "block" });
+                let insuranceTypeValue = $('#insuranceTypeaft').val();
+                $('#insuranceTypebef').val(insuranceTypeValue);
                 $('#insuranceTypeaft').css({ display: "none" });
+                $('#insuranceTypebef').css({ display: "block" });
 
                 $("#editSubmit").css({ display: "none" })
             })

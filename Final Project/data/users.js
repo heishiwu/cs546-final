@@ -278,11 +278,15 @@ async function updateUserInformation(userId, name, email, address, birthday, gen
     if (!userId || typeof userId !== 'string' || !userId.trim()){
         throw 'User id is not a valid string.';
     }
-    if(name){
-        if ( typeof name !== "string"){
-            throw "name should be string format";
-        }
+
+    if (!name || typeof name !== "object"|| !name.firstName || !name.lastName|| typeof (name.firstName) !=="string" || typeof(name.lastName) !== "string"){
+        throw "must provide username";
     }
+    // if(name){
+    //     if ( typeof name !== "string"){
+    //         throw "name should be string format";
+    //     }
+    // }
 
     if(email){
         if(!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(email)){

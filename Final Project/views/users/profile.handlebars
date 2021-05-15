@@ -18,55 +18,69 @@
         <h5 class="col-10">User Info</h5>
         <a href="#" id="edit_info" class="link-primary col-2">Edit Info</a>
         <form method="POST" action="#" id="editForm" class="row g-3">
+            {{#if message}}
+            <div class="error font-italic" id="errors">{{message}}</div>
+            {{/if}}
+
             <div class="col-sm-6">
                 <label for="firstName" class="form-label">First name</label>
-                <input type="text" class="form-control" name="firstName" id="firstName" value="{{userInformation.name.firstName}}" disabled>
+                <input type="text" class="form-control" name="firstName" id="firstName"
+                    value="{{userInformation.name.firstName}}" disabled>
             </div>
 
             <div class="col-sm-6">
                 <label for="lastName" class="form-label">Last name</label>
-                <input type="text" class="form-control" name="lastName" id="lastName" value="{{userInformation.name.lastName}}" disabled>
+                <input type="text" class="form-control" name="lastName" id="lastName"
+                    value="{{userInformation.name.lastName}}" disabled>
             </div>
 
             <div class="col-12">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" id="email" value="{{userInformation.email}}" disabled>
+                <input type="email" class="form-control" name="email" id="email" value="{{userInformation.email}}"
+                    disabled>
             </div>
 
             <div class="col-12">
                 <label for="birthday" class="form-label">Birthday</label>
-                <input type="date" class="form-control" name="birthday" id="birthday" value="{{userInformation.birthday}}" disabled>
+                <input type="date" class="form-control" name="birthday" id="birthday"
+                    value="{{userInformation.birthday}}" disabled>
             </div>
 
             <div class="col-12">
                 <label for="addressLine" class="form-label">Address Line</label>
-                <input type="text" class="form-control" name="addressLine" id="addressLine" value="{{userInformation.address.addressLine}}" disabled>
+                <input type="text" class="form-control" name="addressLine" id="addressLine"
+                    value="{{userInformation.address.addressLine}}" disabled>
             </div>
 
             <div class="col-12">
                 <label for="apartment_suite_unitNumber" class="form-label">Apartment Suite UnitNumber</label>
-                <input type="text" class="form-control" name="apartment_suite_unitNumber" id="apartment_suite_unitNumber"
-                    value="{{userInformation.address.apartment_suite_unitNumber}}" disabled>
+                <input type="text" class="form-control" name="apartment_suite_unitNumber"
+                    id="apartment_suite_unitNumber" value="{{userInformation.address.apartment_suite_unitNumber}}"
+                    disabled>
             </div>
 
             <div class="col-md-3">
                 <label for="city" class="form-label">City</label>
-                <input type="text" class="form-control" name="city" id="city" value="{{userInformation.address.city}}" disabled>
+                <input type="text" class="form-control" name="city" id="city" value="{{userInformation.address.city}}"
+                    disabled>
             </div>
 
             <div class="col-md-3">
                 <label for="county" class="form-label">County</label>
-                <input type="text" class="form-control" name="county" id="county" value="{{userInformation.address.county}}" disabled>
+                <input type="text" class="form-control" name="county" id="county"
+                    value="{{userInformation.address.county}}" disabled>
             </div>
 
             <div class="col-md-3">
                 <label for="state" class="form-label">State</label>
-                <input type="text" class="form-control" name="state" id="state" value="{{userInformation.address.state}}" disabled>
+                <input type="text" class="form-control" name="state" id="state"
+                    value="{{userInformation.address.state}}" disabled>
             </div>
 
             <div class="col-md-3">
                 <label for="postalCode" class="form-label">PostalCode</label>
-                <input type="text" class="form-control" name="postalCode" id="postalCode" value="{{userInformation.address.postalCode}}" disabled>
+                <input type="text" class="form-control" name="postalCode" id="postalCode"
+                    value="{{userInformation.address.postalCode}}" disabled>
             </div>
 
             <div class="col-12">
@@ -88,9 +102,7 @@
 
             <div class="col-md-6">
                 <label for="race" class="form-label">Race</label>
-                <select class="form-select" id="racebef" disabled>
-                    <option value="{{userInformation.race}}">{{userInformation.race}}</option>
-                </select>
+                <input type="text" class="form-control" id="racebef" value="{{userInformation.race}}" disabled>
                 <select style="display: none;" class="form-select" name="race" id="raceaft">
                     <option value="">Prefer not to say</option>
                     <option value="African American or Black">African American or Black</option>
@@ -105,9 +117,7 @@
 
             <div class="col-md-6">
                 <label for="ethnicity" class="form-label">Ethnicity</label>
-                <select class="form-select" id="ethnicitybef" disabled>
-                    <option value="{{userInformation.ethnicity}}">{{userInformation.ethnicity}}</option>
-                </select>
+                <input type="text" class="form-control" id="ethnicitybef" value="{{userInformation.ethnicity}}" disabled>
                 <select style="display: none;" class="form-select" name="ethnicity" id="ethnicityaft">
                     <option value="">Prefer not to say</option>
                     <option value="Hispanic or Latino">Hispanic or Latino</option>
@@ -117,9 +127,7 @@
 
             <div class="col-md-6">
                 <label for="insuranceType" class="form-label">Insurance Type</label>
-                <select class="form-select" id="insuranceTypebef" disabled>
-                    <option value="{{userInformation.insuranceType}}">{{userInformation.insurance.insuranceType}}</option>
-                </select>
+                <input type="text" class="form-control" id="insuranceTypebef" value="{{userInformation.insurance.insuranceType}}" disabled>
                 <select style="display: none;" class="form-select" name="insuranceType" id="insuranceTypeaft">
                     <option value="No Health Insurance">No Health Insurance</option>
                     <option value="Private Insurance">Private Insurance</option>
@@ -131,17 +139,20 @@
 
             <div class="col-md-6">
                 <label for="insuranceName" class="form-label">Insurance Name</label>
-                <input type="text" class="form-control" name="insuranceName" id="insuranceName" value="{{userInformation.insurance.insuranceName}}" disabled>
+                <input type="text" class="form-control" name="insuranceName" id="insuranceName"
+                    value="{{userInformation.insurance.insuranceName}}" disabled>
             </div>
 
             <div class="col-md-6">
                 <label for="medicalGroupNumber" class="form-label">Medical GroupNumber</label>
-                <input type="text" class="form-control" name="medicalGroupNumber" id="medicalGroupNumber" value="{{userInformation.medicalGroupNumber}}" disabled>
+                <input type="text" class="form-control" name="medicalGroupNumber" id="medicalGroupNumber"
+                    value="{{userInformation.medicalGroupNumber}}" disabled>
             </div>
 
             <div class="col-md-6">
                 <label for="medicalid" class="form-label">Medical Id</label>
-                <input type="text" class="form-control" name="medicalid" id="medicalid" value="{{userInformation.medicalid}}" disabled>
+                <input type="text" class="form-control" name="medicalid" id="medicalid"
+                    value="{{userInformation.medicalid}}" disabled>
             </div>
 
             <button class="w-100 btn btn-primary btn-lg" id="editSubmit" type="submit"

@@ -14,7 +14,12 @@ router.get('/account', async (req, res) => {
     try {
         const userId = req.session.userId;
         let userInformation = await userData.getUserById(userId);
-        res.render('users/profile', {userInformation, partial:'profile-script', authenticated: true});
+
+        //transfer mm/dd/yyyy into yyyy-mm-dd
+        let arr = userInformation.birthday.split("/");
+        userInformation.birthday = arr[2] + "-" + arr[0] + "-" + arr[1];
+
+        res.render('users/profile', { userInformation, partial: 'profile-script', authenticated: true });
 
     } catch (e) {
         res.status(404).json({ error: 'User not found' });
@@ -89,13 +94,13 @@ router.post('/account2', async (req, res) => {
 /**
  * update userinformation except username and password
  */
-router.post('/account3', async (req, res) =>{
+router.post('/account3', async (req, res) => {
 
-    const{firstName, lastName, email, addressLine, apartment_suite_unitNumber,
+    const { firstName, lastName, email, addressLine, apartment_suite_unitNumber,
         city, county, state, postalCode, birthday, gender, race,
-        ethnicity, insuranceType, insuranceName, medicalGroupNumber, medicalid} = req.body;
+        ethnicity, insuranceType, insuranceName, medicalGroupNumber, medicalid } = req.body;
 
-    let name = {firstName: firstName, lastName: lastName};
+    let name = { firstName: firstName, lastName: lastName };
     let address = {
         addressLine: addressLine,
         apartment_suite_unitNumber: apartment_suite_unitNumber,
@@ -110,18 +115,22 @@ router.post('/account3', async (req, res) =>{
         insuranceName: insuranceName
     };
 
+    let arr = birthday.split("-");
+    let birthdayFormat = arr[1] + "/" + arr[2] + "/" + arr[0];
+
+
     // const{name, email, address, birthday, gender, race,
     //     ethnicity, insurance, medicalGroupNumber, medicalid} = req.body;
-    if(!req.session.userId){
+    if (!req.session.userId) {
         return res.redirect('/private');
     }
     let oldUser;
     const userId = req.session.userId;
-    try{
+    try {
         oldUser = await userData.getUserById(userId);
-    }catch (e){
-        res.status(404).json({error: 'User not found'});
-        return ;
+    } catch (e) {
+        res.status(404).json({ error: 'User not found' });
+        return;
     }
     if (email === oldUser.email) {
         res.status(400).json({ error: 'you have to input different email' });
@@ -129,7 +138,7 @@ router.post('/account3', async (req, res) =>{
     }
 
     try {
-        const userInfo = await userData.updateUserInformation(userId, name, email, address, birthday, gender, race,
+        const userInfo = await userData.updateUserInformation(userId, name, email, address, birthdayFormat, gender, race,
             ethnicity, insurance, medicalGroupNumber, medicalid);
         res.status(200).send(userInfo)
     } catch (e) {
@@ -272,6 +281,9 @@ router.post('/signup', async (req, res) => {
             postalCode: postalCode
         };
         let insurance = { insuranceType: insuranceType, insuranceName: insuranceName };
+
+        let arr = birthday.split("-");
+        let birthdayFormat = arr[1] + "/" + arr[2] + "/" + arr[0];
         // const{name, username, password, email, address, birthday, gender, race,
         //     ethnicity, insurance, medicalGroupNumber, medicalid, repeatPassword} = userInfo;
         try {
@@ -297,9 +309,6 @@ router.post('/signup', async (req, res) => {
                 throw "you must input a same password";
             }
 
-            let arr = birthday.split("-");
-            let birthdayFormat = arr[1] + "/" + arr[2] + "/" + arr[0];
-
             // const hashPassword = await bcrypt.hash(password, saltRounds);
             const newUser = await userData.createUser(name, username, password, email, address, birthdayFormat, gender, race,
                 ethnicity, insurance, medicalGroupNumber, medicalid);
@@ -307,7 +316,7 @@ router.post('/signup', async (req, res) => {
             let userInformation = await userData.getUserById((newUser._id).toString());
             // return userInformation;
             // res.status(200).json({result: userInformation});
-            res.status(200).render('landing/landing', {userInformation, partial: 'login-script',authenticated:true});
+            res.status(200).render('landing/landing', { userInformation, partial: 'login-script', authenticated: true });
         } catch (e) {
             res.status(404).render('users/signup', { message: e, partial: 'signup-script' });
         }
