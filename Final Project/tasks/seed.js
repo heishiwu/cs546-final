@@ -114,7 +114,12 @@ async function main() {
 
     s1 = await vaccineInjectionSite.addCommentAndReservation(s1_siteid, c3_id, r3_id);
     console.log("s1");
-
+    
+    const u1 = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date)
+    const u2 = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date)
+    const u3 = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date)
+    const u4 = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date)
+    const u5 = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date)
 
     await db.serverConfig.close();
     console.log('Done!');
