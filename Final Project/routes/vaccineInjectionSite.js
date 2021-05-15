@@ -151,6 +151,45 @@ router.post('/update', async (req, res) =>{
     }
 });
 
+router.post('/:id', async (req, res) =>{
+    let commentInfo = req.body;
+    
+    // if(!req.session.userId) throw 'Please log in first';
+    // let userId = req.session.userId;
+    // let siteId = req.params.id;
+    let userId = "123";
+    let siteId = "321";
+    if(!commentInfo){
+        res.status(400).json({error: "You must input a data"});
+    }
+    const {rating, comment} = commentInfo;
+    if(!userId){
+        res.status(400).json({error: "You must input a userId"});
+    }
+    if(!siteId){
+        res.status(400).json({error: "You must input a siteId"});
+    }
+    if(!rating || typeof (rating) !=="string"){
+        res.status(400).json({error: "You must input a string rating"});
+    }
+    if(!comment || typeof (comment) !=="string"){
+        res.status(400).json({error: "You must input a string rating"});
+    }
+    
+    try{
+       
+        const newComment = await commentsData.addComment(userId, siteId, rating, comment);
+        
+        await userData.addCommentIdFromUser(userId, (newComment._id).toString());
+        console.log(userId, siteId, rating, comment)
+        await vaccineData.addCommentIdFromSite(siteId, (newComment._id).toString());
+        
+        res.status(200).send(newComment);
+    }catch (e){
+        res.status(500).json({error:e});
+    }
+});
+
 router.delete('/', async (req, res) =>{
     let siteId = req.body._id;
     if(!siteId){
