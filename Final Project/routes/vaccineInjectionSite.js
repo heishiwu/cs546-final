@@ -141,10 +141,10 @@ router.post('/', async (req, res) =>{
 });
 
 router.post('/update', async (req, res) =>{
-    const{siteId, name, address, rating} = req.body;
-    // if(!req.session.siteId){
-    //     return res.redirect('/private');
-    // }
+    const{siteId, name, address} = req.body;
+    if(!req.session.adminId){
+        return res.redirect('/private');
+    }
     let oldSite;
     try{
         oldSite = await vaccineData.getSiteById(siteId);
@@ -153,10 +153,11 @@ router.post('/update', async (req, res) =>{
         return ;
     }
     try{
-        const siteInfo = await vaccineData.updateSite(siteId, name, address, rating.toString());
+        const siteInfo = await vaccineData.updateSite(siteId, name, address);
         res.status(200).send(siteInfo)
     }catch (e){
-        res.status(500).json({error:e})
+        res.status(500).json({error:e});
+        // res.state(500).render('admin/admin',{error: e})
     }
 });
 
