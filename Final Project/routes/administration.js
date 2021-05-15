@@ -6,7 +6,6 @@ const siteData = data.vaccineInjectionSite;
 const dailyData = data.dailyData;
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
-const xss = require('xss');
 
 router.get('/account', async (req, res) =>{
     try{
@@ -21,7 +20,7 @@ router.get('/account', async (req, res) =>{
 router.get('/', async (req, res) =>{
     try{
         const adminInformation = await administrationData.getAllAdmin();
-        // console.log(adminInformation)
+        console.log(adminInformation)
         res.json(adminInformation);
     }catch (e){
         res.status(500).send();
@@ -29,7 +28,7 @@ router.get('/', async (req, res) =>{
 });
 
 router.post('/', async (req, res) =>{
-    let adminInfo = xss(req.body);
+    let adminInfo = req.body;
     if(!adminInfo){
         res.status(400).json({error: "You must input a data"});
     }
@@ -50,8 +49,8 @@ router.post('/', async (req, res) =>{
 });
 
 router.post('/updateAdminUsername', async (req, res) =>{
-    let username = xss(req.body.username);
-    let adminId = xss(req.body._id);
+    let username = req.body.username;
+    let adminId = req.body._id
     if(!username){
         res.status(400).json({error: "You must input a username"});
     }
@@ -100,7 +99,7 @@ router.post('/login', async (req, res) =>{
         return res.redirect('/private');
     }
     else {
-        let {username, password} = xss(req.body);
+        let {username, password} = req.body;
         // const username = xss(req.body.username.trim());
         // const password = xss(req.body.password.trim());
         const allAdmin = await administrationData.getAllAdmin();

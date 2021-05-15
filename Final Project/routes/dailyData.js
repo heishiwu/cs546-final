@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require("../data");
 const dailyData = data.dailyData;
-const xss = require('xss');
+
 
 
 
@@ -28,7 +28,7 @@ router.get('/', async (req, res) =>{
 
 router.post('/', async (req, res) =>{
     
-    let dailyDataInfo = xss(req.body);
+    let dailyDataInfo = req.body;
     if(!dailyDataInfo){
         res.status(400).json({error: "You must input a data"});
     }

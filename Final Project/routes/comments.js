@@ -5,7 +5,6 @@ const commentData = data.comments;
 const vaccineData = data.vaccineInjectionSite;
 const usersData = data.users;
 const { ObjectId } = require('mongodb');
-const xss = require('xss');
 
 /**
  * get comment information by commentId
@@ -58,7 +57,7 @@ router.get('/', async (req, res) =>{
  * comments information in users and vaccineInjectionSite database.
  */
 router.post('/', async (req, res) =>{
-    let commentInfo = xss(req.bod);
+    let commentInfo = req.body;
     if(!commentInfo){
         res.status(400).json({error: "You must input a data"});
     }
@@ -93,7 +92,7 @@ router.post('/', async (req, res) =>{
  * reservation and comments information in users and vaccineInjectionSite database.
  */
 router.delete('/', async (req, res) =>{
-    let commentInfo = xss(req.body);
+    let commentInfo = req.body;
     if(!commentInfo){
         res.status(400).json({error: "You must input a data"});
     }

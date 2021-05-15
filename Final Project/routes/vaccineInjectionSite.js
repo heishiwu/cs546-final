@@ -5,7 +5,7 @@ const vaccineData = data.vaccineInjectionSite;
 const commentsData = data.comments;
 const userData = data.users;
 const adminData = data.administration;
-const xss = require('xss');
+
 
 
 router.get('/:id', async (req, res) =>{
@@ -124,7 +124,7 @@ router.get('/', async (req, res) =>{
 });
 
 router.post('/', async (req, res) =>{
-    let siteInfo = xss(req.body);
+    let siteInfo = req.body;
     if(!siteInfo){
         res.status(400).render('admin/addNewSite', { message: "You must input a data", partial: 'addDailyData-script' });
         // res.status(400).json({error: "You must input a data"});
@@ -186,7 +186,7 @@ router.post('/', async (req, res) =>{
 });
 
 router.post('/update', async (req, res) =>{
-    const{siteId, name, address, rating} = xss(req.body);
+    const{siteId, name, address, rating} = req.body;
     // if(!req.session.siteId){
     //     return res.redirect('/private');
     // }
@@ -206,7 +206,7 @@ router.post('/update', async (req, res) =>{
 });
 
 router.post('/:id', async (req, res) =>{
-    let commentInfo = xss(req.body);
+    let commentInfo = req.body;   
     if(!req.session.userId) throw 'Please log in first';
     let userId = req.session.userId;
     let siteId = req.params.id;

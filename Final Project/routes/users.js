@@ -4,12 +4,10 @@ const data = require("../data");
 const bcrypt = require('bcryptjs');
 const saltRounds = 5;
 const userData = data.users;
-
+const xss = require('xss');
 
 
 router.get('/account', async (req, res) => {
-    // const username = xss(req.body.username.trim());
-    // const password = xss(req.body.password.trim());
     if (!req.session.userId) {
         return res.redirect('/private');
     }
@@ -32,8 +30,7 @@ router.get('/account', async (req, res) => {
  * update username
  */
 router.post('/account1', async (req, res) => {
-    const { username } = xss(req.body);
-
+    const { username } = req.body;
     if (!req.session.userId) {
         return res.redirect('/private');
     }
@@ -64,7 +61,7 @@ router.post('/account1', async (req, res) => {
  * update password
  */
 router.post('/account2', async (req, res) => {
-    const { password, repeatPassword } = xss(req.body);
+    const { password, repeatPassword } = req.body;
     if (!req.session.userId) {
         return res.redirect('/private');
     }
@@ -101,7 +98,7 @@ router.post('/account3', async (req, res) => {
 
     const { firstName, lastName, email, addressLine, apartment_suite_unitNumber,
         city, county, state, postalCode, birthday, gender, race,
-        ethnicity, insuranceType, insuranceName, medicalGroupNumber, medicalid } = xss(req.body);
+        ethnicity, insuranceType, insuranceName, medicalGroupNumber, medicalid } = req.body;
 
     let name = { firstName: firstName, lastName: lastName };
     let address = {
@@ -266,7 +263,7 @@ router.post('/signup', async (req, res) => {
         let userInformation = await userData.getUserById((req.session.userId).toString());
         res.status(200).render('landing/landing', { userInformation, partial: 'login-script', authenticated: true });
     } {
-        let userInfo = xss(req.body);
+        let userInfo = req.body;
         if (!userInfo) {
             res.status(400).json({ error: 'You must provide data to create a userInfo' });
             return;
