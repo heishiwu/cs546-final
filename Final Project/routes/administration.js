@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const data = require("../data");
 const administrationData = data.administration;
+const siteData = data.vaccineInjectionSite;
+const dailyData = data.dailyData;
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
 
@@ -106,14 +108,28 @@ router.post('/login', async (req, res) =>{
                 console.log(await bcrypt.compare(password, x.password))
                 if(await bcrypt.compare(password, x.password)){
                     req.session.adminId = x._id.toHexString();
-                    let userInformation = await administrationData.getAdminById((x._id).toString());
-                    res.status(200).render('admin/admin', { userInformation, partial: 'admin-script', authenticated: true });
+                    //let userInformation = await administrationData.getAdminById((x._id).toString());
+                    res.redirect('/getInfo')
+                    //res.status(200).render('admin/admin', { userInformation, partial: 'admin-script', authenticated: true });
                 }
                 break;
             }
         }
         res.status(401).render('admin/adminLogin', {message: "Invalid username or password", partial: 'login-script'});
     }
+});
+
+router.get('/getInfo', async (req, res) =>{
+    if(req.session.adminId){
+        return res.redirect('/private');
+    }
+    else {
+            let userInformation = await administrationData.getAdminById((x._id).toString());
+            let dailyDataInfo = await dailyData.getAllData();
+            let siteInfo = await siteData.getAllSites();
+            res.status(200).render('admin/admin', { userInformation,dailyDataInfo,siteInfo, partial: 'admin-script', authenticated: true });
+        }
+    res.status(401).render('admin/adminLogin', {message: "Invalid username or password", partial: 'login-script'});
 });
 
 router.get('/logout', async (req, res) => {
@@ -135,7 +151,6 @@ router.get('/admin/addNewSite', async (req, res) => {
             partial: 'login-script'
         });
     }
-
 });
 
 router.get('/admin/addDailyData', async (req, res) => {
