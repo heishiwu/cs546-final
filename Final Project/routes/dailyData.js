@@ -61,7 +61,8 @@ router.post('/', async (req, res) =>{
     }
     try{
         const newDailyData = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date);
-        res.status(200).send(newDailyData);
+        // res.status(200).send(newDailyData);
+        res.redirect('/administration/getInfo');
     }catch (e){
         res.status(500).json({error:e});
     }
