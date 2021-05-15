@@ -31,9 +31,9 @@ router.get('/', async (req, res) =>{
             }
         }
         if(req.session.adminId){
-            res.render('admin/admin', {adminInformation,partial:'admin-script'}); 
+            res.render('admin/admin', {adminInformation,partial:'admin-script',authenticated:true}); 
         } else if(req.session.userId){
-            res.render('landing/landing', {userInformation,partial:'landing-script'});
+            res.render('landing/landing', {userInformation,partial:'landing-script', authenticated:true});
         } else{
             res.render('landing/landing', {userInformation,partial:'landing-script'});
         }

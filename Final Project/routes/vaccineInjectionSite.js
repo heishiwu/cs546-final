@@ -32,10 +32,25 @@ router.get('/:id', async (req, res) =>{
 router.get('/', async (req, res) =>{
     try{
         const siteInfo = await vaccineData.getAllSites();
-        
-        res.render('sites/list', {
-            partial: 'sites-list-script',
-            sites: siteInfo});
+        if (req.session){
+            if (req.session.adminId){
+                res.render('sites/list', {
+                    partial: 'sites-list-script',
+                    sites: siteInfo,
+                    authenticated: true});
+            } else {
+                res.render('sites/list', {
+                    partial: 'sites-list-script',
+                    sites: siteInfo,
+                    authenticated: true});
+            }
+        }else{
+            res.render('sites/list', {
+                partial: 'sites-list-script',
+                sites: siteInfo});
+        }
+               
+
     }catch (e){
         res.status(500).send();
     }
