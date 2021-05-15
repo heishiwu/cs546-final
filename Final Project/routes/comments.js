@@ -33,7 +33,6 @@ router.get('/:id', async (req, res) =>{
             comment: commentInformation.comment,
             name: userInformation.name
         }
-
         res.status(200).render('sites/single', {partial: 'list-single-script', result: result});
         // res.json(result);
     }catch (e){

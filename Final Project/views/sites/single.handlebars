@@ -16,7 +16,8 @@
                 <h1 class="display-4 font-weight-bold">{{siteInfo.name}}</h1>
 
                 <span class="error font-italic" hidden></span>
-                <h2 id="addressLine" class="font-italic h6">{{siteInfo.address.addressLine}}, {{siteInfo.address.apartment_suite_unitNumber}}</h2>
+                <h2 id="addressLine" class="font-italic h6">{{siteInfo.address.addressLine}}</h2>
+                <h2 id="apt" class="font-italic h6">{{siteInfo.address.apartment_suite_unitNumber}}</h2>
                 <h2 id="city" class="font-italic h6">{{siteInfo.address.city}}, {{siteInfo.address.county}}, {{siteInfo.address.state}}, {{siteInfo.address.postalCode}}</h2>
                 <h2 id="rating" class="font-italic h6">Rating: {{siteInfo.rating}}</h2>
             </div>
@@ -90,7 +91,7 @@
 
             <div id="map-parent" class="container shadow-sm p-3 border border-light rounded">
                 <h3 class="font-weight-bold">Location</h3>
-                <div id="map" class="container"></div>
+                <div id="map" class="container"  style="height:500px; width:500px;"></div>
             </div>   
         </div>         
     </div>
