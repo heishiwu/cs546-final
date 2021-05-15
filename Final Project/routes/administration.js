@@ -106,8 +106,8 @@ router.post('/login', async (req, res) =>{
                 console.log(await bcrypt.compare(password, x.password))
                 if(await bcrypt.compare(password, x.password)){
                     req.session.adminId = x._id.toHexString();
-                    let adminInformation = await administrationData.getAdminById((x._id).toString());
-                    res.status(200).render('admin/admin', { adminInformation, partial: 'admin-script', authenticated: true });
+                    let userInformation = await administrationData.getAdminById((x._id).toString());
+                    res.status(200).render('admin/admin', { userInformation, partial: 'admin-script', authenticated: true });
                 }
                 break;
             }
