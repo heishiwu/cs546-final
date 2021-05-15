@@ -81,30 +81,30 @@ async function createUser(name, username, password, email, address, birthday, ge
     if(!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(email)){
         throw "must provide correct format email";
     }
-    // if(address){
-    //     if(!address.addressLine || typeof (address.addressLine) !=="string"){
-    //         throw "must provide addressLine";
-    //     }
-    //     if(!address.apartment_suite_unitNumber || typeof (address.apartment_suite_unitNumber) !=="string"){
-    //         throw "must provide apartment_suite_unitNumber";
-    //     }
-    //     if(!address.city || typeof (address.city) !=="string"){
-    //         throw "must provide city";
-    //     }
-    //     if(!address.county || typeof (address.county) !=="string"){
-    //         throw "must provide county";
-    //     }
-    //     if(!address.state || typeof (address.state) !=="string"){
-    //         throw "must provide county";
-    //     }
-    //     if(!address.postalCode || typeof (address.postalCode) !=="string"){
-    //         throw "must provide postalCode";
-    //     }
-    //     // test postalCode using regular expression.
-    //     if(!(/^[0-9]{5}?$/).test(address.postalCode)){
-    //         throw "must provide correct format postalCode";
-    //     }
-    // }
+    if(address){
+        if(typeof (address.addressLine) !=="string"){
+            throw "must provide valid addressLine";
+        }
+        if(typeof (address.apartment_suite_unitNumber) !=="string"){
+            throw "must provide valid apartment_suite_unitNumber";
+        }
+        if(typeof (address.city) !=="string"){
+            throw "must provide valid city";
+        }
+        if(typeof (address.county) !=="string"){
+            throw "must provide valid county";
+        }
+        if(typeof (address.state) !=="string"){
+            throw "must provide valid county";
+        }
+        if(typeof (address.postalCode) !=="string"){
+            throw "must provide valid postalCode";
+        }
+        // test postalCode using regular expression.
+        if(!(/^[0-9]{5}?$/).test(address.postalCode)){
+            throw "must provide correct format postalCode";
+        }
+    }
     if(!birthday || typeof (birthday) !== "string"){
         throw "must provide birthday";
     }
