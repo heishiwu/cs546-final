@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) =>{
             let temp = [];
             for(let i = 0; i <commentsHistory.length; i++){
                 // let a = commentsHistory[i];
-                let commentsInfo = await commentsData.getCommentById(commentsHistory[i]);
+                let commentsInfo = await commentData.getCommentById(commentsHistory[i]);
                 
                 temp.push(commentsInfo);
             }
@@ -66,6 +66,7 @@ router.get('/:id', async (req, res) =>{
 
         if (req.session.userId){
             let userInformation = await userData.getUserById((req.session.userId).toString());
+            console.log(siteInfo)
             res.render('sites/single', {
                 userInformation,
                 partial: 'list-single-script',
@@ -207,7 +208,6 @@ router.post('/update', async (req, res) =>{
 });
 
 router.post('/:id', async (req, res) =>{
-    console.log("111111111")
     let commentInfo = req.body;   
     if(!req.session.userId) throw 'Please log in first';
     let userId = req.session.userId;
@@ -228,6 +228,7 @@ router.post('/:id', async (req, res) =>{
     if(!comment || typeof (comment) !=="string"){
         res.status(400).json({error: "You must input a string rating"});
     }
+    
     try{
        
         const newComment = await commentsData.addComment(userId, siteId, rating, comment);
