@@ -4,6 +4,7 @@ const data = require("../data");
 const reservationData = data.reservation;
 const usersData = data.users;
 const vaccineData = data.vaccineInjectionSite;
+const xss = require('xss');
 
 /**
  * get reservation information by reservationId
@@ -65,7 +66,7 @@ router.get('/', async (req, res) =>{
  * reservation information in users and vaccineInjectionSite database.
  */
 router.post('/:id', async (req, res) =>{
-    let reservationInfo = req.body;
+    let reservationInfo = xss(req.body);
     if(!reservationInfo){
         res.status(400).json({error: "You must input a data"});
     }
@@ -144,7 +145,7 @@ router.post('/:id', async (req, res) =>{
  * reservation information in users and vaccineInjectionSite database.
  */
 router.delete('/', async (req, res) =>{
-    let reservationInfo = req.body;
+    let reservationInfo = xss(req.body);
     if(!reservationInfo){
         res.status(400).json({error: "You must input a data"});
     }
