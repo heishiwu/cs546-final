@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) =>{
     //     res.redirect('/users/login');
     //     return;
     // }
-
+        let siteId = req.params.id;
     try{
     //     let reservationId = req.params.id
     //     const reservationInformation =  await reservationData.getReservationById(reservationId.toString());
@@ -39,7 +39,7 @@ router.get('/:id', async (req, res) =>{
     //         sitename: siteInformation.name
     //     };
         // res.json(result);
-        res.status(200).render('reservation/makeReservation', {partial: 'makeReservation-script'});
+        res.status(200).render('reservation/makeReservation', {siteId, partial: 'makeReservation-script'});
 
     }catch (e){
         res.status(404).json({error: 'Reservation not found'});
@@ -64,31 +64,41 @@ router.get('/', async (req, res) =>{
  * create a new reservations, input userId, siteId, data, and it will automatically update
  * reservation information in users and vaccineInjectionSite database.
  */
-router.post('/', async (req, res) =>{
+router.post('/:id', async (req, res) =>{
     let reservationInfo = req.body;
     if(!reservationInfo){
         res.status(400).json({error: "You must input a data"});
     }
-    const {userId, siteId, data} = reservationInfo;
-    if(!userId){
-        res.status(400).json({error: "You must input a userId"});
-    }
-    if(!siteId){
-        res.status(400).json({error: "You must input a siteId"});
-    }
-    if(!data){
-        res.status(400).json({error: "You must input a data"});
+    if(!req.session) {
+        return res.redirect('../private')
+    } else {
+        const userId = req.session.userId;
+        const siteId = req.params.id;
+        const date = reservationInfo.reservationDate;
+        if(!userId){
+            res.status(400).json({error: "You must input a userId"});
+        }
+        if(!siteId){
+            res.status(400).json({error: "You must input a siteId"});
+        }
+        if(!data){
+            res.status(400).json({error: "You must input a data"});
+        }
+    
+        try{
+            const newReservation = await reservationData.addReservation(userId, siteId, date);
+            console.log(typeof newReservation)
+            console.log(newReservation)
+            const userInfo = await usersData.addReservationIdFromUser(userId, (newReservation._id).toString());
+            const siteInfo = await vaccineData.addReservationIdFromSite(siteId, (newReservation._id).toString());
+            let allReservation = await reservationData.getAllReservation()
+            res.status(200).render('reservation/myReservation', {result: newReservation, partial: 'myReservation-script'});
+            // res.status(200).json({newReservation: newReservation, userInfo: userInfo, siteInfo: siteInfo});
+        }catch (e){
+            res.status(500).json({error:e});
+        }
     }
 
-    try{
-        const newReservation = await reservationData.addReservation(userId, siteId, data);
-        const userInfo = await usersData.addReservationIdFromUser(userId, (newReservation._id).toString());
-        const siteInfo = await vaccineData.addReservationIdFromSite(siteId, (newReservation._id).toString());
-        res.status(200).render('reservation/myReservation', {newReservation});
-        // res.status(200).json({newReservation: newReservation, userInfo: userInfo, siteInfo: siteInfo});
-    }catch (e){
-        res.status(500).json({error:e});
-    }
 });
 
 

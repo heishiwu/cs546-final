@@ -35,8 +35,7 @@ async function getAllReservation(){
     return allComments;
 }
 
-async function addReservation(userId, siteId, data){
-
+async function addReservation(userId, siteId, date){ 
     if(!siteId || typeof (siteId) !=="string"){
         throw "input a string format siteId";
     }
@@ -44,26 +43,26 @@ async function addReservation(userId, siteId, data){
     if(!userId|| typeof (userId) !=="string"){
         throw "input a string format userId";
     }
-
-    if(!data || typeof (data) !== "string"){
-        throw "must provide birthday";
+    if(!date || typeof (date) !== "string"){
+        throw "must provide a date";
     }
+    let arr =date.split("-");
+    date = arr[1] + "/" + arr[2] + "/" + arr[0];
     //test birthday using regular expression.
-    if(!moment(data, "MM/DD/YYYY", true).isValid() &&
-        !moment(data, "M/DD/YYYY", true).isValid() &&
-        !moment(data, "MM/D/YYYY", true).isValid() &&
-        !moment(data, "M/D/YYYY", true).isValid()){
-        throw "must provide correct format data";
+    if(!moment(date, "MM/DD/YYYY", true).isValid() &&
+        !moment(date, "M/DD/YYYY", true).isValid() &&
+        !moment(date, "MM/D/YYYY", true).isValid() &&
+        !moment(date, "M/D/YYYY", true).isValid()){
+        throw "must provide correct format date";
     }
-
-
     const reservationCollection = await reservation();
     let newReservation = {
         userId: userId,
         siteId:siteId,
-        date: data,
+        date: date,
         time: new Date().getTime()  // timestamp
     }
+    
     let insertInfo = await reservationCollection.insertOne(newReservation);
     if (insertInfo === null)
         throw 'Something wrong when adding the reservation';
@@ -81,7 +80,7 @@ async function addReservation(userId, siteId, data){
         _id: reservationCreated._id,
         userId: reservationCreated.userId,
         siteId: reservationCreated.siteId,
-        data: reservationCreated.data,
+        date: reservationCreated.date,
         time: reservationCreated.time,
         name: siteInformation.name,
         address: siteInformation.address,
