@@ -193,7 +193,8 @@ router.post('/account3', async (req, res) =>{
 
 router.get('/login', async (req, res) => {
     if (req.session.userId) {
-        return res.redirect('/private');
+        let userInformation = await userData.getUserById((req.session.userId).toString());
+        res.status(200).render('landing/landing', { userInformation, partial: 'login-script', authenticated: true });
     }
     else {
         res.render('users/login', {
@@ -208,7 +209,8 @@ router.get('/login', async (req, res) => {
  */
 router.post('/login', async (req, res) => {
     if (req.session.userId) {
-        return res.redirect('/private');
+        let userInformation = await userData.getUserById((req.session.userId).toString());
+        res.status(200).render('landing/landing', { userInformation, partial: 'login-script', authenticated: true });
     }
     else {
         let { username, password } = req.body;

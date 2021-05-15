@@ -25,18 +25,20 @@ router.get('/', async (req, res) =>{
         let adminInformation;
         if(req.session){
             if(req.session.userId){
-                userInformation = await userData.getUserById(req.params.userId);
+                userInformation = await userData.getUserById(req.session.userId);
             } else if(req.session.adminId){
-                adminInformation = await adminData.getAdminById(req.params.userId);
+                adminInformation = await adminData.getAdminById(req.session.userId);
             }
         }
         if(req.session.adminId){
             res.render('admin/admin', {adminInformation,partial:'admin-script'}); 
-        } else {
+        } else if(req.session.userId){
+            res.render('landing/landing', {userInformation,partial:'landing-script'})
+        } else{
             res.render('landing/landing', {userInformation,partial:'landing-script'});
         }
     }catch (e){
-        res.render('error/error',{errors:e})
+        res.render('error/error',{errors:e, partial:'error-script'})
     }
 });
 
