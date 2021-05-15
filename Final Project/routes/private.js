@@ -33,7 +33,7 @@ router.get('/', async (req, res) =>{
         if(req.session.adminId){
             res.render('admin/admin', {adminInformation,partial:'admin-script'}); 
         } else if(req.session.userId){
-            res.render('landing/landing', {userInformation,partial:'landing-script'})
+            res.render('landing/landing', {userInformation,partial:'landing-script'});
         } else{
             res.render('landing/landing', {userInformation,partial:'landing-script'});
         }

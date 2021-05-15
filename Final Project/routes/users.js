@@ -235,7 +235,8 @@ router.post('/login', async (req, res) => {
 
 router.get('/signup', async (req, res) => {
     if (req.session.userId) {
-        return res.redirect('/private');
+        let userInformation = await userData.getUserById((req.session.userId).toString());
+        res.status(200).render('landing/landing', { userInformation, partial: 'login-script', authenticated: true });
     } else {
         return res.render('users/signup', { partial: 'signup-script' });
     }
@@ -249,7 +250,8 @@ router.get('/signup', async (req, res) => {
 //only name, username, password, email birthday and insurance are necessary, and username and email are unique.
 router.post('/signup', async (req, res) => {
     if (req.session.userId) {
-        return res.redirect('/private');
+        let userInformation = await userData.getUserById((req.session.userId).toString());
+        res.status(200).render('landing/landing', { userInformation, partial: 'login-script', authenticated: true });
     } {
         let userInfo = req.body;
         if (!userInfo) {
@@ -305,7 +307,7 @@ router.post('/signup', async (req, res) => {
             let userInformation = await userData.getUserById((newUser._id).toString());
             // return userInformation;
             // res.status(200).json({result: userInformation});
-            return res.redirect('private');
+            res.status(200).render('landing/landing', {userInformation, partial: 'login-script',authenticated:true});
         } catch (e) {
             res.status(404).render('users/signup', { message: e, partial: 'signup-script' });
         }
