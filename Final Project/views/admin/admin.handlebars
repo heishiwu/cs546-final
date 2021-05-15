@@ -2,7 +2,7 @@
 <div class="row g-3">
     <h5 class="col-10">Site List</h5>
     <a href="/administration/admin/addNewSite" class="link-primary col-2">Add New Site</a>
-    <form>
+    {{!-- <form> --}}
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -19,6 +19,7 @@
             </thead>
             <tbody id="siteBody">
                 {{#each siteInfo}}
+                {{!-- <form class="updateSiteForm" method="POST" action="/vaccineInjectionSite/update"> --}}
                 <tr>
                     <td>{{this.name}}</td>
                     <td>{{this.address.addressLine}}</td>
@@ -27,16 +28,23 @@
                     <td>{{this.address.county}}</td>
                     <td>{{this.address.state}}</td>
                     <td>{{this.address.postalCode}}</td>
-                    <td>{{this.rating}}</td>
-                    <td>
-                        <p hidden>{{this._id}}</p>
-                        <a class="updateSite" href="#">Update</a> <a class="deleteSite" href="#">Delete</a>
+                    <td>{{this.Rating}}</td>
+                    <td class="option">
+                        <p name="siteId" hidden>{{this._id}}</p>
+                        <div class="upAndDel">
+                            <a class="updateSite btn btn-primary" href="#">Update</a> <a class="deleteSite btn btn-danger" href="#">Delete</a>
+                        </div>
+                        <div class="confirm" hidden>
+                            <button class='updateConfirm btn btn-primary' type='submit'>Confirm</button>
+                        </div>
+                        
                     </td>
                 </tr>
+                {{!-- </form> --}}
                 {{/each}}
             </tbody>
         </table>
-    </form>
+    {{!-- </form> --}}
 
     <hr class="my-4">
 
