@@ -13,7 +13,7 @@ router.get('/:id', async (req, res) =>{
     try{
 //////////////
         let siteId = req.params.id;
-        let siteInformation;
+        let siteInformation =  await vaccineData.getSiteById(siteId);
         // try{
         //     siteInformation =  await vaccineData.getSiteById(siteId);
         // }catch (e){
@@ -22,16 +22,16 @@ router.get('/:id', async (req, res) =>{
         
         let CH = siteInformation.comments_history;
         if(!(CH) || typeof (CH) === 'undefined') {
-            console.log("11111111")
             return res.render('sites/single', {partial: 'sites-list-script', rating: null});
             // if NULL, return null to sites/singles
         }else {
+            
             let commentsHistory = CH;
             let temp = [];
-            
             for(let i = 0; i <commentsHistory.length; i++){
                 // let a = commentsHistory[i];
-                let commentsInfo = await commentData.getCommentById(commentsHistory[i]);
+                let commentsInfo = await commentsData.getCommentById(commentsHistory[i]);
+                
                 temp.push(commentsInfo);
             }
             
@@ -228,7 +228,6 @@ router.post('/:id', async (req, res) =>{
     if(!comment || typeof (comment) !=="string"){
         res.status(400).json({error: "You must input a string rating"});
     }
-    
     try{
        
         const newComment = await commentsData.addComment(userId, siteId, rating, comment);
