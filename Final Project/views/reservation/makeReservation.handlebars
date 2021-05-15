@@ -1,11 +1,11 @@
 <div class="container col-8 mt-5">
     <div class="container mb-4">
-        <a href="/vaccineInjectionSite/{{reservation.siteId}}" class="text-decoration-none text-dark font-weight-bold">
-            <h1>{{reservation.siteId}}</h1>
+        <a href="/vaccineInjectionSite/{{siteId}}" class="text-decoration-none text-dark font-weight-bold">
+            <h1>{{siteId}}</h1>
         </a>
     </div>
     <div class="container reservation-date">
-        <form method="POST" action="/reservation" id="reservation-form">
+        <form method="POST" action="/reservation/{{siteId}}" id="reservation-form">
             <label for="reservation-date">Please enter the date</label>
             <input type="date" name="reservationDate" id="reservation-date">
             <button type="submit" class="btn btn-primary" name="submitButton">Submit</button>
