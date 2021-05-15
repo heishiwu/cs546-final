@@ -1,18 +1,18 @@
 <div class="container m-5">
     <div class="row">
         <div class="col col-4">
-            <label for="input1"></label>
-            <input type="text" id="input1" onkeyup="fName('input1', 0)" placeholder="search by name">
+            <label for="input1" class="font-weight-bold mb-5 h5">Search By Site Name</label>
+            <input type="text" id="input1" onkeyup="fName('input1', 0)" placeholder="Enter site name">
         </div>
         <div class="col col-4">
-            <label for="input2"></label>
-            <input type="text" id="input2" onkeyup="fName('input2', 5)" placeholder="Search by state">
+            <label for="input2" class="font-weight-bold mb-5 h5">Search By State</label>
+            <input type="text" id="input2" onkeyup="fName('input2', 5)" placeholder="Enter state">
         </div>
     </div>
     <div class="row">
         <div class="col col-4">
             <div class="rating-slider w-100">
-                <label for="rating" class="font-weight-bold">Rating above: <span id="rate" class="ml-2"></span></label>
+                <label for="rating" class="font-weight-bold h5">Rating above: <span id="rate" class="ml-2"></span></label>
                 <input type="range" value="1" min="1" max="5" step="0.1" id="rating" onmouseup="fNum('rating', 7)" onkeyup="fNum('rating', 7)">
             </div>
 
@@ -21,6 +21,7 @@
 </div>
 
 <div class="container m-5">
+    <label for="table" class="font-weight-bold mb-2 h3">Site List</label>
     <table class="table table-hover">
         <thead class="thead-dark">
             <tr>

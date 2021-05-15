@@ -26,23 +26,23 @@ router.get('/:id', async (req, res) =>{
     // }
 
     try{
-        let reservationId = req.params.id
-        const reservationInformation =  await reservationData.getReservationById(reservationId.toString());
-        let siteId = reservationInformation.siteId;
-        const siteInformation = await vaccineData.getSiteById(siteId);
-        let result = {
-            _id: reservationInformation._id,
-            userId: reservationInformation.userId,
-            siteId: reservationInformation.siteId,
-            date: reservationInformation.date,
-            time: reservationInformation.time,
-            sitename: siteInformation.name
-        };
+    //     let reservationId = req.params.id
+    //     const reservationInformation =  await reservationData.getReservationById(reservationId.toString());
+    //     let siteId = reservationInformation.siteId;
+    //     const siteInformation = await vaccineData.getSiteById(siteId);
+    //     let result = {
+    //         _id: reservationInformation._id,
+    //         userId: reservationInformation.userId,
+    //         siteId: reservationInformation.siteId,
+    //         date: reservationInformation.date,
+    //         time: reservationInformation.time,
+    //         sitename: siteInformation.name
+    //     };
         // res.json(result);
-        res.status(200).render('reservation/myReservation', {partial: 'makeReservation-script', result: result});
+        res.status(200).render('reservation/makeReservation', {partial: 'makeReservation-script'});
 
     }catch (e){
-        res.status(404).json({error: 'Comment not found'});
+        res.status(404).json({error: 'Reservation not found'});
     }
 });
 
@@ -84,7 +84,8 @@ router.post('/', async (req, res) =>{
         const newReservation = await reservationData.addReservation(userId, siteId, data);
         await usersData.addReservationIdFromUser(userId, (newReservation._id).toString());
         await vaccineData.addReservationIdFromSite(siteId, (newReservation._id).toString());
-        res.status(200).send(newReservation);
+        res.status(200).render('reservation/myReservation', {newReservation})
+        //res.status(200).send(newReservation);
     }catch (e){
         res.status(500).json({error:e});
     }
@@ -124,7 +125,7 @@ router.get('/allReservation/:id', async (req, res) =>{
     let userId = req.params.id;
     let userInformation = await usersData.getUserById(userId);
     if(!(userInformation.reservation_history) || typeof (userInformation.reservation_history) === 'undefined') {
-        return res.render('users/profile', {partial: 'makeReservation-script', result: null});
+        return res.render('reservation/myReservation', {partial: 'makeReservation-script', result: null});
     }else {
         let reservationHistory = userInformation.reservation_history;
         let temp = [];
@@ -149,7 +150,7 @@ router.get('/allReservation/:id', async (req, res) =>{
             results.push(result);
         }
         // res.status(200).json({result: results});
-        return res.render('users/profile', {partial: 'makeReservation-script', result: results});
+        return res.render('reservation/myReservation', {partial: 'makeReservation-script', result: results});
         // res.status(200).json({result: results});
     }
 });
