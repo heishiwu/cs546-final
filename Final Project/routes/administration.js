@@ -127,7 +127,7 @@ router.get('/getInfo', async (req, res) =>{
             // let userInformation = await administrationData.getAdminById((x._id).toString());
             let dailyDataInfo = await dailyData.getAllData();
             let siteInfo = await siteData.getAllSites();
-            res.status(200).render('admin/admin', { dailyDataInfo, siteInfo, partial: 'admin-script', authenticated: true });
+            res.status(200).render('admin/admin', { dailyDataInfo, siteInfo, partial: 'admin-script', admin: true });
         // }
     // res.status(401).render('admin/adminLogin', {message: "Invalid username or password", partial: 'login-script'});
 });
@@ -143,7 +143,7 @@ router.get('/logout', async (req, res) => {
 
 router.get('/admin/addNewSite', async (req, res) => {
     if(req.session.adminId){
-        res.render('admin/addNewSite', {partial:"addNewSite-script", authenticated: true});
+        res.render('admin/addNewSite', {partial:"addNewSite-script", admin: true});
     }
     else {
         res.render('admin/adminLogin', {
@@ -155,7 +155,7 @@ router.get('/admin/addNewSite', async (req, res) => {
 
 router.get('/admin/addDailyData', async (req, res) => {
     if(req.session.adminId){
-        res.render('admin/addDailyData', {partial:"addDailyData-script", authenticated: true});
+        res.render('admin/addDailyData', {partial:"addDailyData-script", admin: true});
     }
     else {
         res.render('admin/adminLogin', {

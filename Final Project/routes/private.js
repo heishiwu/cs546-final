@@ -35,7 +35,7 @@ router.get('/', async (req, res) =>{
         } else if(req.session.userId){
             res.render('landing/landing', {userInformation,partial:'landing-script', authenticated:true});
         } else{
-            res.render('landing/landing', {userInformation,partial:'landing-script'});
+            res.render('landing/landing', {userInformation,partial:'landing-script', unauthenticated:true});
         }
     }catch (e){
         res.render('error/error',{errors:e, partial:'error-script'})

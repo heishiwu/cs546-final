@@ -2,7 +2,7 @@
     // let updateSiteForm = $('.updateSiteForm');
     let updateSite = $('.updateSite');
     let deleteSite = $('.deleteSite');
-    let deleteData = $('.deleteData');
+    // let deleteData = $('.deleteData');
 
     updateSite.on("click", function (event) {
         let parent = $(this).parents('.option');
@@ -97,7 +97,8 @@
     })
 
     deleteSite.on("click", function (event) {
-        let parent = $(this).parent();
+        let parent = $(this).parents('.option');
+        // let parent = $(this).parent();
         let id = parent.children('p').html().trim();
         let siteBody = $('#siteBody');
         event.preventDefault();

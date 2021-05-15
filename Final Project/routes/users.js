@@ -208,7 +208,8 @@ router.get('/login', async (req, res) => {
     else {
         res.render('users/login', {
             title: 'User Login',
-            partial: 'login-script'
+            partial: 'login-script',
+            unauthenticated: true
         });
     }
 });
@@ -232,13 +233,13 @@ router.post('/login', async (req, res) => {
                     req.session.userId = x._id.toHexString();
                     // return res.redirect('/private');
                     let userInformation = await userData.getUserById((x._id).toString());
-                    res.status(200).render('landing/landing', { userInformation, partial: 'login-script', authenticated: true });
+                    return res.status(200).render('landing/landing', { userInformation, partial: 'landing-script', authenticated: true });
                     // res.status(200).json({result: userInformation});
                 }
                 break;
             }
         }
-        res.status(401).render('users/login', { message: "Invaild username or password", partial: 'login-script' });
+        res.status(401).render('users/login', { message: "Invaild username or password", partial: 'login-script', unauthenticated: true });
     }
 });
 
