@@ -132,10 +132,10 @@ router.post('/account3', async (req, res) => {
         res.status(404).json({ error: 'User not found' });
         return;
     }
-    if (email === oldUser.email) {
-        res.status(400).json({ error: 'you have to input different email' });
-        return;
-    }
+    // if (email === oldUser.email) {
+    //     res.status(400).json({ error: 'you have to input different email' });
+    //     return;
+    // }
 
     try {
         const userInfo = await userData.updateUserInformation(userId, name, email, address, birthdayFormat, gender, race,
