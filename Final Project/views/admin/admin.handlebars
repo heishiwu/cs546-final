@@ -1,13 +1,14 @@
 <h3 class="mb-3">Administration</h3>
 <div class="row g-3">
     <h5 class="col-10">Site List</h5>
-    <a href="admin/addNewSite" class="link-primary col-2">Add New Site</a>
+    <a href="/administration/admin/addNewSite" class="link-primary col-2">Add New Site</a>
     <form>
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">AddressLine</th>
+                    <th scope="col">Apartment Suite UnitNumber</th>
                     <th scope="col">City</th>
                     <th scope="col">County</th>
                     <th scope="col">State</th>
@@ -17,10 +18,11 @@
                 </tr>
             </thead>
             <tbody id="siteBody">
-                {{#each sites}}
+                {{#each siteInfo}}
                 <tr>
                     <td>{{this.name}}</td>
                     <td>{{this.address.addressLine}}</td>
+                    <td>{{this.address.apartment_suite_unitNumber}}</td>
                     <td>{{this.address.city}}</td>
                     <td>{{this.address.county}}</td>
                     <td>{{this.address.state}}</td>
@@ -50,7 +52,7 @@
 //     "change_date ": "04/03/2021" -->
 
     <h5 class="col-10">Daily Data</h5>
-    <a href="admin/addDailyData" class="link-primary col-2">Add Daily Data</a>
+    <a href="/administration/admin/addDailyData" class="link-primary col-2">Add Daily Data</a>
     <table width="95%" class="table table-striped table-hover">
         <thead>
             <tr>
@@ -66,7 +68,7 @@
             </tr>
         </thead>
         <tbody  id="dailydataBody">
-            {{#each sites}}
+            {{#each dailyDataInfo}}
             <tr>
                 <td>{{this.dailyCases}}</td>
                 <td>{{this.dailyDeath}}</td>
