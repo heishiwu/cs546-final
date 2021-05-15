@@ -89,7 +89,7 @@ router.post('/:id', async (req, res) =>{
             const newReservation = await reservationData.addReservation(userId, siteId, date);
             const userInfo = await usersData.addReservationIdFromUser(userId, (newReservation._id).toString());
             const siteInfo = await vaccineData.addReservationIdFromSite(siteId, (newReservation._id).toString());
-            return res.redirect('../reservation/allReservation/' + userId);
+            return res.redirect('/reservation/allReservation/' + userId);
             //res.status(200).render('reservation/myReservation', {result: newReservation, partial: 'myReservation-script'});
             // res.status(200).json({newReservation: newReservation, userInfo: userInfo, siteInfo: siteInfo});
         }catch (e){
@@ -170,6 +170,7 @@ router.delete('/', async (req, res) =>{
  *  This is give all reservation results with one userId
  */
 router.get('/allReservation/:id', async (req, res) =>{
+    
     let userId = req.params.id;
     let userInformation = await usersData.getUserById(userId);
     if(!(userInformation.reservation_history) || typeof (userInformation.reservation_history) === 'undefined') {
@@ -184,6 +185,8 @@ router.get('/allReservation/:id', async (req, res) =>{
         let results = [];
         for(let j = 0; j <temp.length; j++){
             let siteId = temp[j].siteId;
+            console.log(temp[j])
+            console.log(siteId)
             let siteInfo = await vaccineData.getSiteById(siteId);
             let result = {
                 reservationId: temp[j]._id,

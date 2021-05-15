@@ -48,6 +48,7 @@ async function addReservation(userId, siteId, date){
     }
     let arr = date.split("-");
     date = arr[1] + "/" + arr[2] + "/" + arr[0];
+
     //test birthday using regular expression.
     if(!moment(date, "MM/DD/YYYY", true).isValid() &&
         !moment(date, "M/DD/YYYY", true).isValid() &&
@@ -62,7 +63,7 @@ async function addReservation(userId, siteId, date){
         date: date,
         time: new Date().getTime()  // timestamp
     }
-    
+    console.log(newReservation)
     let insertInfo = await reservationCollection.insertOne(newReservation);
     if (insertInfo === null)
         throw 'Something wrong when adding the reservation';

@@ -315,7 +315,7 @@ async function getAllCommentsSiteId(siteId){
 
 async function addCommentAndReservation(siteId, commentId, reservationId) {
     if (!siteId || typeof siteId !== 'string') {
-        throw 'User id is not a valid string.';
+        throw 'siteId is not a valid string.';
     }
     if (!commentId || typeof commentId !== 'string') {
         throw 'commentId is not a valid string.';
@@ -328,7 +328,9 @@ async function addCommentAndReservation(siteId, commentId, reservationId) {
 
     const vaccineCollection = await vaccineInjectionSite();
     let site = await vaccineCollection.findOne({_id: siteId});
+    console.log(typeof site)
     if (site === null) {
+        console.log("1111111")
         throw "No site found";
     } else {
         if (!site.comments_history || typeof (site.comments_history) === 'undefined') {

@@ -248,7 +248,7 @@ router.get('/signup', async (req, res) => {
         let userInformation = await userData.getUserById((req.session.userId).toString());
         res.status(200).render('landing/landing', { userInformation, partial: 'login-script', authenticated: true });
     } else {
-        return res.render('users/signup', { partial: 'signup-script', unauthenticated: true });
+        return res.render('users/signup', { partial: 'signup-script' });
     }
 });
 
@@ -319,7 +319,7 @@ router.post('/signup', async (req, res) => {
             // res.status(200).json({result: userInformation});
             res.status(200).render('landing/landing', { userInformation, partial: 'login-script', authenticated: true });
         } catch (e) {
-            res.status(404).render('users/signup', { message: e, partial: 'signup-script', unauthenticated: true });
+            res.status(404).render('users/signup', { message: e, partial: 'signup-script' });
         }
     }
 

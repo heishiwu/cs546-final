@@ -22,7 +22,8 @@ router.get('/:id', async (req, res) =>{
         
         let CH = siteInformation.comments_history;
         if(!(CH) || typeof (CH) === 'undefined') {
-            return res.render('sites/single', {siteInformation, partial: 'sites-list-script', rating: null});
+            let userInformation = await userData.getUserById(req.session.userId);
+            return res.render('sites/single', {userInformation, siteInfo: siteInformation, partial: 'list-single-script', authenticated : true});
             // if NULL, return null to sites/singles
         }else {
             let commentsHistory = CH;
