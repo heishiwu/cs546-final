@@ -93,6 +93,45 @@ router.post('/', async (req, res) =>{
 
 
 /**
+ * create a new reservations, input userId, siteId, data, and it will automatically update
+ * reservation information in users and vaccineInjectionSite database.
+ */
+router.post('/:id', async (req, res) =>{
+
+    // let reservationInfo = req.body;
+    // if(!reservationInfo){
+    //     res.status(400).json({error: "You must input a data"});
+    // }
+    // const {userId, siteId, data} = reservationInfo;
+    let userId = req.session.userId;
+    userId = userId.toString();
+    let siteId = req.params.id;
+    siteId = siteId.toString();
+    let data = req.body.data;
+
+    if(!userId){
+        res.status(400).json({error: "You must input a userId"});
+    }
+    if(!siteId){
+        res.status(400).json({error: "You must input a siteId"});
+    }
+    if(!data){
+        res.status(400).json({error: "You must input a data"});
+    }
+
+    try{
+        const newReservation = await reservationData.addReservation(userId, siteId, data);
+        const userInfo = await usersData.addReservationIdFromUser(userId, (newReservation._id).toString());
+        const siteInfo = await vaccineData.addReservationIdFromSite(siteId, (newReservation._id).toString());
+        res.status(200).render('reservation/myReservation', {newReservation});
+        // res.status(200).json({newReservation: newReservation, userInfo: userInfo, siteInfo: siteInfo});
+    }catch (e){
+        res.status(500).json({error:e});
+    }
+});
+
+
+/**
  * delete a reservation with reservationId,  and it will automatically delete
  * reservation information in users and vaccineInjectionSite database.
  */
