@@ -46,12 +46,35 @@ router.post('/', async (req, res) =>{
     if(!siteInfo){
         res.status(400).json({error: "You must input a data"});
     }
-    const {name, address} = siteInfo;
+    const {name, addressLine, apartment_suite_unitNumber, city, county, state, postalCode} = siteInfo;
     if(!name){
         res.status(400).json({error: "You must input a name"});
     }
-    if(!address){
-        res.status(400).json({error: "You must input a address"});
+    if(!addressLine){
+        res.status(400).json({error: "You must input a addressLine"});
+    }
+    if(!apartment_suite_unitNumber){
+        res.status(400).json({error: "You must input a apartment_suite_unitNumber"});
+    }
+    if(!city){
+        res.status(400).json({error: "You must input a city"});
+    }
+    if(!county){
+        res.status(400).json({error: "You must input a county"});
+    }
+    if(!state){
+        res.status(400).json({error: "You must input a state"});
+    }
+    if(!postalCode){
+        res.status(400).json({error: "You must input a postalCode"});
+    }
+    let address = {
+        addressLine: addressLine,
+        apartment_suite_unitNumber : apartment_suite_unitNumber,
+        city : city,
+        county : county,
+        state : state,
+        postalCode : postalCode
     }
     // if(!reservation_history){
     //     res.status(400).json({error: "You must input a reservation_history"});
