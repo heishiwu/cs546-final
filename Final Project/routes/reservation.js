@@ -82,10 +82,10 @@ router.post('/', async (req, res) =>{
 
     try{
         const newReservation = await reservationData.addReservation(userId, siteId, data);
-        await usersData.addReservationIdFromUser(userId, (newReservation._id).toString());
-        await vaccineData.addReservationIdFromSite(siteId, (newReservation._id).toString());
-        res.status(200).render('reservation/myReservation', {newReservation})
-        //res.status(200).send(newReservation);
+        const userInfo = await usersData.addReservationIdFromUser(userId, (newReservation._id).toString());
+        const siteInfo = await vaccineData.addReservationIdFromSite(siteId, (newReservation._id).toString());
+        res.status(200).render('reservation/myReservation', {newReservation});
+        // res.status(200).json({newReservation: newReservation, userInfo: userInfo, siteInfo: siteInfo});
     }catch (e){
         res.status(500).json({error:e});
     }
@@ -110,9 +110,10 @@ router.delete('/', async (req, res) =>{
     }
 
     try{
-        await usersData.removeReservationIdFromUser(userId,(reservationId).toString());
-        await vaccineData.removeReservationIdFromSite(siteId, (reservationId).toString());
+        const userInfo = await usersData.removeReservationIdFromUser(userId,(reservationId).toString());
+        const siteInfo = await vaccineData.removeReservationIdFromSite(siteId, (reservationId).toString());
         const message = await reservationData.removeReservation(reservationId, userId, siteId);
+        // res.status(200).json({commentInfo: message, userInfo: userInfo, updateSite: siteInfo});
         res.status(200).send(message);
     }catch (e){
         res.status(500).json({ error: e});

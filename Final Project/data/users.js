@@ -425,8 +425,11 @@ async function removeCommentIdFromUser(userId, commentId){
         }
     }
     userInformation.comments_history = list;
-    let updateInformation = await userCollection.updateOne({ _id: userId }, { $set: { comments_history: userInformation.comments_history} });
-    return updateInformation;
+    let updateInformation = await userCollection.updateOne({ _id: ObjectId(userId) }, { $set: { comments_history: userInformation.comments_history} });
+    if (updateInformation.deletedCount === 0) {
+        throw `Could not delete the commentId from commentHistory`;
+    }
+    return this.getUserById(userId);
 }
 
 //this function is used in ./data/reservation.js
@@ -447,8 +450,12 @@ async function removeReservationIdFromUser(userId, reservationId){
         }
     }
     userInformation.reservation_history = list;
-    let updateInformation = await userCollection.updateOne({ _id: userId }, { $set: { reservation_history: userInformation.reservation_history} });
-    return updateInformation;
+    let updateInformation = await userCollection.updateOne({ _id: ObjectId(userId) }, { $set: { reservation_history: userInformation.reservation_history} });
+    if (updateInformation.deletedCount === 0) {
+        throw `Could not delete the commentId from commentHistory`;
+    }
+    return this.getUserById(userId);
+    // return updateInformation;
 }
 
 
@@ -471,8 +478,11 @@ async function addCommentIdFromUser(userId, commentId){
         userInformation.comments_history.push(commentId);
     }
     // userInformation.comments_history.push(commentId);
-    let updateInformation = await userCollection.updateOne({ _id: userId }, { $set: { comments_history: userInformation.comments_history} });
-    return updateInformation;
+    let updateInformation = await userCollection.updateOne({ _id: ObjectId(userId) }, { $set: { comments_history: userInformation.comments_history} });
+    if (updateInformation.modifiedCount === 0) {
+        throw 'could not edit the comments history successfully';
+    }
+    return this.getUserById(userId);
 }
 
 //this function is used in ./data/reservation.js
@@ -494,8 +504,11 @@ async function addReservationIdFromUser(userId, reservationId){
         userInformation.reservation_history.push(reservationId);
     }
     // userInformation.reservation_history.push(reservationId);
-    let updateInformation = await userCollection.updateOne({ _id: userId }, { $set: { reservation_history: userInformation.reservation_history} });
-    return updateInformation;
+    let updateInformation = await userCollection.updateOne({ _id: ObjectId(userId) }, { $set: { reservation_history: userInformation.reservation_history} });
+    if (updateInformation.modifiedCount === 0) {
+        throw 'could not edit the reservation history successfully';
+    }
+    return this.getUserById(userId);
 }
 
 async function removeCommentIdFromSite(siteId, commentId){
@@ -515,7 +528,7 @@ async function removeCommentIdFromSite(siteId, commentId){
         }
     }
     siteInformation.comments_history = list;
-    let updateInformation = await siteCollection.updateOne({ _id: userId }, { $set: { comments_history: siteInformation.comments_history} });
+    let updateInformation = await siteCollection.updateOne({ _id: ObjectId(siteId) }, { $set: { comments_history: siteInformation.comments_history} });
     return updateInformation;
 }
 
@@ -537,7 +550,7 @@ async function removeReservationIdFromSite(siteId, reservationId){
         }
     }
     siteInformation.reservation_history = list;
-    let updateInformation = await siteCollection.updateOne({ _id: userId }, { $set: { reservation_history: siteInformation.reservation_history} });
+    let updateInformation = await siteCollection.updateOne({ _id: ObjectId(siteId) }, { $set: { reservation_history: siteInformation.reservation_history} });
     return updateInformation;
 }
 
@@ -550,7 +563,7 @@ async function addCommentIdFromSite(siteId, commentId){
     if(!commentId || typeof (commentId) !=="string"){
         throw "input a string format commentId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
     let siteInformation = await getSiteById(siteId.toString());
     if(!siteInformation.comments_history){
@@ -561,7 +574,7 @@ async function addCommentIdFromSite(siteId, commentId){
         siteInformation.comments_history.push(commentId);
     }
     // siteInformation.comments_history.push(commentId);
-    let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { comments_history: siteInformation.comments_history} });
+    let updateInformation = await siteCollection.updateOne({ _id: ObjectId(siteId) }, { $set: { comments_history: siteInformation.comments_history} });
     return updateInformation;
 }
 
@@ -574,7 +587,7 @@ async function addReservationIdFromSite(siteId, reservationId){
     if(!reservationId || typeof (reservationId) !=="string"){
         throw "input a string format reservationId";
     }
-    siteId = ObjectId.createFromHexString(siteId);
+    // siteId = ObjectId.createFromHexString(siteId);
     const siteCollection = await vaccineInjectionSite();
     let siteInformation = await getSiteById(siteId.toString());
     if(!siteInformation.reservation_history){
@@ -585,7 +598,7 @@ async function addReservationIdFromSite(siteId, reservationId){
         siteInformation.reservation_history.push(reservationId);
     }
     // siteInformation.reservation_history.push(reservationId);
-    let updateInformation = await siteCollection.updateOne({ _id: siteId }, { $set: { reservation_history: siteInformation.reservation_history} });
+    let updateInformation = await siteCollection.updateOne({ _id: ObjectId(siteId) }, { $set: { reservation_history: siteInformation.reservation_history} });
     return updateInformation;
 }
 
