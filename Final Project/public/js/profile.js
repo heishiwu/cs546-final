@@ -75,9 +75,14 @@
         $('#postalCode').removeAttr("disabled");
 
         let genderValue = $('#genderLable').html().trim().toLowerCase();
+        if(genderValue){
+            $('.genderRadio[value = ' + genderValue + ']').prop('checked', true);
+        } else {
+            $('.genderRadio[value = ""]').prop('checked', true);
+        }
         $('#genderLable').css({ display: "none" });
         $('#genderDiv').css({ display: "block" });
-        $('.genderRadio[value = ' + genderValue + ']').prop('checked', true)
+        
 
         let raceValue = $('#racebef').val();
         $('#racebef').css({ display: "none" });
