@@ -22,19 +22,16 @@ router.get('/:id', async (req, res) =>{
         
         let CH = siteInformation.comments_history;
         if(!(CH) || typeof (CH) === 'undefined') {
-            return res.render('sites/single', {partial: 'sites-list-script', rating: null});
+            return res.render('sites/single', {siteInformation, partial: 'sites-list-script', rating: null});
             // if NULL, return null to sites/singles
         }else {
-            
             let commentsHistory = CH;
             let temp = [];
             for(let i = 0; i <commentsHistory.length; i++){
                 // let a = commentsHistory[i];
-                let commentsInfo = await commentData.getCommentById(commentsHistory[i]);
-                
+                let commentsInfo = await commentsData.getCommentById(commentsHistory[i]);
                 temp.push(commentsInfo);
             }
-            
             let sum = 0.0;
             for(let j = 0; j < temp.length; j++){
                 sum += parseFloat(temp[j].rating);
@@ -188,10 +185,10 @@ router.post('/', async (req, res) =>{
 });
 
 router.post('/update', async (req, res) =>{
-    const{siteId, name, address} = req.body;
-    if(!req.session.adminId){
-        return res.redirect('/private');
-    }
+    const{siteId, name, address, rating} = req.body;
+    // if(!req.session.siteId){
+    //     return res.redirect('/private');
+    // }
     let oldSite;
     try{
         oldSite = await vaccineData.getSiteById(siteId);
@@ -200,11 +197,10 @@ router.post('/update', async (req, res) =>{
         return ;
     }
     try{
-        const siteInfo = await vaccineData.updateSite(siteId, name, address);
+        const siteInfo = await vaccineData.updateSite(siteId, name, address, rating.toString());
         res.status(200).send(siteInfo)
     }catch (e){
-        res.status(500).json({error:e});
-        // res.state(500).render('admin/admin',{error: e})
+        res.status(500).json({error:e})
     }
 });
 
