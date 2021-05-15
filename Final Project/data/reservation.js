@@ -13,7 +13,7 @@ const vaccineCollection = require('./vaccineInjectionSite');
 //     "userId": "12eg456-e89b-24d3-a456-426655440000",
 //     "siteId": "12eg456-e89b-24d3-a456-426655440000",
 //     "date": "04/06/2021",
-//     "time": "1617644499"
+//     "time": 1617644499
 // }
 
 async function getReservationById(reservationId){

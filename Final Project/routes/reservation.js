@@ -142,7 +142,7 @@ router.get('/allReservation/:id', async (req, res) =>{
                 userId: temp[j].userId,
                 siteId: temp[j].siteId,
                 date: temp[j].date,
-                time: temp[j].time,
+                time:new Date(parseInt(temp[j].time)).toLocaleDateString(),
                 siteName: siteInfo.name,
                 siteAddress: siteInfo.address,
                 siteRating: siteInfo.rating
@@ -155,6 +155,23 @@ router.get('/allReservation/:id', async (req, res) =>{
     }
 });
 
+
+
+// function formatDate(date) {
+//     let dates = date.split("/");
+//     if(dates.length == 3) {
+//         if(dates[1].length == 1) {
+//             dates[1] = "0" + dates[1];
+//         }
+//         if (dates[2].length == 1) {
+//             dates[2] = "0" + dates[2];
+//         }
+//         date = dates.join("-");
+//         return date;
+//     } else {
+//         return null;
+//     }
+// }
 
 
 
