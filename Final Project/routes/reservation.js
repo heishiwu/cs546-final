@@ -125,7 +125,7 @@ router.get('/allReservation/:id', async (req, res) =>{
     let userId = req.params.id;
     let userInformation = await usersData.getUserById(userId);
     if(!(userInformation.reservation_history) || typeof (userInformation.reservation_history) === 'undefined') {
-        return res.render('reservation/myReservation', {partial: 'makeReservation-script', result: null});
+        return res.render('reservation/myReservation', {partial: 'myReservation-script', result: null});
     }else {
         let reservationHistory = userInformation.reservation_history;
         let temp = [];
@@ -150,7 +150,7 @@ router.get('/allReservation/:id', async (req, res) =>{
             results.push(result);
         }
         // res.status(200).json({result: results});
-        return res.render('reservation/myReservation', {partial: 'makeReservation-script', result: results});
+        return res.render('reservation/myReservation', {partial: 'myReservation-script', result: results});
         // res.status(200).json({result: results});
     }
 });
