@@ -46,7 +46,7 @@ router.post('/', async (req, res) =>{
     if(!siteInfo){
         res.status(400).json({error: "You must input a data"});
     }
-    const {name, address, rating} = siteInfo;
+    const {name, address} = siteInfo;
     if(!name){
         res.status(400).json({error: "You must input a name"});
     }
@@ -59,19 +59,19 @@ router.post('/', async (req, res) =>{
     // if(!comments_history){
     //     res.status(400).json({error: "You must input a comments_history"});
     // }
-    if(!rating){
-        res.status(400).json({error: "You must input a rating"});
-    }
+    // if(!rating){
+    //     res.status(400).json({error: "You must input a rating"});
+    // }
     try{
-        const newSite = await vaccineData.createSite(name, address, rating);
-        res.status(200).send(newSite);
+        const newSite = await vaccineData.createSite(name, address);
+        res.render('/administration/admin/addNewSite', {partial:"addNewSite-script"});
     }catch (e){
         res.status(500).json({error:e});
     }
 });
 
 router.post('/update', async (req, res) =>{
-    const{siteId, name, address, Rating} = req.body;
+    const{siteId, name, address} = req.body;
     if(!req.session.siteId){
         return res.redirect('/private');
     }
