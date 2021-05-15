@@ -120,16 +120,14 @@ router.post('/login', async (req, res) =>{
 });
 
 router.get('/getInfo', async (req, res) =>{
-    // if(req.session.adminId){
-    //     return res.redirect('/private');
-    // }
-    // else {
-            // let userInformation = await administrationData.getAdminById((x._id).toString());
+    if(!req.session.adminId){
+        res.redirect('../administration/login')
+    } else {
+            let userInformation = await administrationData.getAdminById(req.session.adminId);
             let dailyDataInfo = await dailyData.getAllData();
             let siteInfo = await siteData.getAllSites();
-            res.status(200).render('admin/admin', { dailyDataInfo, siteInfo, partial: 'admin-script', admin: true });
-        // }
-    // res.status(401).render('admin/adminLogin', {message: "Invalid username or password", partial: 'login-script'});
+            res.status(200).render('admin/admin', { userInformation, dailyDataInfo, siteInfo, partial: 'admin-script', admin: true });
+    }
 });
 
 router.get('/logout', async (req, res) => {
@@ -143,7 +141,8 @@ router.get('/logout', async (req, res) => {
 
 router.get('/admin/addNewSite', async (req, res) => {
     if(req.session.adminId){
-        res.render('admin/addNewSite', {partial:"addNewSite-script", admin: true});
+        let userInformation = await administrationData.getAdminById(req.session.adminId);
+        res.render('admin/addNewSite', {userInformation, partial:"addNewSite-script", admin: true});
     }
     else {
         res.render('admin/adminLogin', {
@@ -155,7 +154,8 @@ router.get('/admin/addNewSite', async (req, res) => {
 
 router.get('/admin/addDailyData', async (req, res) => {
     if(req.session.adminId){
-        res.render('admin/addDailyData', {partial:"addDailyData-script", admin: true});
+        let userInformation = await administrationData.getAdminById(req.session.adminId);
+        res.render('admin/addDailyData', {userInformation, partial:"addDailyData-script", admin: true});
     }
     else {
         res.render('admin/adminLogin', {

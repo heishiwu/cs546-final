@@ -22,16 +22,15 @@ const adminData = data.administration;
 router.get('/', async (req, res) =>{
     try{
         let userInformation;
-        let adminInformation;
         if(req.session){
             if(req.session.userId){
                 userInformation = await userData.getUserById(req.session.userId);
             } else if(req.session.adminId){
-                adminInformation = await adminData.getAdminById(req.session.userId);
+                userInformation = await adminData.getAdminById(req.session.adminId);
             }
         }
         if(req.session.adminId){
-            res.render('admin/admin', {adminInformation,partial:'admin-script',authenticated:true}); 
+            res.redirect('administration/getInfo'); 
         } else if(req.session.userId){
             res.render('landing/landing', {userInformation,partial:'landing-script', authenticated:true});
         } else{
