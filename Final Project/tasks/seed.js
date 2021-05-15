@@ -11,22 +11,23 @@ async function main() {
     await db.dropDatabase();
 
     //add code, Yi Lin will add that after I finish the routes.
-    let u1 = await users.createUser({"firstName": "Yi", "lastName": "Lin"}, "username1", "$2a$10$S47.YnORnIZRLpMOSOINm.eUL4FoSLBFaWfk7qWT65.0c7unyjzGi","username1@gmail.com",
-        {"addressLine": "1313 Grand St.", "apartment_suite_unitNumber": "APT 304", "city": "hoboken", "county": "hudson", "state": "NJ", "postalCode": "07030"}, "02/03/1998", "Male",
-        "Asian", "Not Hispanic or latino", {"insuranceType":"Private Insurance",  "insuranceName":"HuHu"}, "HDEPO National HRA", "sdasdad-sdasd-sdsd");
+    let u1 = await users.createUser({ "firstName": "Yi", "lastName": "Lin" }, "username1", "$2a$10$S47.YnORnIZRLpMOSOINm.eUL4FoSLBFaWfk7qWT65.0c7unyjzGi", "username1@gmail.com",
+        { "addressLine": "1313 Grand St.", "apartment_suite_unitNumber": "APT 304", "city": "hoboken", "county": "hudson", "state": "NJ", "postalCode": "07030" }, "02/03/1998", "Male",
+        "Asian", "Not Hispanic or latino", { "insuranceType": "Private Insurance", "insuranceName": "HuHu" }, "HDEPO National HRA", "sdasdad-sdasd-sdsd");
     let u1_userid = u1._id.toHexString();
     console.log("u1");
     // console.log(u1_userid);
 
-    let u2 = await users.createUser({"firstName": "Yi", "lastName": "Lin"}, "username2", "$2a$10$0A53QP0G0oeux7RFlNUqHuK7j5GU3zJjgYj3IQk02s4SznXUmcBLS","username2@gmail.com",
-        {"addressLine": "1313 Grand St.", "apartment_suite_unitNumber": "APT 304", "city": "hoboken", "county": "hudson", "state": "NJ", "postalCode": "07030"}, "02/03/1998", "Male",
-        "Asian", "Not Hispanic or latino", {"insuranceType":"Private Insurance",  "insuranceName":"HuHu"}, "HDEPO National HRA", "sdasdad-sdasd-sdsd");
+    let u2 = await users.createUser({ "firstName": "Yi", "lastName": "Lin" }, "username2", "$2a$10$0A53QP0G0oeux7RFlNUqHuK7j5GU3zJjgYj3IQk02s4SznXUmcBLS", "username2@gmail.com",
+        { "addressLine": "1313 Grand St.", "apartment_suite_unitNumber": "APT 304", "city": "hoboken", "county": "hudson", "state": "NJ", "postalCode": "07030" }, "02/03/1998", "Male",
+        "Asian", "Not Hispanic or latino", { "insuranceType": "Private Insurance", "insuranceName": "HuHu" }, "HDEPO National HRA", "sdasdad-sdasd-sdsd");
     let u2_userid = u2._id.toHexString();
     console.log("u2");
 
 
-    let s1 = await vaccineInjectionSite.createSite("River Side1" ,
-        { "addressLine": "1313 Grand St.",
+    let s1 = await vaccineInjectionSite.createSite("River Side1",
+        {
+            "addressLine": "1313 Grand St.",
             "apartment_suite_unitNumber": "APT 304",
             "city": "hoboken",
             "county": "hudson",
@@ -39,8 +40,9 @@ async function main() {
     let s1_siteid = s1._id.toHexString();
     console.log("s1");
 
-    let s2 = await vaccineInjectionSite.createSite("River Side2" ,
-        { "addressLine": "1313 Grand St.",
+    let s2 = await vaccineInjectionSite.createSite("River Side2",
+        {
+            "addressLine": "1313 Grand St.",
             "apartment_suite_unitNumber": "APT 304",
             "city": "hoboken",
             "county": "hudson",
@@ -58,6 +60,9 @@ async function main() {
 
     console.log("a1");
 
+    let d1 = await dailyData.addData("1", "1", "3", "4", "5", "6", "7", "8", "2021-05-15");
+
+    console.log("d1");
 
 
     let c1 = await comments.addComment(u1_userid, s1_siteid, "4.1", "Nice1 and Social distant");
