@@ -1,5 +1,5 @@
 (function ($) {
-    // let updateSiteForm = $('.updateSite');
+     let updateSiteForm = $('.updateSite');
     let deleteSite = $('.deleteSite');
     let deleteData = $('.deleteData');
 
@@ -14,29 +14,16 @@
         let siteBody = $('#siteBody');
         event.preventDefault();
         let requestConfig = {
-            method: "POST",
-            url: 'vaccine/vaccineInjectionSite/' + id,
-            // contentType: 'application/json',
-            // data: JSON.stringify({
-            //     _id: id
-            // })
+            method: "delete",
+            url: '/vaccineInjectionSite',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                _id: id
+            })
         }
         $.ajax(requestConfig).then(function (result) {
-            siteBody.clear();
-            let content = "";
-            result.forEach(element => {
-                content += "<tr>" +
-                    "<td>" + element.name + "</td>" +
-                    "<td>" + element.address.addressLine + "</td>" +
-                    "<td>" + element.address.city + "</td>" +
-                    "<td>" + element.address.county + "</td>" +
-                    "<td>" + element.address.state + "</td>" +
-                    "<td>" + element.address.postalCode + "</td>" +
-                    "<td>" + element.rating + "</td>" +
-                    "<td> <p hidden>" + element._id + "</p> <a class='updateSite' href='#'>Update</a> <a class='deleteSite' href='#'>Delete</a></td>" +
-                    "</tr>";
-            });
-            siteBody.append(content);
+            let trParent = parent.parent();
+            trParent.remove();
         });
         // deleteSite.unbind().submit();
     });
@@ -55,7 +42,7 @@
             })
         }
         $.ajax(requestConfig).then(function (result) {
-            dailydataBody.clear();
+            dailydataBody.empty();
             let content = "";
             result.forEach(element => {
                 content += "<tr>" +

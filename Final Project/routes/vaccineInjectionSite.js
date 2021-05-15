@@ -87,7 +87,8 @@ router.post('/', async (req, res) =>{
     // }
     try{
         const newSite = await vaccineData.createSite(name, address);
-        res.render('/administration/admin/addNewSite', {partial:"addNewSite-script"});
+        // res.render('admin/addNewSite', {partial:"addNewSite-script"});
+        res.redirect('/administration/getInfo')
     }catch (e){
         res.status(500).json({error:e});
     }
