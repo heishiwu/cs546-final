@@ -3,7 +3,8 @@ const router = express.Router();
 const data = require("../data");
 const vaccineData = data.vaccineInjectionSite;
 const commentsData = data.comments;
-const userDate = data.users;
+const userData = data.users;
+const adminData = data.administration;
 
 
 
@@ -24,7 +25,7 @@ router.get('/:id', async (req, res) =>{
             comments: commentHistArr
         });
     }catch (e){
-        res.status(404).json({error: 'Site not found'});
+        res.status(404).json({error: e});
     }
 });
 
@@ -32,26 +33,28 @@ router.get('/:id', async (req, res) =>{
 router.get('/', async (req, res) =>{
     try{
         const siteInfo = await vaccineData.getAllSites();
-        if (req.session){
-            if (req.session.adminId){
-                res.render('sites/list', {
-                    partial: 'sites-list-script',
-                    sites: siteInfo,
-                    authenticated: true});
-            } else {
-                res.render('sites/list', {
-                    partial: 'sites-list-script',
-                    sites: siteInfo,
-                    authenticated: true});
-            }
-        }else{
+        if (req.session.adminId){
+            let userInformation = await adminData.getUserById((req.session.admin).toString());
             res.render('sites/list', {
+                userInformation,
                 partial: 'sites-list-script',
-                sites: siteInfo});
+                sites: siteInfo,
+                authenticated: true});
+        } else if (req.session.userId){
+            console.log((req.session.userId).toString())
+            let userInformation = await userData.getUserById((req.session.userId).toString());
+            res.render('sites/list', {
+                userInformation,
+                partial: 'sites-list-script',
+                sites: siteInfo,
+                authenticated: true});
+        } else {
+        res.render('sites/list', {
+            partial: 'sites-list-script',
+            sites: siteInfo});
         }
-               
-
     }catch (e){
+        console.log(e)
         res.status(500).send();
     }
 });
