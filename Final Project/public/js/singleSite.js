@@ -46,7 +46,7 @@
             currentForm.submit((event) => {
                 event.preventDefault();
 
-                let commentInput = currentForm.find('.form-group').find('input');
+                let commentInput = $('#comment-text');
                 commentInput.removeClass('is-invalid is-valid');
                 let ratingInput = $('#comment-rating');
                 ratingInput.removeClass('is-valid is-invalid');
