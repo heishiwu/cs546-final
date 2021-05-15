@@ -9,8 +9,52 @@ const adminData = data.administration;
 
 
 router.get('/:id', async (req, res) =>{
+    
     try{
+//////////////
+        let siteId = req.params.id;
+        let siteInformation =  await vaccineData.getSiteById(siteId);
+        // try{
+        //     siteInformation =  await vaccineData.getSiteById(siteId);
+        // }catch (e){
+        //     throw "error";
+        // }
+        
+        let CH = siteInformation.comments_history;
+        if(!(CH) || typeof (CH) === 'undefined') {
+            return res.render('sites/single', {partial: 'sites-list-script', rating: null});
+            // if NULL, return null to sites/singles
+        }else {
+            
+            let commentsHistory = CH;
+            let temp = [];
+            for(let i = 0; i <commentsHistory.length; i++){
+                // let a = commentsHistory[i];
+                let commentsInfo = await commentsData.getCommentById(commentsHistory[i]);
+                
+                temp.push(commentsInfo);
+            }
+            
+            let sum = 0.0;
+            for(let j = 0; j < temp.length; j++){
+                sum += parseFloat(temp[j].rating);
+            }
+            let sum1 = (sum/ temp.length).toFixed(1);
+            let siteInformation = await vaccineData.updateRating(siteId.toString(), sum1.toString());
+            // return res.render('sites/single',
+            //     {partial: 'sites-list-script',siteInformation: siteInformation});
+
+            // let result = {
+            //     rating: sum1
+            // }
+            // return result;
+            // res.status(200).json({rating: sum1});
+        }
+
+
+////////////////
         const siteInfo = await vaccineData.getSiteById(req.params.id);
+        
         let commentHistArr = [];
         for( let i = 0; i < siteInfo.comments_history.length; i++){
             let commentHistObj = await commentsData.getCommentById(siteInfo.comments_history[i]);
@@ -19,6 +63,7 @@ router.get('/:id', async (req, res) =>{
             commentHistObj['name'] = userName;
             commentHistArr.push(commentHistObj);
         }
+
         if (req.session.userId){
             let userInformation = await userData.getUserById((req.session.userId).toString());
             res.render('sites/single', {
@@ -30,6 +75,7 @@ router.get('/:id', async (req, res) =>{
             });
         }else if(req.session.adminId){
             let userInformation = await adminData.getAdminById((req.session.adminId).toString());
+            
             res.render('sites/single', {
                 userInformation,
                 partial: 'list-single-script',
@@ -162,6 +208,7 @@ router.post('/update', async (req, res) =>{
 });
 
 router.post('/:id', async (req, res) =>{
+    console.log("111111111")
     let commentInfo = req.body;   
     if(!req.session.userId) throw 'Please log in first';
     let userId = req.session.userId;
@@ -182,13 +229,10 @@ router.post('/:id', async (req, res) =>{
     if(!comment || typeof (comment) !=="string"){
         res.status(400).json({error: "You must input a string rating"});
     }
-    
     try{
        
         const newComment = await commentsData.addComment(userId, siteId, rating, comment);
-        
         await userData.addCommentIdFromUser(userId, (newComment._id).toString());
-        console.log(userId, siteId, rating, comment)
         await vaccineData.addCommentIdFromSite(siteId, (newComment._id).toString());
         
         res.status(200).send(newComment);

@@ -87,12 +87,10 @@ router.post('/:id', async (req, res) =>{
     
         try{
             const newReservation = await reservationData.addReservation(userId, siteId, date);
-            console.log(typeof newReservation)
-            console.log(newReservation)
             const userInfo = await usersData.addReservationIdFromUser(userId, (newReservation._id).toString());
             const siteInfo = await vaccineData.addReservationIdFromSite(siteId, (newReservation._id).toString());
-            let allReservation = await reservationData.getAllReservation()
-            res.status(200).render('reservation/myReservation', {result: newReservation, partial: 'myReservation-script'});
+            return res.redirect('../reservation/allReservation/' + userId);
+            //res.status(200).render('reservation/myReservation', {result: newReservation, partial: 'myReservation-script'});
             // res.status(200).json({newReservation: newReservation, userInfo: userInfo, siteInfo: siteInfo});
         }catch (e){
             res.status(500).json({error:e});

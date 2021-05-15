@@ -32,6 +32,7 @@ async function addAdmin(username, password){
 
 async function getAdminById(adminId){
     if (!adminId) throw 'adminId must be provided';
+    
     if (typeof adminId != 'string' || !adminId.trim()) throw 'the input adminId is invalid';
     let parsedAdminId = ObjectId(adminId);
     const adminCollection = await administration();

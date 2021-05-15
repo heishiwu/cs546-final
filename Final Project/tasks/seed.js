@@ -78,16 +78,16 @@ async function main() {
     let c4_id = c4._id.toHexString();
     console.log("c4");
 
-    let r1 = await reservations.addReservation(u1_userid, s1_siteid, "01/01/2021");
+    let r1 = await reservations.addReservation(u1_userid, s1_siteid, "2021-01-01");
     let r1_id = r1._id.toHexString();
     console.log("r1");
-    let r2 = await reservations.addReservation(u1_userid, s2_siteid, "02/02/2021");
+    let r2 = await reservations.addReservation(u1_userid, s2_siteid, "2021-02-02");
     let r2_id = r2._id.toHexString();
     console.log("r1");
-    let r3 = await reservations.addReservation(u2_userid, s1_siteid, "03/03/2021");
+    let r3 = await reservations.addReservation(u2_userid, s1_siteid, "2021-03-03");
     let r3_id = r3._id.toHexString();
     console.log("r1");
-    let r4 = await reservations.addReservation(u2_userid, s2_siteid, "04/04/2021");
+    let r4 = await reservations.addReservation(u2_userid, s2_siteid, "2021-04-04");
     let r4_id = r4._id.toHexString();
     console.log("r1");
 
