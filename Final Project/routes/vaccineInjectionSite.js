@@ -117,7 +117,9 @@ router.get('/', async (req, res) =>{
         } else {
         res.render('sites/list', {
             partial: 'sites-list-script',
-            sites: siteInfo});
+            sites: siteInfo,
+            unauthenticated: true
+        });
         }
     }catch (e){
         res.status(500).send();
