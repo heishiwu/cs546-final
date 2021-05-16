@@ -49,7 +49,11 @@
         if (!validString(info.county)) county.addClass('is-invalid');
         if (!validString(info.state)) state.addClass('is-invalid');
         if (!validString(info.postalCode)) postalCode.addClass('is-invalid');
-        
+        if (!(/^[0-9]{5}?$/).test(info.postalCode)) {
+            postalCode.addClass('is-invalid is-valid');
+            hasErrors = true;
+        }
+
         if (!hasErrors) {
             addNewSiteForm.unbind().submit();
         } else {

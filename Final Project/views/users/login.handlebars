@@ -4,14 +4,20 @@
         <div class="form-floating">
             <input type="text" class="form-control" id="username" name="username" placeholder="Username">
             <label for="username">Username</label>
+            <div class="invalid-feedback">
+                Please enter a valid Username.
+            </div>
         </div>
         <div class="form-floating">
             <input type="password" class="form-control" id="password" name="password" placeholder="Password">
             <label for="password">Password</label>
+            <div class="invalid-feedback">
+                Please enter a valid Password.
+            </div>
         </div>
         <input class="w-100 btn btn-lg btn-primary" type="submit" id="loginSubmit" value="Log in">
         {{#if message}}
-            <div class = "error font-italic" id="errors">{{message}}</div>
+        <div class="error font-italic" id="errors">{{message}}</div>
         {{/if}}
     </form>
 </div>
