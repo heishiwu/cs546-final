@@ -119,25 +119,21 @@
         event.preventDefault();
         hasErrors = false;
         // $('#editForm').unbind().submit();
-        if (!validString(firstName) || !validString(lastName) || !validString(birthday)) {
+        // let emailInput = $('#email');
+        if (!validString(firstName) || !validString(lastName) || !validString(birthday) || !validString(email)) {
             hasErrors = true;
         }
-        if (!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(email)) {
+        // if (!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(emailInput)) {
+        //     hasErrors = true;
+        // }
+        if ((addressLine && !validString(addressLine)) || (apartment_suite_unitNumber && !validString(apartment_suite_unitNumber)) || (city && !validString(city)) || (county && !validString(county)) || (state && !validString(state)) || (postalCode && !validString(postalCode))) {
             hasErrors = true;
-        }
-        if ((addressLine && !validString(addressLine)) || (apartment_suite_unitNumber && !validString(apartment_suite_unitNumber)) || (city && !validString(city)) || (county && !validString(county)) || (state && !validString(state))) {
-            hasErrors = true;
-        }
-        if (postalCode) {
-            if (!(/^[0-9]{5}?$/).test(postalCode)) {
-                hasErrors = true;
-            }
         }
         if ((insuranceName && !validString(insuranceName)) || (medicalGroupNumber && !validString(medicalGroupNumber)) || (medicalid && !validString(medicalid))) {
             hasErrors = true;
         }
 
-        if(hasErrors){
+        if (hasErrors) {
             alert("invalid input");
         }
 
