@@ -64,7 +64,6 @@ router.get('/:id', async (req, res) =>{
 
         if (req.session.userId){
             let userInformation = await userData.getUserById((req.session.userId).toString());
-            console.log(siteInfo)
             res.render('sites/single', {
                 userInformation,
                 partial: 'list-single-script',

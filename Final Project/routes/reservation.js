@@ -185,8 +185,6 @@ router.get('/allReservation/:id', async (req, res) =>{
         let results = [];
         for(let j = 0; j <temp.length; j++){
             let siteId = temp[j].siteId;
-            console.log(temp[j])
-            console.log(siteId)
             let siteInfo = await vaccineData.getSiteById(siteId);
             let result = {
                 reservationId: temp[j]._id,

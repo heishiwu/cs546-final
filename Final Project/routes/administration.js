@@ -105,7 +105,6 @@ router.post('/login', async (req, res) =>{
         const allAdmin = await administrationData.getAllAdmin();
         for(let x of allAdmin){
             if(username === x.username){
-                console.log(await bcrypt.compare(password, x.password))
                 if(await bcrypt.compare(password, x.password)){
                     req.session.adminId = x._id.toHexString();
                     //let userInformation = await administrationData.getAdminById((x._id).toString());
