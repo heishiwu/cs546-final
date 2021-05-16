@@ -2,7 +2,7 @@
     <h3 class="mb-3">Sign Up</h3>
     <form id="signupForm" class="needs-validation" novalidate method="POST" action="/users/signup">
         {{#if message}}
-            <div class = "error font-italic" id="errors">{{message}}</div>
+        <div class="error font-italic" id="errors">{{message}}</div>
         {{/if}}
         <div class="row g-3">
             <div class="col-12">
@@ -97,32 +97,50 @@
             <div class="col-12">
                 <label for="addressLine" class="form-label">Address Line</label>
                 <input type="text" class="form-control" name="addressLine" id="addressLine" placeholder="1234 Main St">
+                <div class="invalid-feedback">
+                    Please enter a valid Address Line.
+                </div>
             </div>
 
             <div class="col-12">
                 <label for="apartment_suite_unitNumber" class="form-label">Apartment Suite UnitNumber</label>
-                <input type="text" class="form-control" name="apartment_suite_unitNumber" id="apartment_suite_unitNumber"
-                    placeholder="Apartment or suite">
+                <input type="text" class="form-control" name="apartment_suite_unitNumber"
+                    id="apartment_suite_unitNumber" placeholder="Apartment or suite">
+                <div class="invalid-feedback">
+                    Please enter an Insurance Name.
+                </div>
             </div>
 
             <div class="col-md-3">
                 <label for="city" class="form-label">City</label>
                 <input type="text" class="form-control" name="city" id="city" placeholder="">
+                <div class="invalid-feedback">
+                    Please enter a valid City.
+                </div>
             </div>
 
             <div class="col-md-3">
                 <label for="county" class="form-label">County</label>
                 <input type="text" class="form-control" name="county" id="county" placeholder="">
+                <div class="invalid-feedback">
+                    Please enter a valid County.
+                </div>
             </div>
 
             <div class="col-md-3">
                 <label for="state" class="form-label">State</label>
                 <input type="text" class="form-control" name="state" id="state" placeholder="">
+                <div class="invalid-feedback">
+                    Please enter a valid State.
+                </div>
             </div>
 
             <div class="col-md-3">
                 <label for="postalCode" class="form-label">PostalCode</label>
                 <input type="text" class="form-control" name="postalCode" id="postalCode" placeholder="">
+                <div class="invalid-feedback">
+                    Please enter a valid PostalCode.
+                </div>
             </div>
 
             <div class="col-12">
@@ -153,6 +171,9 @@
                     </option>
                     <option value="Other">Other</option>
                 </select>
+                <div class="invalid-feedback">
+                    Please enter a valid Race.
+                </div>
             </div>
 
             <div class="col-md-6">
@@ -162,16 +183,26 @@
                     <option value="Hispanic or Latino">Hispanic or Latino</option>
                     <option value="Not Hispanic or Latino">Not Hispanic or Latino</option>
                 </select>
+                <div class="invalid-feedback">
+                    Please enter a valid Ethnicity.
+                </div>
             </div>
 
             <div class="col-md-6">
                 <label for="medicalGroupNumber" class="form-label">Medical GroupNumber</label>
-                <input type="text" class="form-control" name="medicalGroupNumber" id="medicalGroupNumber" placeholder="">
+                <input type="text" class="form-control" name="medicalGroupNumber" id="medicalGroupNumber"
+                    placeholder="">
+                <div class="invalid-feedback">
+                    Please enter a valid Medical GroupNumber.
+                </div>
             </div>
 
             <div class="col-md-6">
                 <label for="medicalid" class="form-label">Medical Id</label>
                 <input type="text" class="form-control" name="medicalid" id="medicalid" placeholder="">
+                <div class="invalid-feedback">
+                    Please enter a valid Medical Id.
+                </div>
             </div>
 
         </div>
