@@ -43,7 +43,7 @@ async function main() {
     let s2 = await vaccineInjectionSite.createSite("River Side2",
         {
             "addressLine": "1313 Grand St.",
-            "apartment_suite_unitNumber": "APT 304",
+            "apartment_suite_unitNumber": "na",
             "city": "hoboken",
             "county": "hudson",
             "state": "NJ",
@@ -51,10 +51,47 @@ async function main() {
         },
         "4.5"
     );
-
     let s2_siteid = s2._id.toHexString();
     console.log("s2");
-
+    let s3 = await vaccineInjectionSite.createSite("NYC Health + Hospitals/Queens: Emergency Room",
+        {
+            "addressLine": "82-68 164th St",
+            "apartment_suite_unitNumber": "na",
+            "city": "Jamaica",
+            "county": "na",
+            "state": "NY ",
+            "postalCode": "11432"
+        },
+        "4.5"
+    );
+    let s3_siteid = s3._id.toHexString();
+    console.log("s3");
+    let s4 = await vaccineInjectionSite.createSite("CVS Pharmacy",
+        {
+            "addressLine": "1900 7th St NW",
+            "apartment_suite_unitNumber": "na",
+            "city": "Washington",
+            "county": "na",
+            "state": "DC",
+            "postalCode": "20001"
+        },
+        "4.5"
+    );
+    console.log("s4");    
+    let s4_siteid = s4._id.toHexString();
+    let s5 = await vaccineInjectionSite.createSite("Walgreens Pharmacy",
+    {
+        "addressLine": "1418 Cedar Rd",
+        "apartment_suite_unitNumber": "na",
+        "city": "Chesapeake",
+        "county": "na",
+        "state": "VA",
+        "postalCode": "23322"
+    },
+    "4.5"
+);
+    let s5_siteid = s5._id.toHexString();
+    console.log("s5");
 
     let a1 = await administration.addAdmin("admin", "123456");
 

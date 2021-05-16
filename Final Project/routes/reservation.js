@@ -4,7 +4,7 @@ const data = require("../data");
 const reservationData = data.reservation;
 const usersData = data.users;
 const vaccineData = data.vaccineInjectionSite;
-
+const xss = require('xss');
 /**
  * get reservation information by reservationId
  */
@@ -157,9 +157,9 @@ router.delete('/', async (req, res) =>{
     }
 
     try{
-        const userInfo = await usersData.removeReservationIdFromUser(userId,(reservationId).toString());
-        const siteInfo = await vaccineData.removeReservationIdFromSite(siteId, (reservationId).toString());
-        const message = await reservationData.removeReservation(reservationId, userId, siteId);
+        const userInfo = await usersData.removeReservationIdFromUser(xss(userId),(reservationId).toString());
+        const siteInfo = await vaccineData.removeReservationIdFromSite(xss(siteId), (reservationId).toString());
+        const message = await reservationData.removeReservation(xss(reservationId), userId, siteId);
         // res.status(200).json({commentInfo: message, userInfo: userInfo, updateSite: siteInfo});
         res.status(200).send(message);
     }catch (e){
@@ -185,8 +185,6 @@ router.get('/allReservation/:id', async (req, res) =>{
         let results = [];
         for(let j = 0; j <temp.length; j++){
             let siteId = temp[j].siteId;
-            console.log(temp[j])
-            console.log(siteId)
             let siteInfo = await vaccineData.getSiteById(siteId);
             let result = {
                 reservationId: temp[j]._id,

@@ -328,9 +328,7 @@ async function addCommentAndReservation(siteId, commentId, reservationId) {
 
     const vaccineCollection = await vaccineInjectionSite();
     let site = await vaccineCollection.findOne({_id: siteId});
-    console.log(typeof site)
     if (site === null) {
-        console.log("1111111")
         throw "No site found";
     } else {
         if (!site.comments_history || typeof (site.comments_history) === 'undefined') {

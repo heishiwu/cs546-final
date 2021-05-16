@@ -48,7 +48,7 @@ router.post('/account1', async (req, res) => {
     }
 
     try {
-        const userInfo = await userData.updateUsername(userId, username);
+        const userInfo = await userData.updateUsername(xss(userId), xss(username));
         res.status(200).send(userInfo)
         // res.render("/users/login");
     } catch (e) {
@@ -84,7 +84,7 @@ router.post('/account2', async (req, res) => {
 
     try {
         // const hashPassword = await bcrypt.hash(password, saltRounds);
-        const userInfo = await userData.updatePassword(userId, password);
+        const userInfo = await userData.updatePassword(xss(userId), xss(password));
         res.status(200).send(userInfo)
     } catch (e) {
         res.status(500).json({ error: e })
@@ -138,8 +138,8 @@ router.post('/account3', async (req, res) => {
     // }
 
     try {
-        const userInfo = await userData.updateUserInformation(userId, name, email, address, birthdayFormat, gender, race,
-            ethnicity, insurance, medicalGroupNumber, medicalid);
+        const userInfo = await userData.updateUserInformation(xss(userId), xss(name), xss(email), xss(address), xss(birthdayFormat), xss(gender), xss(race),
+            xss(ethnicity), xss(insurance), xss(medicalGroupNumber), xss(medicalid));
         res.status(200).send(userInfo)
     } catch (e) {
         res.status(500).json({ error: e })
@@ -311,8 +311,8 @@ router.post('/signup', async (req, res) => {
             }
 
             // const hashPassword = await bcrypt.hash(password, saltRounds);
-            const newUser = await userData.createUser(name, username, password, email, address, birthdayFormat, gender, race,
-                ethnicity, insurance, medicalGroupNumber, medicalid);
+            const newUser = await userData.createUser(xss(name), xss(username), xss(password), xss(email), xss(address), xss(birthdayFormat), xss(gender), xss(race),
+                xss(ethnicity), xss(insurance), xss(medicalGroupNumber), xss(medicalid));
             req.session.userId = newUser._id.toHexString();
             let userInformation = await userData.getUserById((newUser._id).toString());
             // return userInformation;
