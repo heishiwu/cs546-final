@@ -63,7 +63,6 @@ async function addReservation(userId, siteId, date){
         date: date,
         time: new Date().getTime()  // timestamp
     }
-    console.log(newReservation)
     let insertInfo = await reservationCollection.insertOne(newReservation);
     if (insertInfo === null)
         throw 'Something wrong when adding the reservation';

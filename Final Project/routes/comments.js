@@ -5,6 +5,7 @@ const commentData = data.comments;
 const vaccineData = data.vaccineInjectionSite;
 const usersData = data.users;
 const { ObjectId } = require('mongodb');
+const xss = require('xss');
 
 /**
  * get comment information by commentId
@@ -76,9 +77,9 @@ router.post('/', async (req, res) =>{
     }
 
     try{
-        const newComment = await commentData.addComment(userId, siteId, rating, comment);
-        const updateUser = await usersData.addCommentIdFromUser(userId, (newComment._id).toString());
-        const updateSite = await vaccineData.addCommentIdFromSite(siteId, (newComment._id).toString());
+        const newComment = await commentData.addComment(xss(userId), xss(siteId), xss(rating), xss(comment));
+        const updateUser = await usersData.addCommentIdFromUser(xss(userId), (newComment._id).toString());
+        const updateSite = await vaccineData.addCommentIdFromSite(xss(siteId), (newComment._id).toString());
         // res.status(200).json({commentInfo: newComment, userInfo: updateUser, updateSite: updateSite});
         res.status(200).send(newComment);
     }catch (e){

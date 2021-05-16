@@ -4,7 +4,8 @@
   "description": "Final Project for Yi Lin, Yuyang Peng, Xiuyuan Zhao, Zehui Lu",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "Xiuyuan Zhao, Yi Lin, Zehui Lu, Yuyang Peng",
   "license": "ISC",

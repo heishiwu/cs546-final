@@ -43,7 +43,7 @@ async function main() {
     let s2 = await vaccineInjectionSite.createSite("River Side2",
         {
             "addressLine": "1313 Grand St.",
-            "apartment_suite_unitNumber": "APT 304",
+            "apartment_suite_unitNumber": "na",
             "city": "hoboken",
             "county": "hudson",
             "state": "NJ",
@@ -51,19 +51,51 @@ async function main() {
         },
         "4.5"
     );
-
     let s2_siteid = s2._id.toHexString();
     console.log("s2");
-
+    let s3 = await vaccineInjectionSite.createSite("NYC Health + Hospitals/Queens: Emergency Room",
+        {
+            "addressLine": "82-68 164th St",
+            "apartment_suite_unitNumber": "na",
+            "city": "Jamaica",
+            "county": "na",
+            "state": "NY ",
+            "postalCode": "11432"
+        },
+        "4.5"
+    );
+    let s3_siteid = s3._id.toHexString();
+    console.log("s3");
+    let s4 = await vaccineInjectionSite.createSite("CVS Pharmacy",
+        {
+            "addressLine": "1900 7th St NW",
+            "apartment_suite_unitNumber": "na",
+            "city": "Washington",
+            "county": "na",
+            "state": "DC",
+            "postalCode": "20001"
+        },
+        "4.5"
+    );
+    console.log("s4");    
+    let s4_siteid = s4._id.toHexString();
+    let s5 = await vaccineInjectionSite.createSite("Walgreens Pharmacy",
+    {
+        "addressLine": "1418 Cedar Rd",
+        "apartment_suite_unitNumber": "na",
+        "city": "Chesapeake",
+        "county": "na",
+        "state": "VA",
+        "postalCode": "23322"
+    },
+    "4.5"
+);
+    let s5_siteid = s5._id.toHexString();
+    console.log("s5");
 
     let a1 = await administration.addAdmin("admin", "123456");
 
     console.log("a1");
-
-    let d1 = await dailyData.addData("1", "1", "3", "4", "5", "6", "7", "8", "2021-05-15");
-
-    console.log("d1");
-
 
     let c1 = await comments.addComment(u1_userid, s1_siteid, "4.1", "Nice1 and Social distant");
     let c1_id = c1._id.toHexString();
@@ -114,7 +146,12 @@ async function main() {
 
     s1 = await vaccineInjectionSite.addCommentAndReservation(s1_siteid, c3_id, r3_id);
     console.log("s1");
-
+    
+    const d1 = await dailyData.addData('200', '20', '1000', '50', '1000', '20', '1000', '50', '2021-3-10')
+    const d2 = await dailyData.addData('56', '21', '3000', '98', '256', '41', '4000', '148', '2021-3-11')
+    const d3 = await dailyData.addData('158', '56', '1206', '153', '356', '76', '6000', '567', '2021-3-16')
+    const d4 = await dailyData.addData('68', '9', '998', '257', '589', '124', '12553', '954', '2021-3-20')
+    const d5 = await dailyData.addData('12', '16', '2014', '545', '854', '356', '17864', '1205', '2021-3-26')
 
     await db.serverConfig.close();
     console.log('Done!');
