@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "seed": "node ./tasks/seed.js"
   },
   "author": "Xiuyuan Zhao, Yi Lin, Zehui Lu, Yuyang Peng",
   "license": "ISC",
