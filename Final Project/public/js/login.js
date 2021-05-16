@@ -7,8 +7,8 @@
 
     loginForm.submit((event) => {
         event.preventDefault();
-        // usernameInput.removeClass('is-invalid is-valid');
-        // passwordInput.removeClass('is-invalid is-valid');
+        usernameInput.removeClass('is-invalid is-valid');
+        passwordInput.removeClass('is-invalid is-valid');
         loginSubmit.prop('disabled', true);
         errors.hide();
 
@@ -19,8 +19,8 @@
 
         let hasErrors = false;
         if (!info.username || !info.password) {
-            // usernameInput.addClass('is-invalid');
-            // passwordInput.addClass('is-invalid');
+            usernameInput.addClass('is-invalid');
+            passwordInput.addClass('is-invalid');
             hasErrors = true;
         }
 

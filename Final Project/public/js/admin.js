@@ -4,6 +4,15 @@
     let deleteSite = $('.deleteSite');
     // let deleteData = $('.deleteData');
 
+    let hasErrors = false;
+    function validString(str) {
+        if (!str) {
+            hasErrors = true;
+            return false
+        }
+        return true;
+    }
+
     updateSite.on("click", function (event) {
         let parent = $(this).parents('.option');
 
@@ -40,7 +49,7 @@
         let ratingInput = parent.siblings().eq(7);
         let ratingValue = ratingInput.html().trim();
 
-        parent.children('.upAndDel').attr('hidden','true');
+        parent.children('.upAndDel').attr('hidden', 'true');
         parent.children('.confirm').removeAttr('hidden');
 
         event.preventDefault();
@@ -48,27 +57,49 @@
         // let updateSiteForm = parent.parents('.updateSiteForm');
         parent.on('click', '.confirm', function (event) {
             event.preventDefault();
+            hasErrors = false;
+            
+            let name = nameInput.children().val();
+            let addressLine = addressLineInput.children().val();
+            let apartment_suite_unitNumber = apartment_suite_unitNumberInput.children().val();
+            let city = cityInput.children().val();
+            let county = countyInput.children().val();
+            let state = stateInput.children().val();
+            let postalCode = postalCodeInput.children().val();
 
-            let requestConfig = {
-                method: "post",
-                url: '/vaccineInjectionSite/update',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    siteId: siteid,
-                    name: nameInput.children().val(),
-                    address: {
-                        addressLine: addressLineInput.children().val(),
-                        apartment_suite_unitNumber: apartment_suite_unitNumberInput.children().val(),
-                        city: cityInput.children().val(),
-                        county: countyInput.children().val(),
-                        state: stateInput.children().val(),
-                        postalCode: postalCodeInput.children().val()
-                    },
-                    rating: ratingValue
-                })
+            if (!validString(name) || !validString(addressLine) || !validString(apartment_suite_unitNumber) || !validString(city) || !validString(county) || !validString(state)) {
+                hasErrors = true;
             }
 
-            try {
+            if (!(/^[0-9]{5}?$/).test(postalCode)) {
+                postalCodeInput.addClass('is-invalid is-valid');
+                hasErrors = true;
+            }
+
+            if (hasErrors) {
+                alert("invalid input");
+            }
+
+            if (!hasErrors) {
+                let requestConfig = {
+                    method: "post",
+                    url: '/vaccineInjectionSite/update',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        siteId: siteid,
+                        name: nameInput.children().val(),
+                        address: {
+                            addressLine: addressLineInput.children().val(),
+                            apartment_suite_unitNumber: apartment_suite_unitNumberInput.children().val(),
+                            city: cityInput.children().val(),
+                            county: countyInput.children().val(),
+                            state: stateInput.children().val(),
+                            postalCode: postalCodeInput.children().val()
+                        },
+                        rating: ratingValue
+                    })
+                }
+
                 $.ajax(requestConfig).then(function (result) {
                     nameInput.empty().append(result.name);
 
@@ -85,12 +116,9 @@
                     postalCodeInput.empty().append(result.address.postalCode);
 
                     parent.children('.upAndDel').removeAttr('hidden');
-                    parent.children('.confirm').attr('hidden','true');
+                    parent.children('.confirm').attr('hidden', 'true');
                     // parent.empty().append("<a class='updateSite btn btn-primary' href='#'>Update</a> <a class="deleteSite btn btn-danger" href="#">Delete</a>")
-
                 });
-            } catch (error) {
-                alert(error);
             }
 
         });
