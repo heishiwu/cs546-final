@@ -66,6 +66,7 @@ const commentsCollection = require("./comments");
  */
 async function createUser(name, username, password, email, address, birthday, gender, race, ethnicity, insurance, medicalGroupNumber, medicalid){
     if (!name || typeof name !== "object"|| !name.firstName || !name.lastName|| typeof (name.firstName) !=="string" || typeof(name.lastName) !== "string"){
+        console.log(name.firstName)
         throw "must provide username";
     }
     if (!username || typeof (username) !== "string") {

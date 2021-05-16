@@ -311,13 +311,14 @@ router.post('/signup', async (req, res) => {
             }
 
             // const hashPassword = await bcrypt.hash(password, saltRounds);
-            const newUser = await userData.createUser(xss(name), xss(username), xss(password), xss(email), xss(address), xss(birthdayFormat), xss(gender), xss(race),
-                xss(ethnicity), xss(insurance), xss(medicalGroupNumber), xss(medicalid));
+            console.log("111111")
+            const newUser = await userData.createUser(name, username, password, email, address, birthdayFormat, gender, race,
+                ethnicity, insurance, medicalGroupNumber, medicalid);
             req.session.userId = newUser._id.toHexString();
             let userInformation = await userData.getUserById((newUser._id).toString());
             // return userInformation;
             // res.status(200).json({result: userInformation});
-            res.status(200).render('landing/landing', { userInformation, partial: 'login-script', authenticated: true });
+            res.redirect('/private')
         } catch (e) {
             res.status(404).render('users/signup', { message: e, partial: 'signup-script' });
         }
