@@ -9,7 +9,6 @@ const adminData = data.administration;
 
 
 router.get('/:id', async (req, res) =>{
-    
     try{
 //////////////
         let siteId = req.params.id;
@@ -22,7 +21,10 @@ router.get('/:id', async (req, res) =>{
         
         let CH = siteInformation.comments_history;
         if(!(CH) || typeof (CH) === 'undefined') {
-            let userInformation = await userData.getUserById(req.session.userId);
+            let userInformation
+            if (req.session.userId){
+                userInformation = await userData.getUserById(req.session.userId);
+            }
             return res.render('sites/single', {userInformation, siteInfo: siteInformation, partial: 'list-single-script', authenticated : true});
             // if NULL, return null to sites/singles
         }else {
