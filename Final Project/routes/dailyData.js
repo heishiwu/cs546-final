@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require("../data");
 const dailyData = data.dailyData;
-
+const xss = require('xss');
 
 
 
@@ -61,7 +61,7 @@ router.post('/', async (req, res) =>{
         res.status(400).json({error: "You must input a change_date"});
     }
     try{
-        const newDailyData = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date);
+        const newDailyData = await dailyData.addData(xss(dailyCases), xss(dailyDeath), xss(dailyVaccination), xss(dailyRecover), xss(sum_of_cases), xss(sum_of_death), xss(sum_of_vaccination), xss(sum_of_recover), xss(change_date));
         // res.status(200).send(newDailyData);
         res.redirect('/administration/getInfo');
     }catch (e){

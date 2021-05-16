@@ -6,6 +6,7 @@ const siteData = data.vaccineInjectionSite;
 const dailyData = data.dailyData;
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
+const xss = require('xss');
 
 router.get('/account', async (req, res) =>{
     try{
@@ -41,7 +42,7 @@ router.post('/', async (req, res) =>{
     }
 
     try{
-        const newAdmin = await administrationData.addAdmin(username, password);
+        const newAdmin = await administrationData.addAdmin(xss(username), xss(password));
         res.status(200).send(newAdmin);
     }catch (e){
         res.status(500).json({error:e});
@@ -59,7 +60,7 @@ router.post('/updateAdminUsername', async (req, res) =>{
     }
 
     try{
-        const newAdmin = await administrationData.updateAdminUsername(adminId,username);
+        const newAdmin = await administrationData.updateAdminUsername(xss(adminId),xss(username));
         res.status(200).send(newAdmin);
     }catch (e){
         res.status(500).json({error:e});
