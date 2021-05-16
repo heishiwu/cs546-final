@@ -40,7 +40,7 @@ router.get('/:id', async (req, res) =>{
                 sum += parseFloat(temp[j].rating);
             }
             let sum1 = (sum/ temp.length).toFixed(1);
-            let siteInformation = await vaccineData.updateRating(xss(siteId.toString()), xss(sum1.toString()));
+            let siteInformation = await vaccineData.updateRating(siteId.toString(), sum1.toString());
             // return res.render('sites/single',
             //     {partial: 'sites-list-script',siteInformation: siteInformation});
 
@@ -179,7 +179,7 @@ router.post('/', async (req, res) =>{
     //     res.status(400).json({error: "You must input a rating"});
     // }
     try{
-        const newSite = await vaccineData.createSite(xss(name), xss(address));
+        const newSite = await vaccineData.createSite(name, address);
         // res.render('admin/addNewSite', {partial:"addNewSite-script"});
         res.redirect('/administration/getInfo');
     }catch (e){
@@ -201,7 +201,7 @@ router.post('/update', async (req, res) =>{
         return ;
     }
     try{
-        const siteInfo = await vaccineData.updateSite(xss(siteId), xss(name), xss(address), xss(rating.toString()));
+        const siteInfo = await vaccineData.updateSite(siteId, name, address, rating.toString());
         res.status(200).send(siteInfo)
     }catch (e){
         res.status(500).json({error:e})
@@ -232,9 +232,9 @@ router.post('/:id', async (req, res) =>{
     
     try{
        
-        const newComment = await commentsData.addComment(xss(userId), xss(siteId), xss(rating), xss(comment));
-        await userData.addCommentIdFromUser(xss(userId), (newComment._id).toString());
-        await vaccineData.addCommentIdFromSite(xss(siteId), (newComment._id).toString());
+        const newComment = await commentsData.addComment(userId, siteId, rating, comment);
+        await userData.addCommentIdFromUser(userId, (newComment._id).toString());
+        await vaccineData.addCommentIdFromSite(siteId, (newComment._id).toString());
         
         res.status(200).send(newComment);
     }catch (e){

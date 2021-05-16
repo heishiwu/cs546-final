@@ -138,8 +138,8 @@ router.post('/account3', async (req, res) => {
     // }
 
     try {
-        const userInfo = await userData.updateUserInformation(xss(userId), xss(name), xss(email), xss(address), xss(birthdayFormat), xss(gender), xss(race),
-            xss(ethnicity), xss(insurance), xss(medicalGroupNumber), xss(medicalid));
+        const userInfo = await userData.updateUserInformation(userId, name, email, address, birthdayFormat, gender, race,
+            ethnicity, insurance, medicalGroupNumber, medicalid);
         res.status(200).send(userInfo)
     } catch (e) {
         res.status(500).json({ error: e })
@@ -311,7 +311,6 @@ router.post('/signup', async (req, res) => {
             }
 
             // const hashPassword = await bcrypt.hash(password, saltRounds);
-            console.log("111111")
             const newUser = await userData.createUser(name, username, password, email, address, birthdayFormat, gender, race,
                 ethnicity, insurance, medicalGroupNumber, medicalid);
             req.session.userId = newUser._id.toHexString();
