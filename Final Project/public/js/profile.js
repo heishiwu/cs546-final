@@ -8,6 +8,8 @@
         return true;
     }
 
+    let originEmail = $('#email').val();
+
     $('#changeUsername').on("click", function () {
         $('#username').removeAttr("disabled");
         // $('#username').width("70%");
@@ -120,18 +122,31 @@
         hasErrors = false;
         // $('#editForm').unbind().submit();
         // let emailInput = $('#email');
-        if (!validString(firstName) || !validString(lastName) || !validString(birthday) || !validString(email)) {
-            hasErrors = true;
-        }
-        // if (!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(emailInput)) {
-        //     hasErrors = true;
-        // }
-        if ((addressLine && !validString(addressLine)) || (apartment_suite_unitNumber && !validString(apartment_suite_unitNumber)) || (city && !validString(city)) || (county && !validString(county)) || (state && !validString(state)) || (postalCode && !validString(postalCode))) {
-            hasErrors = true;
-        }
-        if ((insuranceName && !validString(insuranceName)) || (medicalGroupNumber && !validString(medicalGroupNumber)) || (medicalid && !validString(medicalid))) {
-            hasErrors = true;
-        }
+        let firstName = $('#firstName').val();
+        let lastName = $('#lastName').val();
+        let birthday = $('#birthday').val();
+        let email = $('#email').val();
+        let addressLine = $('#addressLine').val();
+        let apartment_suite_unitNumber = $('#apartment_suite_unitNumber').val();
+        let city = $('#city').val();
+        let county = $('#county').val();
+        let state = $('#state').val();
+        let postalCode = $('#postalCode').val();
+
+        if (!validString(firstName)) hasErrors = true;
+        if (!validString(lastName)) hasErrors = true;
+        if (!validString(birthday)) hasErrors = true;
+        if (!validString(email) || email === originEmail) hasErrors = true;
+        if (!validString(addressLine)) hasErrors = true;
+        if (!validString(apartment_suite_unitNumber)) hasErrors = true;
+        if (!validString(city)) hasErrors = true;
+        if (!validString(county)) hasErrors = true;
+        if (!validString(state)) hasErrors = true;
+        if (!validString(postalCode)) hasErrors = true;
+
+        if ((insuranceName && !validString(insuranceName))) hasErrors = true;
+        if ((medicalGroupNumber && !validString(medicalGroupNumber))) hasErrors = true;
+        if ((medicalid && !validString(medicalid))) hasErrors = true;
 
         if (hasErrors) {
             alert("invalid input");

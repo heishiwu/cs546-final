@@ -94,27 +94,25 @@
         if (!validString(info.birthday)) birthdayInput.addClass('is-invalid');
         if (!validString(info.insuranceName)) insuranceNameInput.addClass('is-invalid');
         if (!validString(info.insuranceType)) insuranceTypeInput.addClass('is-invalid');
-        if (info.postalCode) {
-            if (!(/^[0-9]{5}?$/).test(info.postalCode)) {
-                postalCodeInput.addClass('is-invalid is-valid');
-                hasErrors = true;
-            }
+        if (!(/^[0-9]{5}?$/).test(info.postalCode)) {
+            postalCodeInput.addClass('is-invalid is-valid');
+            hasErrors = true;
         }
-        if (info.addressLine) {
+        // if (info.addressLine) {
             if (!validString(info.addressLine)) addressLineInput.addClass('is-invalid');
-        }
-        if (info.apartment_suite_unitNumber) {
+        // }
+        // if (info.apartment_suite_unitNumber) {
             if (!validString(info.apartment_suite_unitNumber)) apartment_suite_unitNumberInput.addClass('is-invalid');
-        }
-        if (info.city) {
+        // }
+        // if (info.city) {
             if (!validString(info.city)) cityInput.addClass('is-invalid');
-        }
-        if (info.county) {
+        // }
+        // if (info.county) {
             if (!validString(info.county)) countyInput.addClass('is-invalid');
-        }
-        if (info.state) {
+        // }
+        // if (info.state) {
             if (!validString(info.state)) stateInput.addClass('is-invalid');
-        }
+        // }
         // if (info.gender) {
         //     if (!validString(info.gender)) genderInput.addClass('is-invalid');
         // }
