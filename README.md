@@ -24,8 +24,8 @@ Running the program
 2. Browse the website (only able to read posts)
 3. Login and Create an account to access all of the website's features
 4. If you want to login in
-    Username: username1
-    Password: $2a$10$S47.YnORnIZRLpMOSOINm.eUL4FoSLBFaWfk7qWT65.0c7unyjzGi
+    5. Username: username1
+    6. Password: $2a$10$S47.YnORnIZRLpMOSOINm.eUL4FoSLBFaWfk7qWT65.0c7unyjzGi
 
 
 Running the program with an administrator account
