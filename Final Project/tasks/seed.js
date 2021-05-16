@@ -60,11 +60,6 @@ async function main() {
 
     console.log("a1");
 
-    let d1 = await dailyData.addData("1", "1", "3", "4", "5", "6", "7", "8", "2021-05-15");
-
-    console.log("d1");
-
-
     let c1 = await comments.addComment(u1_userid, s1_siteid, "4.1", "Nice1 and Social distant");
     let c1_id = c1._id.toHexString();
     console.log("c1");
@@ -115,11 +110,11 @@ async function main() {
     s1 = await vaccineInjectionSite.addCommentAndReservation(s1_siteid, c3_id, r3_id);
     console.log("s1");
     
-    const u1 = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date)
-    const u2 = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date)
-    const u3 = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date)
-    const u4 = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date)
-    const u5 = await dailyData.addData(dailyCases, dailyDeath, dailyVaccination, dailyRecover, sum_of_cases, sum_of_death, sum_of_vaccination, sum_of_recover, change_date)
+    const d1 = await dailyData.addData('200', '20', '1000', '50', '1000', '20', '1000', '50', '2021-3-10')
+    const d2 = await dailyData.addData('56', '21', '3000', '98', '256', '41', '4000', '148', '2021-3-11')
+    const d3 = await dailyData.addData('158', '56', '1206', '153', '356', '76', '6000', '567', '2021-3-16')
+    const d4 = await dailyData.addData('68', '9', '998', '257', '589', '124', '12553', '954', '2021-3-20')
+    const d5 = await dailyData.addData('12', '16', '2014', '545', '854', '356', '17864', '1205', '2021-3-26')
 
     await db.serverConfig.close();
     console.log('Done!');
